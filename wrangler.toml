@@ -1,13 +1,9 @@
-# Cloudflare Pages / Wrangler — prensesmuzik
-# https://developers.cloudflare.com/pages/platform/wrangler/
+# Cloudflare Workers — prensesmuzik (statik site)
+# Deploy: npx wrangler deploy
 
 name = "prensesmuzik"
 compatibility_date = "2024-01-01"
 
-# Static site: Cloudflare Pages ile deploy için:
-#   npx wrangler pages deploy . --project-name=prensesmuzik
-#
-# İlk kez proje oluşturmak için:
-#   npx wrangler pages project create prensesmuzik
-#
-# GitHub bağlıysa dashboard'da "Deploy" ile de deploy edebilirsiniz.
+# Worker ile statik dosyaları sun (HTML, CSS, img, videos vb.)
+[assets]
+directory = "."
