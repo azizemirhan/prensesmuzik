@@ -1,0 +1,60 @@
+/* ══════════════════════════════════════════
+   TOP BAR — Siyah, kayan yazı (marquee)
+   Sabit üstte; header hemen altında
+══════════════════════════════════════════ */
+
+.site-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #0a0a0a;
+  color: #f8f6f2;
+  padding: 10px 0;
+  overflow: hidden;
+  z-index: 1001;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+/* Header'ı topbar altına indir (sadece topbar olan sayfalarda) */
+.site-topbar ~ header {
+  top: 38px;
+}
+
+.topbar-marquee-wrap {
+  display: flex;
+  width: max-content;
+  flex-shrink: 0;
+  animation: topbar-marquee 35s linear infinite;
+  -webkit-animation: topbar-marquee 35s linear infinite;
+  will-change: transform;
+}
+
+.topbar-marquee-wrap:hover {
+  animation-play-state: paused;
+  -webkit-animation-play-state: paused;
+}
+
+.topbar-marquee {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 0 3em;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(248,246,242,0.9);
+}
+
+@keyframes topbar-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@-webkit-keyframes topbar-marquee {
+  0% { -webkit-transform: translateX(0); }
+  100% { -webkit-transform: translateX(-50%); }
+}

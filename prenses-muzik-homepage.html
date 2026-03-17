@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Prenses Müzik — Ana Sayfa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --black:#080808;
+  --off-black:#111;
+  --white:#f7f4ef;
+  --cream:#f0ece5;
+  --warm-gray:#d6d0c8;
+  --mid-gray:#9e968c;
+  --dark-gray:#3e3a35;
+  --accent-line:rgba(255,255,255,0.07);
+  --font-display:'Cormorant Garamond',serif;
+  --font-body:'Montserrat',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--white);
+  color:var(--black);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── Custom cursor ── */
+.cursor{
+  position:fixed;width:9px;height:9px;
+  background:#e02020;border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width 0.22s,height 0.22s,background 0.3s;
+  box-shadow:0 0 12px rgba(224,32,32,.5);
+}
+.cursor-ring{
+  position:fixed;width:30px;height:30px;
+  border:1.5px solid rgba(224,32,32,.4);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:all 0.18s ease;
+}
+body.dark-bg .cursor{background:var(--white);}
+
+/* ── Grain overlay ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size:180px;
+  pointer-events:none;z-index:1000;opacity:0.4;
+}
+
+/* ── Reveal animation ── */
+.reveal{
+  opacity:0;transform:translateY(40px);
+  transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+             transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.revealed{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:0.1s;}
+.reveal-delay-2{transition-delay:0.22s;}
+.reveal-delay-3{transition-delay:0.34s;}
+.reveal-delay-4{transition-delay:0.46s;}
+.reveal-left{
+  opacity:0;transform:translateX(-50px);
+  transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+             transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-left.revealed{opacity:1;transform:translateX(0);}
+.reveal-right{
+  opacity:0;transform:translateX(50px);
+  transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+             transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-right.revealed{opacity:1;transform:translateX(0);}
+
+/* ══════════════════════════════════════════
+   § 1  HERO  — DARK
+══════════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  background:var(--black);
+  color:var(--white);
+  position:relative;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:0 72px 80px;
+  overflow:hidden;
+}
+
+/* Animated staff lines */
+.hero-lines{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:center;gap:18px;
+  padding:0 0 0 72px;
+  pointer-events:none;
+}
+.hero-line{
+  height:1px;background:var(--accent-line);
+  transform:scaleX(0);transform-origin:left;
+  animation:lineReveal 1.6s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-line:nth-child(1){animation-delay:0.1s;}
+.hero-line:nth-child(2){animation-delay:0.2s;}
+.hero-line:nth-child(3){animation-delay:0.3s;}
+.hero-line:nth-child(4){animation-delay:0.4s;}
+.hero-line:nth-child(5){animation-delay:0.5s;}
+@keyframes lineReveal{to{transform:scaleX(1);}}
+
+/* Big number watermark */
+.hero-watermark{
+  position:absolute;
+  right:-40px;top:50%;transform:translateY(-50%);
+  font-family:var(--font-display);
+  font-size:clamp(280px,32vw,480px);
+  font-weight:200;
+  color:rgba(255,255,255,0.025);
+  letter-spacing:-0.05em;
+  line-height:1;
+  pointer-events:none;
+  user-select:none;
+  animation:fadeIn 2s 0.5s ease both;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* Hero tag */
+.hero-tag{
+  position:absolute;top:52px;left:72px;
+  display:flex;align-items:center;gap:12px;
+  animation:fadeInUp 1s 0.2s ease both;
+}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);}
+.hero-tag-text{
+  font-size:8.5px;font-weight:300;
+  letter-spacing:0.32em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+}
+
+/* Hero year badge */
+.hero-badge{
+  position:absolute;top:52px;right:72px;
+  font-family:var(--font-display);
+  font-size:11px;font-weight:300;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.2);
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+  animation:fadeIn 1.2s 0.6s ease both;
+}
+
+/* Hero main content */
+.hero-content{position:relative;z-index:2;}
+.hero-eyebrow{
+  font-size:9px;font-weight:300;
+  letter-spacing:0.38em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+  margin-bottom:28px;
+  animation:fadeInUp 1s 0.4s ease both;
+}
+.hero-title{
+  font-family:var(--font-display);
+  font-size:clamp(60px,9vw,130px);
+  font-weight:200;line-height:0.92;
+  letter-spacing:-0.01em;
+  color:var(--white);
+  animation:fadeInUp 1s 0.55s ease both;
+}
+.hero-title em{
+  font-style:italic;
+  color:rgba(255,255,255,0.45);
+}
+.hero-title .indent{padding-left:0.22em;}
+
+.hero-bottom{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-top:64px;
+  gap:40px;
+  animation:fadeInUp 1s 0.75s ease both;
+}
+.hero-desc{
+  font-size:11.5px;font-weight:300;
+  line-height:2.1;letter-spacing:0.06em;
+  color:rgba(255,255,255,0.4);
+  max-width:340px;
+}
+.hero-actions{display:flex;gap:16px;align-items:center;}
+.btn-hero-primary{
+  font-family:var(--font-body);
+  font-size:9.5px;font-weight:300;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--black);background:var(--white);
+  border:none;padding:14px 32px;
+  cursor:none;
+  transition:background 0.3s,color 0.3s;
+}
+.btn-hero-primary:hover{background:var(--warm-gray);}
+.btn-hero-secondary{
+  font-size:9.5px;font-weight:300;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);
+  background:none;border:1px solid rgba(255,255,255,0.15);
+  padding:14px 28px;cursor:none;
+  transition:border-color 0.3s,color 0.3s;
+}
+.btn-hero-secondary:hover{border-color:rgba(255,255,255,0.45);color:var(--white);}
+
+/* Scroll indicator */
+.hero-scroll{
+  position:absolute;bottom:80px;right:72px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  animation:fadeIn 1.5s 1.2s ease both;
+}
+.scroll-text{
+  font-size:7.5px;font-weight:300;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  writing-mode:vertical-rl;
+}
+.scroll-line{
+  width:1px;height:48px;
+  background:rgba(255,255,255,0.15);
+  position:relative;overflow:hidden;
+}
+.scroll-line::after{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:100%;background:rgba(255,255,255,0.6);
+  animation:scrollDrop 1.8s 1.5s ease-in-out infinite;
+}
+@keyframes scrollDrop{
+  0%{transform:translateY(-100%);}
+  100%{transform:translateY(200%);}
+}
+
+/* ══════════════════════════════════════════
+   § 2  SERVICES  — LIGHT
+══════════════════════════════════════════ */
+.services{
+  background:var(--white);
+  padding:140px 72px;
+}
+.section-header{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:80px;
+  gap:40px;
+}
+.section-label{
+  font-size:8px;font-weight:300;
+  letter-spacing:0.38em;text-transform:uppercase;
+  color:var(--mid-gray);
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::before{
+  content:'';display:block;
+  width:28px;height:1px;background:var(--warm-gray);
+}
+.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(40px,5vw,72px);
+  font-weight:300;line-height:1.05;
+  letter-spacing:0.01em;
+  color:var(--black);
+}
+.section-title em{font-style:italic;color:var(--mid-gray);}
+.section-subtitle{
+  font-size:11px;font-weight:300;
+  line-height:2;letter-spacing:0.06em;
+  color:var(--mid-gray);
+  max-width:300px;
+  text-align:right;
+  margin-top:auto;
+  align-self:flex-end;
+}
+
+/* Services grid */
+.services-list{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--warm-gray);
+  border-left:1px solid var(--warm-gray);
+}
+.service-card{
+  border-right:1px solid var(--warm-gray);
+  border-bottom:1px solid var(--warm-gray);
+  padding:36px 28px 32px;
+  cursor:none;
+  position:relative;
+  overflow:hidden;
+  transition:background 0.4s;
+  text-decoration:none;
+  display:block;
+  color:inherit;
+}
+.service-card::before{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--black);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  z-index:0;
+}
+.service-card:hover::before{transform:scaleY(1);}
+.service-card:hover .sc-num,
+.service-card:hover .sc-name,
+.service-card:hover .sc-tag,
+.service-card:hover .sc-icon svg{color:var(--white);stroke:rgba(255,255,255,0.6);}
+.service-card:hover .sc-arrow{opacity:1;transform:translate(0,0);}
+
+.sc-num{
+  font-family:var(--font-display);
+  font-size:11px;font-weight:300;
+  letter-spacing:0.1em;color:var(--warm-gray);
+  margin-bottom:32px;
+  position:relative;z-index:1;
+  transition:color 0.4s;
+}
+.sc-icon{
+  margin-bottom:20px;
+  position:relative;z-index:1;
+}
+.sc-icon svg{
+  width:22px;height:22px;
+  stroke:var(--mid-gray);fill:none;
+  stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;
+  transition:stroke 0.4s;
+}
+.sc-name{
+  font-family:var(--font-display);
+  font-size:17px;font-weight:400;
+  line-height:1.25;letter-spacing:0.01em;
+  color:var(--black);
+  margin-bottom:8px;
+  position:relative;z-index:1;
+  transition:color 0.4s;
+}
+.sc-tag{
+  font-size:8px;font-weight:300;
+  letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--mid-gray);
+  position:relative;z-index:1;
+  transition:color 0.4s;
+}
+.sc-arrow{
+  position:absolute;bottom:28px;right:24px;
+  font-size:16px;color:var(--white);
+  opacity:0;
+  transform:translate(-6px,6px);
+  transition:opacity 0.4s,transform 0.4s;
+  z-index:1;
+}
+
+/* ══════════════════════════════════════════
+   § 3  STATS  — DARK
+══════════════════════════════════════════ */
+.stats{
+  background:var(--off-black);
+  color:var(--white);
+  padding:120px 72px;
+  position:relative;
+  overflow:hidden;
+}
+.stats-bg-text{
+  position:absolute;
+  bottom:-60px;left:-20px;
+  font-family:var(--font-display);
+  font-size:clamp(120px,18vw,240px);
+  font-weight:200;
+  color:rgba(255,255,255,0.025);
+  letter-spacing:-0.04em;
+  white-space:nowrap;
+  pointer-events:none;
+  user-select:none;
+}
+.stats-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  position:relative;z-index:1;
+}
+.stats-left{
+  padding-right:80px;
+  border-right:1px solid rgba(255,255,255,0.08);
+  display:flex;flex-direction:column;justify-content:center;
+  gap:28px;
+  padding-bottom:0;
+}
+.stats-eyebrow{
+  font-size:8px;font-weight:300;
+  letter-spacing:0.38em;text-transform:uppercase;
+  color:rgba(255,255,255,0.28);
+  display:flex;align-items:center;gap:12px;
+}
+.stats-eyebrow::before{content:'';display:block;width:28px;height:1px;background:rgba(255,255,255,0.15);}
+.stats-headline{
+  font-family:var(--font-display);
+  font-size:clamp(38px,4.5vw,64px);
+  font-weight:300;line-height:1.1;
+  letter-spacing:0.01em;
+}
+.stats-headline em{font-style:italic;color:rgba(255,255,255,0.4);}
+.stats-body{
+  font-size:11px;font-weight:300;
+  line-height:2.1;letter-spacing:0.05em;
+  color:rgba(255,255,255,0.38);
+  max-width:380px;
+}
+.stats-cta{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:9px;font-weight:300;
+  letter-spacing:0.26em;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);
+  text-decoration:none;cursor:none;
+  transition:color 0.25s;
+  padding-bottom:6px;
+  border-bottom:1px solid rgba(255,255,255,0.12);
+  width:fit-content;
+}
+.stats-cta:hover{color:var(--white);}
+.stats-cta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5;transition:transform 0.25s;}
+.stats-cta:hover svg{transform:translateX(5px);}
+
+.stats-right{
+  padding-left:80px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+}
+.stat-item{
+  padding:44px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  display:flex;flex-direction:column;gap:10px;
+}
+.stat-item:nth-child(odd){
+  padding-right:44px;
+  border-right:1px solid rgba(255,255,255,0.06);
+}
+.stat-item:nth-child(even){padding-left:44px;}
+.stat-item:nth-last-child(1),
+.stat-item:nth-last-child(2){border-bottom:none;}
+.stat-num{
+  font-family:var(--font-display);
+  font-size:clamp(52px,6vw,84px);
+  font-weight:200;line-height:1;
+  letter-spacing:-0.02em;
+  color:var(--white);
+}
+.stat-num sup{
+  font-size:0.38em;vertical-align:super;
+  color:rgba(255,255,255,0.45);
+}
+.stat-label{
+  font-size:8.5px;font-weight:300;
+  letter-spacing:0.24em;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+}
+
+/* ══════════════════════════════════════════
+   § 4  PORTFOLIO / GALLERY  — LIGHT
+══════════════════════════════════════════ */
+.portfolio{
+  background:var(--cream);
+  padding:140px 72px;
+}
+.portfolio-header{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;
+  margin-bottom:64px;
+  gap:40px;
+}
+.portfolio-title{
+  font-family:var(--font-display);
+  font-size:clamp(38px,5vw,68px);
+  font-weight:300;line-height:1.05;
+}
+.portfolio-title em{font-style:italic;color:var(--mid-gray);}
+.portfolio-link{
+  font-size:9px;font-weight:300;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--mid-gray);text-decoration:none;cursor:none;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--warm-gray);
+  padding-bottom:4px;
+  transition:color 0.25s,border-color 0.25s;
+  white-space:nowrap;
+  align-self:flex-end;
+}
+.portfolio-link:hover{color:var(--black);border-color:var(--black);}
+.portfolio-link svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5;transition:transform 0.25s;}
+.portfolio-link:hover svg{transform:translateX(4px);}
+
+/* Mosaic grid */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:auto;
+  gap:3px;
+}
+.gallery-item{
+  position:relative;
+  overflow:hidden;
+  cursor:none;
+}
+.gallery-item:nth-child(1){grid-column:span 5;grid-row:span 2;}
+.gallery-item:nth-child(2){grid-column:span 4;}
+.gallery-item:nth-child(3){grid-column:span 3;}
+.gallery-item:nth-child(4){grid-column:span 4;}
+.gallery-item:nth-child(5){grid-column:span 3;}
+.gallery-item:nth-child(6){grid-column:span 4;grid-row:span 1;}
+
+.gallery-img{
+  width:100%;
+  aspect-ratio:unset;
+  height:100%;
+  min-height:220px;
+  display:flex;align-items:flex-end;
+  position:relative;
+  transition:transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.gallery-item:hover .gallery-img{transform:scale(1.03);}
+
+/* Visual placeholders using gradients + patterns */
+.gi-1{background:linear-gradient(145deg,#1a1a1a 0%,#2d2a27 50%,#111 100%);min-height:480px;}
+.gi-2{background:linear-gradient(160deg,#e8e4de 0%,#d0c9bf 100%);}
+.gi-3{background:linear-gradient(140deg,#2a2520 0%,#1a1510 100%);}
+.gi-4{background:linear-gradient(150deg,#d8d2c8 0%,#c4bdb4 100%);}
+.gi-5{background:linear-gradient(160deg,#181510 0%,#2e2820 100%);}
+.gi-6{background:linear-gradient(145deg,#e4e0da 0%,#cec8be 100%);}
+
+/* Geometric SVG decorations on gallery items */
+.gallery-deco{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0.12;pointer-events:none;
+}
+.gallery-deco svg{width:60%;height:60%;}
+
+.gallery-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:24px 24px 20px;
+  background:linear-gradient(transparent,rgba(0,0,0,0.65));
+  display:flex;align-items:flex-end;justify-content:space-between;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.4s,transform 0.4s;
+}
+.gallery-item:hover .gallery-overlay{opacity:1;transform:translateY(0);}
+.gallery-overlay-name{
+  font-family:var(--font-display);
+  font-size:16px;font-weight:300;
+  color:var(--white);letter-spacing:0.03em;
+}
+.gallery-overlay-tag{
+  font-size:7.5px;font-weight:300;
+  letter-spacing:0.26em;text-transform:uppercase;
+  color:rgba(255,255,255,0.5);
+}
+
+/* ══════════════════════════════════════════
+   § 5  PROCESS  — DARK
+══════════════════════════════════════════ */
+.process{
+  background:var(--black);
+  color:var(--white);
+  padding:140px 72px;
+}
+.process-top{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  margin-bottom:100px;
+  align-items:end;
+}
+.process-title{
+  font-family:var(--font-display);
+  font-size:clamp(40px,5vw,72px);
+  font-weight:300;line-height:1.05;
+}
+.process-title em{font-style:italic;color:rgba(255,255,255,0.35);}
+.process-intro{
+  font-size:11.5px;font-weight:300;
+  line-height:2.1;letter-spacing:0.05em;
+  color:rgba(255,255,255,0.4);
+}
+
+.process-steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+.process-step{
+  padding:48px 36px 40px 0;
+  border-right:1px solid rgba(255,255,255,0.06);
+  position:relative;
+}
+.process-step:last-child{border-right:none;padding-right:0;}
+.process-step-num{
+  font-family:var(--font-display);
+  font-size:72px;font-weight:200;
+  color:rgba(255,255,255,0.05);
+  line-height:1;letter-spacing:-0.04em;
+  margin-bottom:24px;
+}
+.process-step-title{
+  font-family:var(--font-display);
+  font-size:22px;font-weight:300;
+  color:var(--white);letter-spacing:0.02em;
+  margin-bottom:14px;
+}
+.process-step-body{
+  font-size:10.5px;font-weight:300;
+  line-height:2;letter-spacing:0.04em;
+  color:rgba(255,255,255,0.33);
+}
+.process-step-line{
+  position:absolute;top:0;left:0;
+  width:0;height:1px;
+  background:rgba(255,255,255,0.4);
+  transition:width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+.process-step.revealed .process-step-line{width:70%;}
+
+/* ══════════════════════════════════════════
+   § 6  QUOTE  — LIGHT
+══════════════════════════════════════════ */
+.quote-section{
+  background:var(--white);
+  padding:160px 72px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:0;
+  position:relative;
+  overflow:hidden;
+}
+.quote-bg-clef{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  font-family:var(--font-display);
+  font-size:clamp(300px,40vw,600px);
+  color:rgba(0,0,0,0.025);
+  line-height:1;
+  pointer-events:none;
+  user-select:none;
+}
+.quote-mark{
+  font-family:var(--font-display);
+  font-size:120px;font-weight:200;
+  color:var(--warm-gray);
+  line-height:0.6;
+  margin-bottom:28px;
+  position:relative;z-index:1;
+}
+.quote-text{
+  font-family:var(--font-display);
+  font-size:clamp(28px,4vw,52px);
+  font-weight:300;font-style:italic;
+  line-height:1.35;letter-spacing:0.01em;
+  color:var(--black);
+  max-width:860px;
+  position:relative;z-index:1;
+}
+.quote-text strong{font-style:normal;font-weight:400;}
+.quote-author{
+  margin-top:48px;
+  display:flex;flex-direction:column;
+  align-items:center;gap:8px;
+  position:relative;z-index:1;
+}
+.quote-line{width:40px;height:1px;background:var(--warm-gray);margin-bottom:8px;}
+.quote-author-name{
+  font-family:var(--font-display);
+  font-size:15px;font-weight:400;
+  letter-spacing:0.06em;color:var(--dark-gray);
+}
+.quote-author-title{
+  font-size:8px;font-weight:300;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--mid-gray);
+}
+
+/* ══════════════════════════════════════════
+   § 7  HIZMETLER BANNER  — DARK SPLIT
+══════════════════════════════════════════ */
+.banner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:520px;
+}
+.banner-left{
+  background:var(--off-black);
+  padding:96px 72px;
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+  position:relative;
+  overflow:hidden;
+}
+.banner-left::before{
+  content:'';
+  position:absolute;
+  right:-80px;top:50%;transform:translateY(-50%);
+  width:320px;height:320px;
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:50%;pointer-events:none;
+}
+.banner-left::after{
+  content:'';
+  position:absolute;
+  right:-40px;top:50%;transform:translateY(-50%);
+  width:200px;height:200px;
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:50%;pointer-events:none;
+}
+.banner-tag{
+  font-size:8px;font-weight:300;
+  letter-spacing:0.36em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+}
+.banner-title{
+  font-family:var(--font-display);
+  font-size:clamp(36px,4.5vw,64px);
+  font-weight:300;line-height:1.1;
+  color:var(--white);
+}
+.banner-title em{font-style:italic;color:rgba(255,255,255,0.4);}
+.banner-cta-group{display:flex;gap:14px;align-items:center;}
+.btn-banner{
+  font-size:9.5px;font-weight:300;
+  letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--black);background:var(--white);
+  border:none;padding:13px 28px;
+  cursor:none;transition:background 0.3s;
+}
+.btn-banner:hover{background:var(--warm-gray);}
+.btn-banner-ghost{
+  font-size:9.5px;font-weight:300;
+  letter-spacing:0.24em;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);
+  background:none;border:1px solid rgba(255,255,255,0.15);
+  padding:13px 24px;cursor:none;
+  transition:border-color 0.3s,color 0.3s;
+}
+.btn-banner-ghost:hover{border-color:rgba(255,255,255,0.45);color:var(--white);}
+
+.banner-right{
+  background:var(--white);
+  padding:96px 72px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  gap:0;
+}
+.banner-right-label{
+  font-size:8px;font-weight:300;
+  letter-spacing:0.36em;text-transform:uppercase;
+  color:var(--mid-gray);
+  margin-bottom:36px;
+  display:flex;align-items:center;gap:12px;
+}
+.banner-right-label::before{content:'';display:block;width:24px;height:1px;background:var(--warm-gray);}
+.banner-services-mini{display:flex;flex-direction:column;}
+.bsm-row{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding:16px 0;
+  border-bottom:1px solid var(--warm-gray);
+  cursor:none;
+  transition:padding-left 0.3s;
+}
+.bsm-row:hover{padding-left:8px;}
+.bsm-row:last-child{border-bottom:none;}
+.bsm-name{
+  font-family:var(--font-display);
+  font-size:17px;font-weight:300;
+  color:var(--black);letter-spacing:0.02em;
+  transition:color 0.25s;
+}
+.bsm-row:hover .bsm-name{color:var(--dark-gray);}
+.bsm-arrow{
+  font-size:11px;color:var(--warm-gray);
+  transition:transform 0.25s,color 0.25s;
+}
+.bsm-row:hover .bsm-arrow{transform:translateX(4px);color:var(--black);}
+
+/* ══════════════════════════════════════════
+   § 8  CTA  — DARK FULL
+══════════════════════════════════════════ */
+.cta-section{
+  background:var(--black);
+  color:var(--white);
+  padding:160px 72px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.cta-rings{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.cta-ring{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.04);
+  transform:translate(-50%,-50%);
+}
+.cta-ring:nth-child(1){width:320px;height:320px;}
+.cta-ring:nth-child(2){width:520px;height:520px;}
+.cta-ring:nth-child(3){width:720px;height:720px;}
+.cta-ring:nth-child(4){width:960px;height:960px;}
+
+.cta-label{
+  font-size:8.5px;font-weight:300;
+  letter-spacing:0.38em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  margin-bottom:32px;
+  position:relative;z-index:1;
+}
+.cta-title{
+  font-family:var(--font-display);
+  font-size:clamp(52px,8vw,120px);
+  font-weight:200;line-height:0.92;
+  letter-spacing:-0.01em;
+  color:var(--white);
+  margin-bottom:52px;
+  position:relative;z-index:1;
+}
+.cta-title em{font-style:italic;color:rgba(255,255,255,0.35);}
+.cta-actions{
+  display:flex;align-items:center;justify-content:center;
+  gap:20px;position:relative;z-index:1;
+}
+.btn-cta-main{
+  font-size:10px;font-weight:300;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--black);background:var(--white);
+  border:none;padding:16px 44px;
+  cursor:none;transition:background 0.3s;
+}
+.btn-cta-main:hover{background:var(--warm-gray);}
+.cta-contact{
+  font-size:10px;font-weight:300;
+  letter-spacing:0.18em;
+  color:rgba(255,255,255,0.35);
+  margin-top:52px;
+  position:relative;z-index:1;
+}
+.cta-contact a{
+  color:rgba(255,255,255,0.6);
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+  padding-bottom:1px;
+  cursor:none;
+  transition:color 0.25s,border-color 0.25s;
+}
+.cta-contact a:hover{color:var(--white);border-color:rgba(255,255,255,0.5);}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1100px){
+  .services-list{grid-template-columns:repeat(3,1fr);}
+  .stats-inner{grid-template-columns:1fr;}
+  .stats-left{padding-right:0;border-right:none;padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .stats-right{padding-left:0;padding-top:60px;}
+  .process-steps{grid-template-columns:repeat(2,1fr);}
+  .banner{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  .hero,.services,.portfolio,.process,.quote-section,.cta-section{padding-left:28px;padding-right:28px;}
+  .stats,.banner-left,.banner-right{padding-left:28px;padding-right:28px;}
+  .hero-tag,.hero-badge,.hero-scroll{display:none;}
+  .hero{padding-bottom:60px;}
+  .hero-bottom{flex-direction:column;align-items:flex-start;margin-top:40px;}
+  .services-list{grid-template-columns:repeat(2,1fr);}
+  .section-header{flex-direction:column;}
+  .section-subtitle{text-align:left;}
+  .gallery-grid{grid-template-columns:repeat(6,1fr);}
+  .gallery-item:nth-child(1){grid-column:span 6;}
+  .gallery-item:nth-child(2){grid-column:span 3;}
+  .gallery-item:nth-child(3){grid-column:span 3;}
+  .gallery-item:nth-child(4){grid-column:span 3;}
+  .gallery-item:nth-child(5){grid-column:span 3;}
+  .gallery-item:nth-child(6){grid-column:span 6;}
+  .process-top{grid-template-columns:1fr;}
+  .process-steps{grid-template-columns:1fr;}
+  .process-step{border-right:none;padding-right:0;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .process-step:last-child{border-bottom:none;}
+  .cta-title{font-size:clamp(42px,10vw,80px);}
+  body{cursor:auto;}
+  .cursor,.cursor-ring{display:none;}
+}
+@media(max-width:480px){
+  .services-list{grid-template-columns:1fr;}
+  .stats-right{grid-template-columns:1fr;}
+  .stat-item:nth-child(odd){padding-right:0;border-right:none;}
+  .stat-item:nth-child(even){padding-left:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- ═══════════════════════════════════════
+     § 1  HERO
+═══════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-lines">
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+  </div>
+  <div class="hero-watermark">♩</div>
+
+  <div class="hero-tag">
+    <div class="hero-tag-dot"></div>
+    <span class="hero-tag-text">Ankara · Türkiye · Est. 2020</span>
+  </div>
+  <div class="hero-badge">Prenses Müzik · 2025</div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Ses · Işık · Sahne · Orkestra</p>
+    <h1 class="hero-title">
+      Sahneyi<br>
+      <em class="indent">Bize</em><br>
+      Bırakın
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        Profesyonel ses sistemlerinden orkestra organizasyonuna,
+        sahne kurulumundan LED ekranlara kadar her detayı
+        titizlikle yönetiyoruz.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-hero-primary">Teklif Al</button>
+        <button class="btn-hero-secondary">Hizmetleri Gör</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Keşfet</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     § 2  SERVICES
+═══════════════════════════════════════ -->
+<section class="services" id="services">
+  <div class="section-header">
+    <div>
+      <span class="section-label reveal">Hizmetlerimiz</span>
+      <h2 class="section-title reveal reveal-delay-1">
+        Her Etkinlik<br>İçin <em>Çözüm</em>
+      </h2>
+    </div>
+    <p class="section-subtitle reveal reveal-delay-2">
+      Profesyonel ekipman ve uzman<br>kadromuzla yanınızdayız.
+    </p>
+  </div>
+
+  <div class="services-list">
+
+    <a href="#" class="service-card reveal">
+      <span class="sc-num">01</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 8a4 4 0 0 1 0 8"/></svg></div>
+      <div class="sc-name">Ses Sistemleri</div>
+      <div class="sc-tag">Profesyonel Ses</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal reveal-delay-1">
+      <span class="sc-num">02</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div>
+      <div class="sc-name">Işık Sistemleri</div>
+      <div class="sc-tag">Sahne Aydınlatma</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal reveal-delay-2">
+      <span class="sc-num">03</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="16" width="20" height="4" rx="1"/><path d="M6 16V8h3v8M15 16V8h3v8"/><path d="M9 10h6"/></svg></div>
+      <div class="sc-name">Sahne &amp; Truss</div>
+      <div class="sc-tag">Yapısal Sistemler</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal reveal-delay-3">
+      <span class="sc-num">04</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 0 0 0 4h2a2 2 0 0 0 2-2V5l12-2v12"/><circle cx="18" cy="17" r="2"/></svg></div>
+      <div class="sc-name">Orkestra</div>
+      <div class="sc-tag">Canlı Müzik</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal reveal-delay-4">
+      <span class="sc-num">05</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+      <div class="sc-name">LED Ekran</div>
+      <div class="sc-tag">Görsel Sistemler</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal">
+      <span class="sc-num">06</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></div>
+      <div class="sc-name">Okul Mezuniyetleri</div>
+      <div class="sc-tag">Özel Törenler</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal reveal-delay-1">
+      <span class="sc-num">07</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
+      <div class="sc-name">DJ Party</div>
+      <div class="sc-tag">Dans &amp; Eğlence</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal reveal-delay-2">
+      <span class="sc-num">08</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2 1 2 1"/><path d="M2 21h20M12 8V3M9 5h6"/></svg></div>
+      <div class="sc-name">Doğum Günü Party</div>
+      <div class="sc-tag">Kutlama Organizasyonu</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal reveal-delay-3">
+      <span class="sc-num">09</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="sc-name">Etkinlik</div>
+      <div class="sc-tag">Kurumsal &amp; Özel</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+    <a href="#" class="service-card reveal reveal-delay-4">
+      <span class="sc-num">10</span>
+      <div class="sc-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+      <div class="sc-name">Davet &amp; Açılış</div>
+      <div class="sc-tag">Açılış Törenleri</div>
+      <span class="sc-arrow">→</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     § 3  STATS
+═══════════════════════════════════════ -->
+<section class="stats" id="stats">
+  <div class="stats-bg-text">2020</div>
+  <div class="stats-inner">
+    <div class="stats-left">
+      <span class="stats-eyebrow reveal">Rakamlarla Prenses Müzik</span>
+      <h2 class="stats-headline reveal reveal-delay-1">
+        Güvenin<br><em>Kanıtı</em>
+      </h2>
+      <p class="stats-body reveal reveal-delay-2">
+        2020'den bu yana yüzlerce etkinlikte profesyonel hizmet sunuyoruz.
+        Ses sistemlerinden sahne kurulumuna, orkestra organizasyonundan
+        LED ekranlara kadar her adımda yanınızdayız.
+      </p>
+      <a href="#" class="stats-cta reveal reveal-delay-3">
+        Referanslarımız
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="stats-right">
+      <div class="stat-item reveal">
+        <div class="stat-num">500<sup>+</sup></div>
+        <div class="stat-label">Tamamlanan Etkinlik</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-num">12<sup>+</sup></div>
+        <div class="stat-label">Yıllık Tecrübe</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-num">98<sup>%</sup></div>
+        <div class="stat-label">Müşteri Memnuniyeti</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-num">80<sup>+</sup></div>
+        <div class="stat-label">Aktif Ekipman Seti</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     § 4  PORTFOLIO
+═══════════════════════════════════════ -->
+<section class="portfolio" id="portfolio">
+  <div class="portfolio-header">
+    <div>
+      <span class="section-label reveal">Son Çalışmalar</span>
+      <h2 class="portfolio-title reveal reveal-delay-1">
+        Gerçekleştirdiğimiz<br><em>Anlar</em>
+      </h2>
+    </div>
+    <a href="#" class="portfolio-link reveal reveal-delay-2">
+      Tüm Galeri
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <div class="gallery-img gi-1">
+        <div class="gallery-deco">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" stroke="white" stroke-width="0.5"/>
+            <circle cx="50" cy="50" r="25" stroke="white" stroke-width="0.5"/>
+            <line x1="10" y1="50" x2="90" y2="50" stroke="white" stroke-width="0.5"/>
+            <line x1="50" y1="10" x2="50" y2="90" stroke="white" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="gallery-overlay">
+          <div>
+            <div class="gallery-overlay-name">Büyük Konser</div>
+            <div class="gallery-overlay-tag">Ses · Işık · Sahne</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-1">
+      <div class="gallery-img gi-2">
+        <div class="gallery-deco">
+          <svg viewBox="0 0 100 100" fill="none"><rect x="20" y="20" width="60" height="60" stroke="#333" stroke-width="0.5"/><rect x="35" y="35" width="30" height="30" stroke="#333" stroke-width="0.5"/></svg>
+        </div>
+        <div class="gallery-overlay">
+          <div>
+            <div class="gallery-overlay-name" style="color:#111">Mezuniyet Töreni</div>
+            <div class="gallery-overlay-tag" style="color:rgba(0,0,0,0.4)">Okul Organizasyonu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-2">
+      <div class="gallery-img gi-3">
+        <div class="gallery-deco">
+          <svg viewBox="0 0 100 100" fill="none"><polygon points="50,10 90,80 10,80" stroke="white" stroke-width="0.5"/></svg>
+        </div>
+        <div class="gallery-overlay">
+          <div>
+            <div class="gallery-overlay-name">DJ Night</div>
+            <div class="gallery-overlay-tag">LED · Ses Sistemi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-1">
+      <div class="gallery-img gi-4">
+        <div class="gallery-deco">
+          <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="35" stroke="#555" stroke-width="0.5"/><line x1="15" y1="50" x2="85" y2="50" stroke="#555" stroke-width="0.5"/></svg>
+        </div>
+        <div class="gallery-overlay">
+          <div>
+            <div class="gallery-overlay-name" style="color:#111">Kurumsal Etkinlik</div>
+            <div class="gallery-overlay-tag" style="color:rgba(0,0,0,0.4)">Açılış Töreni</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-2">
+      <div class="gallery-img gi-5">
+        <div class="gallery-deco">
+          <svg viewBox="0 0 100 100" fill="none"><rect x="10" y="10" width="80" height="80" stroke="white" stroke-width="0.5"/><circle cx="50" cy="50" r="30" stroke="white" stroke-width="0.5"/></svg>
+        </div>
+        <div class="gallery-overlay">
+          <div>
+            <div class="gallery-overlay-name">Orkestra Gecesi</div>
+            <div class="gallery-overlay-tag">Canlı Performans</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-3">
+      <div class="gallery-img gi-6">
+        <div class="gallery-deco">
+          <svg viewBox="0 0 100 100" fill="none"><line x1="0" y1="25" x2="100" y2="25" stroke="#777" stroke-width="0.5"/><line x1="0" y1="50" x2="100" y2="50" stroke="#777" stroke-width="0.5"/><line x1="0" y1="75" x2="100" y2="75" stroke="#777" stroke-width="0.5"/></svg>
+        </div>
+        <div class="gallery-overlay">
+          <div>
+            <div class="gallery-overlay-name" style="color:#111">Doğum Günü</div>
+            <div class="gallery-overlay-tag" style="color:rgba(0,0,0,0.4)">Özel Kutlama</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     § 5  PROCESS
+═══════════════════════════════════════ -->
+<section class="process" id="process">
+  <div class="process-top">
+    <h2 class="process-title reveal">
+      Nasıl<br><em>Çalışıyoruz?</em>
+    </h2>
+    <p class="process-intro reveal reveal-delay-2">
+      Etkinliğinizin her aşamasında profesyonel bir deneyim sunmak için
+      sistematik bir süreç izliyoruz. İlk görüşmeden sahne sökümüne
+      kadar yanınızdayız.
+    </p>
+  </div>
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <div class="process-step-line"></div>
+      <div class="process-step-num">01</div>
+      <div class="process-step-title">Keşif &amp; Brifing</div>
+      <p class="process-step-body">Etkinliğinizin kapsamını, mekanını ve beklentilerinizi detaylıca konuşuyoruz.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-step-line"></div>
+      <div class="process-step-num">02</div>
+      <div class="process-step-title">Teknik Planlama</div>
+      <p class="process-step-body">Ses, ışık, sahne ve ekran düzenini mekan özelinde tasarlıyoruz.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="process-step-line"></div>
+      <div class="process-step-num">03</div>
+      <div class="process-step-title">Kurulum &amp; Prova</div>
+      <p class="process-step-body">Tüm ekipmanı etkinlikten önce kurarak kapsamlı test ve prova gerçekleştiriyoruz.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="process-step-line"></div>
+      <div class="process-step-num">04</div>
+      <div class="process-step-title">Canlı Destek</div>
+      <p class="process-step-body">Etkinlik boyunca uzman ekibimiz sahada; her an müdahaleye hazırız.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     § 6  QUOTE
+═══════════════════════════════════════ -->
+<section class="quote-section" id="quote">
+  <div class="quote-bg-clef">♪</div>
+  <div class="quote-mark reveal">"</div>
+  <blockquote class="quote-text reveal reveal-delay-1">
+    Müzik, kelimelerin yetersiz kaldığı yerde
+    <strong>duyguların sesi</strong> olur —
+    biz o sesi <em>mükemmel</em> duyuruyoruz.
+  </blockquote>
+  <div class="quote-author reveal reveal-delay-2">
+    <div class="quote-line"></div>
+    <span class="quote-author-name">Prenses Müzik</span>
+    <span class="quote-author-title">Müzik &amp; Sahne Sanatları · Ankara</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     § 7  BANNER
+═══════════════════════════════════════ -->
+<div class="banner" id="banner">
+  <div class="banner-left">
+    <span class="banner-tag reveal">Etkinliğiniz için hazırız</span>
+    <h2 class="banner-title reveal reveal-delay-1">
+      Hayalinizi<br><em>Sahneliyoruz</em>
+    </h2>
+    <div class="banner-cta-group reveal reveal-delay-2">
+      <button class="btn-banner">Hemen Teklif Al</button>
+      <button class="btn-banner-ghost">Bizi Ara</button>
+    </div>
+  </div>
+  <div class="banner-right">
+    <p class="banner-right-label reveal">Popüler Hizmetler</p>
+    <div class="banner-services-mini reveal reveal-delay-1">
+      <div class="bsm-row"><span class="bsm-name">Ses Sistemleri</span><span class="bsm-arrow">→</span></div>
+      <div class="bsm-row"><span class="bsm-name">Işık Sistemleri</span><span class="bsm-arrow">→</span></div>
+      <div class="bsm-row"><span class="bsm-name">Sahne &amp; Truss</span><span class="bsm-arrow">→</span></div>
+      <div class="bsm-row"><span class="bsm-name">Orkestra</span><span class="bsm-arrow">→</span></div>
+      <div class="bsm-row"><span class="bsm-name">LED Ekran</span><span class="bsm-arrow">→</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     § 8  CTA
+═══════════════════════════════════════ -->
+<section class="cta-section" id="cta">
+  <div class="cta-rings">
+    <div class="cta-ring"></div>
+    <div class="cta-ring"></div>
+    <div class="cta-ring"></div>
+    <div class="cta-ring"></div>
+  </div>
+  <p class="cta-label reveal">Birlikte Çalışalım</p>
+  <h2 class="cta-title reveal reveal-delay-1">
+    Etkinliğiniz<br><em>Unutulmaz</em><br>Olsun
+  </h2>
+  <div class="cta-actions reveal reveal-delay-2">
+    <button class="btn-cta-main">Ücretsiz Teklif Al</button>
+  </div>
+  <p class="cta-contact reveal reveal-delay-3">
+    veya doğrudan ulaşın &nbsp;·&nbsp;
+    <a href="tel:+905001234567">+90 500 123 45 67</a>
+    &nbsp;·&nbsp;
+    <a href="/cdn-cgi/l/email-protection#85ecebe3eac5f5f7e0ebf6e0f6e8f0ffeceeabe6eae8"><span class="__cf_email__" data-cfemail="8de4e3ebe2cdfdffe8e3fee8fee0f8f7e4e6a3eee2e0">[email&#160;protected]</span></a>
+  </p>
+</section>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── Custom Cursor ── */
+const cur = document.getElementById('cursor');
+const curR = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*0.12;
+  ry+=(my-ry)*0.12;
+  curR.style.left=rx+'px';curR.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a,button,.service-card,.bsm-row,.gallery-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cur.style.width='14px';cur.style.height='14px';
+    curR.style.width='48px';curR.style.height='48px';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cur.style.width='8px';cur.style.height='8px';
+    curR.style.width='32px';curR.style.height='32px';
+  });
+});
+
+/* ── Scroll Reveal ── */
+const revealEls = document.querySelectorAll(
+  '.reveal,.reveal-delay-1,.reveal-delay-2,.reveal-delay-3,.reveal-delay-4,.reveal-left,.reveal-right'
+);
+const revealObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('revealed');
+      // Also trigger process-step-line
+      if(e.target.classList.contains('process-step'))
+        e.target.classList.add('revealed');
+    }
+  });
+},{threshold:0.12});
+revealEls.forEach(el=>revealObs.observe(el));
+
+/* Process steps also need "revealed" on the parent for line */
+const stepObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('revealed');
+  });
+},{threshold:0.2});
+document.querySelectorAll('.process-step').forEach(el=>stepObs.observe(el));
+
+/* ── Animated counter ── */
+function animateCount(el,target,suffix=''){
+  let start=0;
+  const dur=2000;
+  const step=timestamp=>{
+    if(!start) start=timestamp;
+    const prog=Math.min((timestamp-start)/dur,1);
+    const ease=1-Math.pow(1-prog,4);
+    el.innerHTML=Math.floor(ease*target)+'<sup>'+suffix+'</sup>';
+    if(prog<1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const countObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target;
+      const text=el.dataset.target;
+      const num=parseInt(text);
+      const suf=text.replace(String(num),'');
+      animateCount(el,num,suf);
+      countObs.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('.stat-num').forEach

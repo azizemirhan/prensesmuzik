@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>İletişim — Prenses Müzik</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════
+   TOKENS & RESET
+══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#080808;
+  --ink2:#111009;
+  --paper:#f5f1ec;
+  --cream:#ece7e0;
+  --rule:#d9d2c9;
+  --muted:#a09488;
+  --dim:#6b6460;
+  --white:#faf7f3;
+  --red:#e02020;
+  --red-dim:rgba(224,32,32,.12);
+  --D:'Cormorant Garamond',serif;
+  --B:'Montserrat',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:var(--B);overflow-x:hidden;cursor:none;}
+@media(max-width:768px){body{cursor:auto;}}
+
+/* ── Cursor ── */
+.cur{position:fixed;width:9px;height:9px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(224,32,32,.5);transition:width .22s,height .22s;}
+.cur-r{position:fixed;width:28px;height:28px;border:1.5px solid rgba(224,32,32,.38);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s ease;}
+@media(max-width:768px){.cur,.cur-r{display:none;}}
+
+/* ── Grain ── */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");background-size:160px;pointer-events:none;z-index:9990;opacity:.35;}
+
+/* ── Reveal ── */
+.rv{opacity:0;transform:translateY(32px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.rv.on{opacity:1;transform:none;}
+.r1{transition-delay:.1s;}.r2{transition-delay:.2s;}.r3{transition-delay:.3s;}.r4{transition-delay:.42s;}
+.rv-l{opacity:0;transform:translateX(-40px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.rv-l.on{opacity:1;transform:none;}
+.rv-r{opacity:0;transform:translateX(40px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.rv-r.on{opacity:1;transform:none;}
+
+/* ══════════════════════════════════════
+   § 1  HERO — DARK FULL BLEED
+══════════════════════════════════════ */
+.hero{
+  min-height:72vh;
+  background:var(--ink2);
+  color:var(--white);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:0 80px 0;
+}
+/* Staff lines */
+.staff{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:18px;pointer-events:none;}
+.sl{height:1px;background:rgba(255,255,255,.04);transform:scaleX(0);transform-origin:left;animation:lineGrow 2s cubic-bezier(.16,1,.3,1) forwards;}
+.sl:nth-child(1){animation-delay:.04s;}.sl:nth-child(2){animation-delay:.11s;}
+.sl:nth-child(3){animation-delay:.18s;}.sl:nth-child(4){animation-delay:.25s;}.sl:nth-child(5){animation-delay:.32s;}
+@keyframes lineGrow{to{transform:scaleX(1);}}
+
+/* Large circle decoration */
+.hero-ring{position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:clamp(300px,32vw,480px);height:clamp(300px,32vw,480px);border:1px solid rgba(255,255,255,.05);border-radius:50%;pointer-events:none;animation:fadeIn 2s .3s ease both;}
+.hero-ring::before{content:'';position:absolute;inset:50px;border:1px solid rgba(255,255,255,.04);border-radius:50%;}
+.hero-ring::after{content:'';position:absolute;inset:110px;border:1px solid rgba(255,255,255,.03);border-radius:50%;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* Watermark */
+.hero-wm{position:absolute;left:-20px;bottom:-60px;font-family:var(--D);font-size:clamp(180px,24vw,320px);font-weight:200;color:rgba(255,255,255,.025);letter-spacing:-.04em;line-height:1;pointer-events:none;user-select:none;animation:fadeIn 2s .5s ease both;}
+
+/* Vertical label */
+.hero-vert{position:absolute;right:80px;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:rgba(255,255,255,.16);animation:fadeIn 1.5s .9s ease both;}
+
+.hero-inner{
+  position:relative;z-index:1;
+  padding-top:140px;
+  padding-bottom:0;
+}
+.hero-bc{display:flex;align-items:center;gap:8px;font-size:8px;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.24);margin-bottom:44px;animation:fu .9s .1s ease both;}
+.hero-bc a{color:inherit;text-decoration:none;cursor:none;transition:color .25s;}
+.hero-bc a:hover{color:rgba(255,255,255,.55);}
+.hero-bc span{color:rgba(255,255,255,.1);}
+@keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+.hero-eyebrow{font-size:8.5px;font-weight:300;letter-spacing:.38em;text-transform:uppercase;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:12px;margin-bottom:22px;animation:fu .9s .22s ease both;}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:rgba(255,255,255,.18);}
+
+.hero-h1{font-family:var(--D);font-size:clamp(66px,9.5vw,130px);font-weight:200;line-height:.88;letter-spacing:-.015em;animation:fu .9s .36s ease both;}
+.hero-h1 em{font-style:italic;color:rgba(255,255,255,.35);display:block;}
+
+.hero-desc{font-size:11.5px;font-weight:300;line-height:2.1;letter-spacing:.05em;color:rgba(255,255,255,.38);max-width:440px;margin-top:32px;margin-bottom:0;animation:fu .9s .52s ease both;}
+
+/* Bottom contact strip */
+.hero-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid rgba(255,255,255,.07);
+  margin-top:64px;
+  position:relative;z-index:1;
+}
+.hs-cell{
+  padding:28px 0;
+  border-right:1px solid rgba(255,255,255,.07);
+  display:flex;flex-direction:column;gap:8px;
+  animation:fu .9s ease both;
+}
+.hs-cell:nth-child(1){animation-delay:.58s;}
+.hs-cell:nth-child(2){animation-delay:.68s;padding-left:40px;}
+.hs-cell:nth-child(3){animation-delay:.78s;border-right:none;padding-left:40px;}
+.hs-label{font-size:7.5px;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+.hs-val{font-family:var(--D);font-size:18px;font-weight:300;color:rgba(255,255,255,.65);letter-spacing:.02em;}
+.hs-val a{color:inherit;text-decoration:none;cursor:none;transition:color .25s;}
+.hs-val a:hover{color:var(--white);}
+
+/* ══════════════════════════════════════
+   § 2  CONTACT MAIN — FORM + INFO
+══════════════════════════════════════ */
+.contact-main{
+  display:grid;grid-template-columns:1.1fr .9fr;
+  background:var(--white);
+  min-height:80vh;
+}
+
+/* ─ LEFT: Form ─ */
+.cf-left{
+  padding:100px 80px;
+  border-right:1px solid var(--rule);
+}
+.cf-eyebrow{font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.cf-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--rule);}
+.cf-title{font-family:var(--D);font-size:clamp(34px,4vw,56px);font-weight:300;line-height:1.05;margin-bottom:52px;}
+.cf-title em{font-style:italic;color:var(--muted);}
+
+/* Form layout */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.fg-full{grid-column:1/-1;}
+
+.form-field{
+  padding:20px 0;
+  border-bottom:1px solid var(--rule);
+  position:relative;
+}
+.form-field:nth-child(odd):not(.fg-full){border-right:1px solid var(--rule);padding-right:32px;}
+.form-field:nth-child(even):not(.fg-full){padding-left:32px;}
+.fg-full{padding-right:0;padding-left:0;}
+
+.form-field label{
+  display:block;
+  font-size:7.5px;font-weight:300;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;
+  transition:color .3s;
+}
+.form-field:focus-within label{color:var(--ink);}
+
+.form-field input,
+.form-field textarea,
+.form-field select{
+  width:100%;background:none;border:none;outline:none;
+  font-family:var(--D);font-size:18px;font-weight:300;
+  color:var(--ink);letter-spacing:.02em;
+  padding:0;appearance:none;-webkit-appearance:none;
+  cursor:none;
+  transition:color .3s;
+}
+.form-field select{background-image:none;}
+.form-field select option{font-family:var(--B);font-size:14px;}
+.form-field textarea{resize:none;height:100px;line-height:1.8;}
+.form-field input::placeholder,
+.form-field textarea::placeholder{color:var(--rule);}
+
+/* Animated bottom border on focus */
+.form-field::after{
+  content:'';position:absolute;bottom:-1px;left:0;width:0;height:1px;
+  background:var(--ink);transition:width .45s cubic-bezier(.16,1,.3,1);
+}
+.form-field:focus-within::after{width:100%;}
+
+/* Service checkboxes */
+.service-checks{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:10px;padding:20px 0;
+  border-bottom:1px solid var(--rule);
+}
+.sch-label{
+  font-size:7.5px;font-weight:300;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;grid-column:1/-1;
+}
+.sch-item{
+  display:flex;align-items:center;gap:10px;
+  cursor:none;user-select:none;
+}
+.sch-box{
+  width:16px;height:16px;flex-shrink:0;
+  border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .25s,background .25s;
+}
+.sch-item input[type=checkbox]{display:none;}
+.sch-item.checked .sch-box{border-color:var(--ink);background:var(--ink);}
+.sch-box svg{width:9px;height:9px;stroke:var(--white);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .2s;}
+.sch-item.checked .sch-box svg{opacity:1;}
+.sch-name{font-family:var(--D);font-size:15px;font-weight:300;color:var(--dim);transition:color .25s;}
+.sch-item.checked .sch-name{color:var(--ink);}
+
+/* Date & budget row */
+.form-inline{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule);}
+.fi-cell{padding:20px 0;position:relative;}
+.fi-cell:first-child{padding-right:32px;border-right:1px solid var(--rule);}
+.fi-cell:last-child{padding-left:32px;}
+.fi-cell label{display:block;font-size:7.5px;font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;transition:color .3s;}
+.fi-cell:focus-within label{color:var(--ink);}
+.fi-cell input,.fi-cell select{width:100%;background:none;border:none;outline:none;font-family:var(--D);font-size:18px;font-weight:300;color:var(--ink);letter-spacing:.02em;cursor:none;appearance:none;-webkit-appearance:none;}
+.fi-cell input::placeholder{color:var(--rule);}
+.fi-cell::after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:1px;background:var(--ink);transition:width .45s cubic-bezier(.16,1,.3,1);}
+.fi-cell:focus-within::after{width:100%;}
+
+/* Submit */
+.form-submit{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:40px;gap:24px;
+}
+.form-note{font-size:9.5px;font-weight:300;letter-spacing:.05em;color:var(--muted);line-height:1.7;max-width:260px;}
+.btn-submit{
+  display:flex;align-items:center;gap:14px;
+  font-size:9.5px;font-weight:300;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--white);background:var(--ink);border:none;
+  padding:15px 36px;cursor:none;
+  transition:background .3s;
+  flex-shrink:0;
+  position:relative;overflow:hidden;
+}
+.btn-submit::before{content:'';position:absolute;inset:0;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.btn-submit:hover::before{transform:scaleX(1);}
+.btn-submit span,.btn-submit svg{position:relative;z-index:1;}
+.btn-submit svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;transition:transform .3s;}
+.btn-submit:hover svg{transform:translateX(4px);}
+
+/* Success state */
+.form-success{
+  display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:20px;
+  padding:60px 40px;
+  border:1px solid var(--rule);
+  margin-top:40px;
+}
+.form-success.show{display:flex;}
+.fs-icon{width:52px;height:52px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;}
+.fs-icon svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.fs-title{font-family:var(--D);font-size:28px;font-weight:300;color:var(--ink);}
+.fs-body{font-size:10.5px;font-weight:300;letter-spacing:.06em;color:var(--muted);line-height:2;}
+
+/* ─ RIGHT: Info ─ */
+.cf-right{
+  padding:100px 80px;
+  display:flex;flex-direction:column;gap:0;
+  background:var(--white);
+}
+
+/* Contact blocks */
+.ci-block{
+  padding:36px 0;
+  border-bottom:1px solid var(--rule);
+  display:flex;gap:20px;align-items:flex-start;
+  cursor:none;
+  transition:padding-left .3s;
+}
+.ci-block:hover{padding-left:6px;}
+.ci-block:last-of-type{border-bottom:none;}
+.ci-icon{
+  width:40px;height:40px;
+  border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:border-color .3s,background .3s;
+}
+.ci-block:hover .ci-icon{border-color:var(--ink);background:var(--ink);}
+.ci-icon svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s;}
+.ci-block:hover .ci-icon svg{stroke:var(--white);}
+.ci-text{}
+.ci-label{font-size:7.5px;font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.ci-val{font-family:var(--D);font-size:20px;font-weight:300;color:var(--ink);letter-spacing:.02em;line-height:1.3;}
+.ci-val a{color:inherit;text-decoration:none;cursor:none;transition:color .25s;}
+.ci-val a:hover{color:var(--dim);}
+.ci-sub{font-size:10px;font-weight:300;letter-spacing:.06em;color:var(--muted);margin-top:4px;}
+
+/* Hours table */
+.hours-block{padding:36px 0;border-bottom:1px solid var(--rule);}
+.hb-title{font-size:7.5px;font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+.hours-rows{display:flex;flex-direction:column;gap:0;}
+.hr-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(217,210,201,.5);}
+.hr-row:last-child{border-bottom:none;}
+.hr-day{font-size:10px;font-weight:300;letter-spacing:.1em;color:var(--dim);}
+.hr-time{font-family:var(--D);font-size:15px;font-weight:300;color:var(--ink);letter-spacing:.02em;}
+.hr-row.today .hr-day{color:var(--ink);font-weight:400;}
+.hr-row.today .hr-time{color:var(--red);}
+.today-badge{font-size:7px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;background:var(--red-dim);color:var(--red);padding:2px 7px;margin-left:8px;}
+
+/* Social block */
+.social-block{padding:36px 0;}
+.sb-title{font-size:7.5px;font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+.social-row{display:flex;gap:10px;}
+.soc-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 18px;
+  border:1px solid var(--rule);
+  text-decoration:none;cursor:none;
+  font-size:9px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);
+  transition:border-color .3s,background .3s,color .3s;
+}
+.soc-btn:hover{border-color:var(--ink);background:var(--ink);color:var(--white);}
+.soc-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ══════════════════════════════════════
+   § 3  MAP SECTION — DARK
+══════════════════════════════════════ */
+.map-section{
+  background:var(--ink2);
+  color:var(--white);
+  display:grid;grid-template-columns:1fr 1.6fr;
+  min-height:520px;
+}
+.ms-left{
+  padding:80px 80px;
+  display:flex;flex-direction:column;justify-content:center;gap:40px;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.ms-eyebrow{font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:rgba(255,255,255,.26);display:flex;align-items:center;gap:10px;}
+.ms-eyebrow::before{content:'';display:block;width:22px;height:1px;background:rgba(255,255,255,.14);}
+.ms-title{font-family:var(--D);font-size:clamp(32px,4vw,52px);font-weight:300;line-height:1.06;}
+.ms-title em{font-style:italic;color:rgba(255,255,255,.34);}
+.ms-addr{
+  display:flex;flex-direction:column;gap:6px;
+  padding:24px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.ms-addr-line{font-size:11px;font-weight:300;letter-spacing:.06em;color:rgba(255,255,255,.5);line-height:1.8;}
+.ms-addr-line strong{color:rgba(255,255,255,.75);font-weight:400;}
+.ms-directions{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:9px;font-weight:300;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(255,255,255,.38);text-decoration:none;cursor:none;
+  border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:5px;width:fit-content;
+  transition:color .25s,border-color .25s;
+}
+.ms-directions:hover{color:var(--white);border-color:rgba(255,255,255,.4);}
+.ms-directions svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;transition:transform .25s;}
+.ms-directions:hover svg{transform:translateX(4px);}
+
+/* Map visual */
+.ms-right{
+  position:relative;overflow:hidden;
+  background:#0e0d0b;
+  min-height:480px;
+}
+.map-canvas{
+  width:100%;height:100%;
+  position:absolute;inset:0;
+}
+/* SVG street map illustration */
+.map-svg{width:100%;height:100%;opacity:.7;}
+/* Pin */
+.map-pin{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-100%);
+  display:flex;flex-direction:column;align-items:center;
+  animation:pinDrop .8s 1s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes pinDrop{from{opacity:0;transform:translate(-50%,-130%);}to{opacity:1;transform:translate(-50%,-100%);}}
+.pin-dot{width:14px;height:14px;background:var(--red);border-radius:50%;box-shadow:0 0 0 4px rgba(224,32,32,.2),0 0 20px rgba(224,32,32,.4);}
+.pin-line{width:1px;height:32px;background:rgba(224,32,32,.5);margin-top:-1px;}
+.pin-label{
+  font-size:8px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--white);background:rgba(224,32,32,.9);
+  padding:5px 12px;margin-top:0;
+  white-space:nowrap;
+}
+/* Pulse ring */
+.pin-pulse{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid rgba(224,32,32,.4);
+  animation:pulse 2.5s 1.5s ease-out infinite;
+  margin-top:-46px;
+}
+@keyframes pulse{
+  0%{transform:translate(-50%,-50%) scale(1);opacity:.6;}
+  100%{transform:translate(-50%,-50%) scale(3.5);opacity:0;}
+}
+
+/* ══════════════════════════════════════
+   § 4  FAQ — LIGHT
+══════════════════════════════════════ */
+.faq{
+  background:var(--cream);
+  padding:120px 80px;
+}
+.faq-header{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;
+  margin-bottom:72px;
+}
+.fq-eyebrow{font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.fq-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--rule);}
+.fq-title{font-family:var(--D);font-size:clamp(34px,4vw,54px);font-weight:300;line-height:1.05;}
+.fq-title em{font-style:italic;color:var(--muted);}
+.fq-sub{font-size:11px;font-weight:300;line-height:2;letter-spacing:.05em;color:var(--muted);}
+
+.faq-list{display:flex;flex-direction:column;gap:0;}
+.faq-item{border-top:1px solid var(--rule);overflow:hidden;}
+.faq-item:last-child{border-bottom:1px solid var(--rule);}
+.faq-trigger{
+  display:flex;align-items:center;justify-content:space-between;gap:32px;
+  padding:28px 0;cursor:none;
+  background:none;border:none;width:100%;text-align:left;
+}
+.fq-q{font-family:var(--D);font-size:clamp(18px,2.2vw,24px);font-weight:300;color:var(--ink);letter-spacing:.01em;transition:color .3s;}
+.faq-item.open .fq-q{color:var(--ink);}
+.fq-ico{
+  width:32px;height:32px;flex-shrink:0;
+  border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .35s,border-color .35s,transform .45s cubic-bezier(.16,1,.3,1);
+}
+.faq-item.open .fq-ico{background:var(--ink);border-color:var(--ink);transform:rotate(45deg);}
+.fq-ico svg{width:12px;height:12px;stroke:var(--muted);fill:none;stroke-width:1.6;stroke-linecap:round;transition:stroke .35s;}
+.faq-item.open .fq-ico svg{stroke:var(--white);}
+
+.faq-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.16,1,.3,1);}
+.faq-item.open .faq-panel{grid-template-rows:1fr;}
+.faq-panel-inner{overflow:hidden;}
+.fq-a{padding:0 80px 28px 0;font-size:11.5px;font-weight:300;line-height:2.15;letter-spacing:.05em;color:var(--dim);max-width:680px;}
+
+/* ══════════════════════════════════════
+   § 5  CTA STRIP — DARK
+══════════════════════════════════════ */
+.cta-strip{
+  background:var(--ink);
+  color:var(--white);
+  padding:100px 80px;
+  display:flex;align-items:center;justify-content:space-between;gap:60px;
+  position:relative;overflow:hidden;
+}
+.cta-strip::before{content:'';position:absolute;left:-100px;top:50%;transform:translateY(-50%);width:360px;height:360px;border:1px solid rgba(255,255,255,.04);border-radius:50%;pointer-events:none;}
+.cs-left{position:relative;z-index:1;}
+.cs-eyebrow{font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:16px;}
+.cs-title{font-family:var(--D);font-size:clamp(34px,4.5vw,60px);font-weight:300;line-height:1.05;}
+.cs-title em{font-style:italic;color:rgba(255,255,255,.32);}
+.cs-right{display:flex;flex-direction:column;align-items:flex-end;gap:18px;position:relative;z-index:1;flex-shrink:0;}
+.btn-cs{font-size:9.5px;font-weight:300;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);background:var(--white);border:none;padding:14px 32px;cursor:none;transition:background .3s;white-space:nowrap;}
+.btn-cs:hover{background:var(--cream);}
+.cs-contact{text-align:right;font-size:10px;font-weight:300;letter-spacing:.05em;color:rgba(255,255,255,.32);line-height:2;}
+.cs-contact a{color:rgba(255,255,255,.55);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.16);padding-bottom:1px;cursor:none;transition:color .25s,border-color .25s;}
+.cs-contact a:hover{color:var(--white);border-color:rgba(255,255,255,.5);}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:1100px){
+  .contact-main{grid-template-columns:1fr;}
+  .cf-left{border-right:none;border-bottom:1px solid var(--rule);}
+  .map-section{grid-template-columns:1fr;}
+  .ms-right{min-height:340px;}
+  .faq-header{grid-template-columns:1fr;}
+  .cta-strip{flex-direction:column;align-items:flex-start;}
+  .cs-right{align-items:flex-start;}
+}
+@media(max-width:768px){
+  .hero,.cf-left,.cf-right,.ms-left,.faq,.cta-strip{padding-left:28px;padding-right:28px;}
+  .hero-inner{padding-top:110px;}
+  .hero-ring,.hero-vert{display:none;}
+  .hero-strip{grid-template-columns:1fr 1fr;}
+  .hs-cell:nth-child(3){grid-column:1/-1;border-right:none;padding-left:0;border-top:1px solid rgba(255,255,255,.07);}
+  .form-grid{grid-template-columns:1fr;}
+  .form-field:nth-child(odd):not(.fg-full){border-right:none;padding-right:0;}
+  .form-field:nth-child(even):not(.fg-full){padding-left:0;}
+  .form-inline{grid-template-columns:1fr;}
+  .fi-cell:first-child{border-right:none;padding-right:0;}
+  .fi-cell:last-child{padding-left:0;border-top:1px solid var(--rule);}
+  .service-checks{grid-template-columns:1fr;}
+  .form-submit{flex-direction:column;align-items:flex-start;}
+  .faq-header{grid-template-columns:1fr;gap:24px;}
+  .fq-a{padding-right:0;}
+  .social-row{flex-wrap:wrap;}
+  .ms-left{padding:60px 28px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- ══════════════════════════════════════
+     § 1  HERO
+══════════════════════════════════════ -->
+<section class="hero">
+  <div class="staff"><div class="sl"></div><div class="sl"></div><div class="sl"></div><div class="sl"></div><div class="sl"></div></div>
+  <div class="hero-wm">İLT</div>
+  <div class="hero-ring"></div>
+  <div class="hero-vert">Prenses Müzik · Ankara · 2025</div>
+
+  <div class="hero-inner">
+    <div class="hero-bc">
+      <a href="#">Anasayfa</a><span>/</span>
+      <span style="color:rgba(255,255,255,.5)">İletişim</span>
+    </div>
+    <div class="hero-eyebrow">Bize Ulaşın</div>
+    <h1 class="hero-h1">
+      Konuşalım<em>Birlikte.</em>
+    </h1>
+    <p class="hero-desc">
+      Etkinliğiniz için fikir alışverişi yapmak, teklif almak ya da
+      sadece merhaba demek için — her zaman buradayız.
+    </p>
+  </div>
+
+  <div class="hero-strip">
+    <div class="hs-cell">
+      <div class="hs-label">Telefon</div>
+      <div class="hs-val"><a href="tel:+905001234567">+90 500 123 45 67</a></div>
+    </div>
+    <div class="hs-cell">
+      <div class="hs-label">E-posta</div>
+      <div class="hs-val"><a href="mailto:info@prensesmuzik.com">info@prensesmuzik.com</a></div>
+    </div>
+    <div class="hs-cell">
+      <div class="hs-label">Adres</div>
+      <div class="hs-val">Çankaya, Ankara</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     § 2  CONTACT MAIN
+══════════════════════════════════════ -->
+<div class="contact-main">
+
+  <!-- FORM -->
+  <div class="cf-left">
+    <div class="cf-eyebrow rv">Teklif & İletişim Formu</div>
+    <h2 class="cf-title rv r1">
+      Etkinliğinizi<br><em>Anlatın</em>
+    </h2>
+
+    <form id="contact-form" novalidate>
+
+      <div class="form-grid rv r2">
+        <div class="form-field">
+          <label>Adınız</label>
+          <input type="text" placeholder="Ahmet Yılmaz" name="name" autocomplete="off"/>
+        </div>
+        <div class="form-field">
+          <label>Soyadınız</label>
+          <input type="text" placeholder="Kara" name="surname" autocomplete="off"/>
+        </div>
+        <div class="form-field">
+          <label>E-posta Adresi</label>
+          <input type="email" placeholder="ahmet@ornek.com" name="email" autocomplete="off"/>
+        </div>
+        <div class="form-field">
+          <label>Telefon Numarası</label>
+          <input type="tel" placeholder="+90 5XX XXX XX XX" name="phone" autocomplete="off"/>
+        </div>
+        <div class="form-field fg-full">
+          <label>Etkinlik Adı / Firma</label>
+          <input type="text" placeholder="Mezuniyet Töreni · Şirket İsmi · Özel Etkinlik…" name="event" autocomplete="off"/>
+        </div>
+      </div>
+
+      <!-- Service checkboxes -->
+      <div class="service-checks rv r3">
+        <div class="sch-label">İlgilendiğiniz Hizmetler</div>
+        <div class="sch-item" data-check>
+          <input type="checkbox" name="svc_ses"/><div class="sch-box"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
+          <span class="sch-name">Ses Sistemleri</span>
+        </div>
+        <div class="sch-item" data-check>
+          <input type="checkbox" name="svc_isik"/><div class="sch-box"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
+          <span class="sch-name">Işık Sistemleri</span>
+        </div>
+        <div class="sch-item" data-check>
+          <input type="checkbox" name="svc_sahne"/><div class="sch-box"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
+          <span class="sch-name">Sahne &amp; Truss</span>
+        </div>
+        <div class="sch-item" data-check>
+          <input type="checkbox" name="svc_orkestra"/><div class="sch-box"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
+          <span class="sch-name">Orkestra</span>
+        </div>
+        <div class="sch-item" data-check>
+          <input type="checkbox" name="svc_led"/><div class="sch-box"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
+          <span class="sch-name">LED Ekran</span>
+        </div>
+        <div class="sch-item" data-check>
+          <input type="checkbox" name="svc_dj"/><div class="sch-box"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
+          <span class="sch-name">DJ Party</span>
+        </div>
+        <div class="sch-item" data-check>
+          <input type="checkbox" name="svc_mezun"/><div class="sch-box"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
+          <span class="sch-name">Okul Mezuniyeti</span>
+        </div>
+        <div class="sch-item" data-check>
+          <input type="checkbox" name="svc_diger"/><div class="sch-box"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
+          <span class="sch-name">Diğer</span>
+        </div>
+      </div>
+
+      <!-- Date & Budget -->
+      <div class="form-inline rv r3">
+        <div class="fi-cell">
+          <label>Etkinlik Tarihi</label>
+          <input type="date" name="date"/>
+        </div>
+        <div class="fi-cell">
+          <label>Tahmini Katılımcı Sayısı</label>
+          <select name="capacity">
+            <option value="" disabled selected>Seçiniz…</option>
+            <option>50 – 150 kişi</option>
+            <option>150 – 500 kişi</option>
+            <option>500 – 1.500 kişi</option>
+            <option>1.500 – 5.000 kişi</option>
+            <option>5.000+ kişi</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="form-grid rv r4">
+        <div class="form-field fg-full">
+          <label>Mesajınız</label>
+          <textarea name="message" placeholder="Etkinliğiniz hakkında detay paylaşın; mekan, tarih, özel istekler…"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="form-submit rv r4">
+        <p class="form-note">Formu doldurduktan sonra ekibimiz en geç 24 saat içinde sizinle iletişime geçer.</p>
+        <button type="submit" class="btn-submit">
+          <span>Gönder</span>
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Success -->
+    <div class="form-success" id="form-success">
+      <div class="fs-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="fs-title">Mesajınız İletildi</div>
+      <p class="fs-body">En kısa sürede sizinle iletişime geçeceğiz.<br>Prenses Müzik olarak ilginiz için teşekkür ederiz.</p>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="cf-right rv-r">
+
+    <div class="ci-block">
+      <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.1-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+      <div class="ci-text">
+        <div class="ci-label">Telefon</div>
+        <div class="ci-val"><a href="tel:+905001234567">+90 500 123 45 67</a></div>
+        <div class="ci-sub">Hafta içi 09:00 – 18:00</div>
+      </div>
+    </div>
+
+    <div class="ci-block">
+      <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div class="ci-text">
+        <div class="ci-label">E-posta</div>
+        <div class="ci-val"><a href="mailto:info@prensesmuzik.com">info@prensesmuzik.com</a></div>
+        <div class="ci-sub">24 saat içinde yanıt</div>
+      </div>
+    </div>
+
+    <div class="ci-block">
+      <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div class="ci-text">
+        <div class="ci-label">Adres</div>
+        <div class="ci-val">Kızılay Mah. Atatürk Bulv.<br>No:42, Çankaya / Ankara</div>
+        <div class="ci-sub">Randevu ile ziyaret</div>
+      </div>
+    </div>
+
+    <div class="ci-block">
+      <div class="ci-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <div class="ci-text">
+        <div class="ci-label">Hizmet Bölgesi</div>
+        <div class="ci-val">Ankara &amp; Ulusal</div>
+        <div class="ci-sub">Tüm Türkiye'ye hizmet</div>
+      </div>
+    </div>
+
+    <div class="hours-block">
+      <div class="hb-title">Çalışma Saatleri</div>
+      <div class="hours-rows" id="hours-rows">
+        <div class="hr-row" data-day="1"><span class="hr-day">Pazartesi</span><span class="hr-time">09:00 – 18:00</span></div>
+        <div class="hr-row" data-day="2"><span class="hr-day">Salı</span><span class="hr-time">09:00 – 18:00</span></div>
+        <div class="hr-row" data-day="3"><span class="hr-day">Çarşamba</span><span class="hr-time">09:00 – 18:00</span></div>
+        <div class="hr-row" data-day="4"><span class="hr-day">Perşembe</span><span class="hr-time">09:00 – 18:00</span></div>
+        <div class="hr-row" data-day="5"><span class="hr-day">Cuma</span><span class="hr-time">09:00 – 18:00</span></div>
+        <div class="hr-row" data-day="6"><span class="hr-day">Cumartesi</span><span class="hr-time">10:00 – 16:00</span></div>
+        <div class="hr-row" data-day="0"><span class="hr-day">Pazar</span><span class="hr-time">Kapalı</span></div>
+      </div>
+    </div>
+
+    <div class="social-block">
+      <div class="sb-title">Sosyal Medya</div>
+      <div class="social-row">
+        <a href="#" class="soc-btn">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          Instagram
+        </a>
+        <a href="#" class="soc-btn">
+          <svg viewBox="0 0 24 24"><path d="M22.5 6.4s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C17 3 12 3 12 3s-5 0-7.3.1c-.5.1-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S1.2 8.1 1.2 9.8v1.5c0 1.7.3 3.4.3 3.4s.2 1.6.9 2.3c.9.9 2 .8 2.5.9C6.2 18 12 18 12 18s5 0 7.3-.1c.5-.1 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.3-1.7.3-3.4V9.8c0-1.7-.3-3.4-.3-3.4z"/><polygon points="9.5,15 15.5,12 9.5,9" fill="currentColor" stroke="none"/></svg>
+          YouTube
+        </a>
+        <a href="#" class="soc-btn">
+          <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          TikTok
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     § 3  HARİTA
+══════════════════════════════════════ -->
+<section class="map-section">
+  <div class="ms-left">
+    <div class="ms-eyebrow rv">Konumumuz</div>
+    <h2 class="ms-title rv r1">
+      Bizi<br><em>Ziyaret Edin</em>
+    </h2>
+    <div class="ms-addr rv r2">
+      <div class="ms-addr-line"><strong>Prenses Müzik</strong></div>
+      <div class="ms-addr-line">Kızılay Mah. Atatürk Bulv.</div>
+      <div class="ms-addr-line">No: 42 / Kat: 3, Daire: 8</div>
+      <div class="ms-addr-line">Çankaya / Ankara, 06420</div>
+    </div>
+    <a href="https://maps.google.com" target="_blank" class="ms-directions rv r3">
+      Yol Tarifi Al
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <!-- SVG Map Illustration -->
+  <div class="ms-right">
+    <div class="map-canvas">
+      <svg class="map-svg" viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <rect width="800" height="520" fill="#0e0d0b"/>
+        <!-- Grid of streets -->
+        <!-- Vertical streets -->
+        <line x1="80" y1="0" x2="80" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <line x1="160" y1="0" x2="160" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <line x1="240" y1="0" x2="240" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <line x1="320" y1="0" x2="320" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <line x1="400" y1="0" x2="400" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <line x1="480" y1="0" x2="480" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <line x1="560" y1="0" x2="560" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <line x1="640" y1="0" x2="640" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <line x1="720" y1="0" x2="720" y2="520" stroke="#1a1815" stroke-width="1"/>
+        <!-- Horizontal streets -->
+        <line x1="0" y1="65" x2="800" y2="65" stroke="#1a1815" stroke-width="1"/>
+        <line x1="0" y1="130" x2="800" y2="130" stroke="#1a1815" stroke-width="1"/>
+        <line x1="0" y1="195" x2="800" y2="195" stroke="#1a1815" stroke-width="1"/>
+        <line x1="0" y1="260" x2="800" y2="260" stroke="#1a1815" stroke-width="1"/>
+        <line x1="0" y1="325" x2="800" y2="325" stroke="#1a1815" stroke-width="1"/>
+        <line x1="0" y1="390" x2="800" y2="390" stroke="#1a1815" stroke-width="1"/>
+        <line x1="0" y1="455" x2="800" y2="455" stroke="#1a1815" stroke-width="1"/>
+        <!-- Main boulevard diagonal -->
+        <line x1="0" y1="520" x2="800" y2="0" stroke="#201e1a" stroke-width="16" stroke-opacity=".8"/>
+        <line x1="0" y1="540" x2="820" y2="0" stroke="#1a1815" stroke-width="1"/>
+        <!-- Blocks / buildings -->
+        <rect x="90" y="75" width="60" height="45" fill="#161412" rx="1"/>
+        <rect x="165" y="75" width="65" height="45" fill="#131210" rx="1"/>
+        <rect x="90" y="140" width="55" height="45" fill="#141210" rx="1"/>
+        <rect x="165" y="140" width="65" height="50" fill="#161412" rx="1"/>
+        <rect x="250" y="75" width="55" height="45" fill="#131210" rx="1"/>
+        <rect x="250" y="140" width="60" height="45" fill="#161412" rx="1"/>
+        <rect x="330" y="75" width="60" height="50" fill="#141210" rx="1"/>
+        <rect x="330" y="140" width="55" height="45" fill="#161412" rx="1"/>
+        <rect x="490" y="75" width="55" height="45" fill="#141210" rx="1"/>
+        <rect x="490" y="140" width="60" height="50" fill="#131210" rx="1"/>
+        <rect x="570" y="75" width="60" height="45" fill="#161412" rx="1"/>
+        <rect x="570" y="140" width="55" height="45" fill="#141210" rx="1"/>
+        <rect x="650" y="75" width="60" height="50" fill="#131210" rx="1"/>
+        <rect x="650" y="140" width="55" height="45" fill="#161412" rx="1"/>
+        <rect x="90" y="270" width="60" height="45" fill="#161412" rx="1"/>
+        <rect x="165" y="270" width="65" height="50" fill="#131210" rx="1"/>
+        <rect x="250" y="270" width="55" height="45" fill="#141210" rx="1"/>
+        <rect x="330" y="270" width="60" height="50" fill="#161412" rx="1"/>
+        <rect x="490" y="270" width="55" height="45" fill="#131210" rx="1"/>
+        <rect x="570" y="270" width="60" height="45" fill="#141210" rx="1"/>
+        <rect x="650" y="270" width="55" height="50" fill="#161412" rx="1"/>
+        <rect x="90" y="335" width="60" height="45" fill="#131210" rx="1"/>
+        <rect x="165" y="335" width="65" height="45" fill="#161412" rx="1"/>
+        <rect x="250" y="335" width="55" height="50" fill="#141210" rx="1"/>
+        <rect x="330" y="335" width="60" height="45" fill="#131210" rx="1"/>
+        <rect x="490" y="335" width="55" height="50" fill="#141210" rx="1"/>
+        <rect x="570" y="335" width="60" height="45" fill="#131210" rx="1"/>
+        <rect x="650" y="335" width="55" height="45" fill="#161412" rx="1"/>
+        <rect x="90" y="400" width="60" height="45" fill="#161412" rx="1"/>
+        <rect x="165" y="400" width="65" height="45" fill="#131210" rx="1"/>
+        <rect x="250" y="400" width="55" height="45" fill="#141210" rx="1"/>
+        <rect x="330" y="400" width="60" height="45" fill="#161412" rx="1"/>
+        <rect x="490" y="400" width="55" height="45" fill="#131210" rx="1"/>
+        <rect x="570" y="400" width="60" height="45" fill="#141210" rx="1"/>
+        <rect x="650" y="400" width="55" height="45" fill="#161412" rx="1"/>
+        <!-- Main roads highlight -->
+        <line x1="400" y1="0" x2="400" y2="520" stroke="#222018" stroke-width="8"/>
+        <line x1="0" y1="260" x2="800" y2="260" stroke="#222018" stroke-width="8"/>
+        <!-- Park area -->
+        <rect x="90" y="200" width="150" height="55" fill="#131f10" rx="2" opacity=".6"/>
+        <rect x="490" y="200" width="160" height="55" fill="#131f10" rx="2" opacity=".5"/>
+        <!-- Location marker highlight -->
+        <circle cx="400" cy="260" r="50" fill="rgba(224,32,32,.06)"/>
+        <circle cx="400" cy="260" r="28" fill="rgba(224,32,32,.08)"/>
+      </svg>
+    </div>
+    <!-- Pin -->
+    <div class="map-pin">
+      <div class="pin-dot"></div>
+      <div class="pin-line"></div>
+      <div class="pin-label">Prenses Müzik</div>
+    </div>
+    <div class="pin-pulse"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     § 4  SSS
+══════════════════════════════════════ -->
+<section class="faq">
+  <div class="faq-header">
+    <div>
+      <div class="fq-eyebrow rv">Sıkça Sorulan Sorular</div>
+      <h2 class="fq-title rv r1">
+        Aklınızdaki<br><em>Sorular</em>
+      </h2>
+    </div>
+    <p class="fq-sub rv r2">
+      En çok merak edilen sorular burada.<br>
+      Cevabınızı bulamazsanız doğrudan bize ulaşın.
+    </p>
+  </div>
+
+  <div class="faq-list">
+
+    <div class="faq-item rv" data-faq>
+      <button class="faq-trigger"><span class="fq-q">Teklif almak için ne kadar önceden iletişime geçmeliyim?</span><div class="fq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p class="fq-a">Küçük etkinlikler için en az 1 hafta, orta ölçekli etkinlikler için 2–4 hafta, büyük kurumsal ve festival organizasyonları için en az 4–8 hafta öncesinden iletişime geçmenizi öneririz. Yoğun sezonda (Mayıs–Haziran, Eylül–Ekim) daha erken rezervasyon yapılması tavsiye edilir.</p></div></div>
+    </div>
+
+    <div class="faq-item rv r1" data-faq>
+      <button class="faq-trigger"><span class="fq-q">Teknik keşif ve mekân değerlendirmesi yapıyor musunuz?</span><div class="fq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p class="fq-a">Evet, büyük ve orta ölçekli etkinlikler için etkinlik öncesi teknik keşif hizmetimiz mevcuttur. Ekibimiz mekanı yerinde inceleyerek akustik analiz, güç altyapısı ve lojistik planlaması yapar. Bu hizmet standart paketlerimize dahildir.</p></div></div>
+    </div>
+
+    <div class="faq-item rv r2" data-faq>
+      <button class="faq-trigger"><span class="fq-q">Kurulum ve söküm süresi ne kadar sürer?</span><div class="fq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p class="fq-a">Etkinliğin ölçeğine göre değişmekle birlikte küçük etkinlikler için 1–2 saat, orta ölçekli etkinlikler için 4–6 saat, büyük sahne ve festival kurulumları için 1–2 gün öngörülmektedir. Kurulum süresi teklif aşamasında netleştirilir ve etkinlik programına uygun olarak planlanır.</p></div></div>
+    </div>
+
+    <div class="faq-item rv r1" data-faq>
+      <button class="faq-trigger"><span class="fq-q">Etkinlik sırasında teknik destek sağlıyor musunuz?</span><div class="fq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p class="fq-a">Evet, tüm etkinliklerimizde deneyimli teknik operatörlerimiz sahada görev yapar. Ses operatörü, ışık programcısı ve gerektiğinde sahne teknisyeni etkinlik boyunca hazır bulunur. Acil müdahale için yedek ekipman da bulundurulur.</p></div></div>
+    </div>
+
+    <div class="faq-item rv r2" data-faq>
+      <button class="faq-trigger"><span class="fq-q">Ankara dışına hizmet veriyor musunuz?</span><div class="fq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p class="fq-a">Evet. Ankara merkezli olmakla birlikte ulusal çapta hizmet sunmaktayız. Şehir dışı etkinliklerde nakliye ve konaklama giderleri teklife ayrıca eklenir. Özellikle İstanbul, İzmir ve Antalya başta olmak üzere büyük şehirlerde aktif referans projelerimiz bulunmaktadır.</p></div></div>
+    </div>
+
+    <div class="faq-item rv r3" data-faq>
+      <button class="faq-trigger"><span class="fq-q">Ödeme koşulları nasıldır?</span><div class="fq-ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p class="fq-a">Standart uygulamamızda toplam tutarın %40'ı sözleşme imzalanırken, %60'ı etkinlik günü teslimatta alınır. Büyük kurumsal projelerde %30–30–40 dilimli ödeme planı da uygulanabilir. Tüm ödeme detayları teklif aşamasında netleştirilir.</p></div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     § 5  CTA STRIP
+══════════════════════════════════════ -->
+<section class="cta-strip rv">
+  <div class="cs-left">
+    <div class="cs-eyebrow">Hâlâ Aklınızda Sorular mı Var?</div>
+    <h2 class="cs-title rv r1">
+      Hemen<br><em>Arayın</em>
+    </h2>
+  </div>
+  <div class="cs-right rv r2">
+    <button class="btn-cs" onclick="window.location='tel:+905001234567'">+90 500 123 45 67</button>
+    <div class="cs-contact">
+      veya e-posta ile ulaşın<br>
+      <a href="mailto:info@prensesmuzik.com">info@prensesmuzik.com</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ── Cursor ── */
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.ci-block,.sch-item,.faq-trigger,.soc-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';curR.style.width='44px';curR.style.height='44px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='9px';cur.style.height='9px';curR.style.width='28px';curR.style.height='28px';});
+});
+
+/* ── Scroll Reveal ── */
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08});
+document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(el=>obs.observe(el));
+
+/* ── Highlight today's hours ── */
+const today=new Date().getDay();
+document.querySelectorAll('.hr-row').forEach(row=>{
+  if(parseInt(row.dataset.day)===today){
+    row.classList.add('today');
+    const badge=document.createElement('span');
+    badge.className='today-badge';badge.textContent='Bugün';
+    row.querySelector('.hr-day').appendChild(badge);
+  }
+});
+
+/* ── Checkbox toggle ── */
+document.querySelectorAll('[data-check]').forEach(item=>{
+  item.addEventListener('click',()=>{
+    item.classList.toggle('checked');
+    item.querySelector('input').checked=item.classList.contains('checked');
+  });
+});
+
+/* ── FAQ accordion ── */
+document.querySelectorAll('[data-faq]').forEach(item=>{
+  item.querySelector('.faq-trigger').addEventListener('click',()=>{
+    const isOpen=item.classList.contains('open');
+    document.querySelectorAll('[data-faq]').forEach(i=>i.classList.remove('open'));
+    if(!isOpen)item.classList.add('open');
+  });
+});
+
+/* ── Form submit ── */
+document.getElementById('contact-form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const form=e.target;
+  const btn=form.querySelector('.btn-submit');
+  btn.querySelector('span').textContent='Gönderiliyor…';
+  btn.disabled=true;
+  setTimeout(()=>{
+    form.style.transition='opacity .5s';
+    form.style.opacity='0';
+    setTimeout(()=>{
+      form.style.display='none';
+      document.getElementById('form-success').classList.add('show');
+    },500);
+  },1400);
+});
+
+/* ── Input date styling ── */
+document.querySelectorAll('input[type=date]').forEach(inp=>{
+  inp.addEventListener('focus',()=>inp.showPicker?.());
+});
+</script>
+</body>
+</html>

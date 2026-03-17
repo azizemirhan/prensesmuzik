@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ses Sistemleri — Prenses Müzik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/ses-sistemleri.css">
+  <link rel="stylesheet" href="css/topbar.css">
+  <link rel="stylesheet" href="css/bottom-bar.css">
+</head>
+<body>
+
+  <!-- Top bar — siyah, kayan yazı -->
+  <div class="site-topbar" aria-hidden="true">
+    <div class="topbar-marquee-wrap">
+      <div class="topbar-marquee">Ses · Işık · Sahne · Orkestra · LED Ekran · Etkinlik · Prenses Müzik · Ankara &nbsp;&nbsp;◆&nbsp;&nbsp;</div>
+      <div class="topbar-marquee">Ses · Işık · Sahne · Orkestra · LED Ekran · Etkinlik · Prenses Müzik · Ankara &nbsp;&nbsp;◆&nbsp;&nbsp;</div>
+    </div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div id="cursor" class="cur"></div>
+  <div id="cursor-ring" class="cur-r"></div>
+
+  <!-- ══════════════════ HEADER ══════════════════ -->
+  <header id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="img/prenses-müzik-logo.png" alt="Prenses Müzik" class="logo-img">
+      </a>
+
+      <nav>
+        <div class="nav-item" id="hizmetler-item">
+          <a href="hizmetlerimiz.html" class="nav-link" id="hizmetler-trigger">
+            Hizmetler <span class="arrow">&#9660;</span>
+          </a>
+        </div>
+        <div class="nav-item">
+          <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
+        </div>
+        <div class="nav-item">
+          <a href="referanslar.html" class="nav-link">Referanslar</a>
+        </div>
+        <div class="nav-item">
+          <a href="demo.html" class="nav-link">Galeri</a>
+        </div>
+        <div class="nav-item">
+          <a href="iletisim.html" class="nav-link">İletişim</a>
+        </div>
+      </nav>
+
+      <div class="header-cta">
+        <button class="btn-ghost">Giriş Yap</button>
+        <button class="btn-solid">Teklif Al</button>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menü">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-nav-link" id="mobile-hizmetler-toggle">
+        Hizmetler <span class="arrow">&#9660;</span>
+      </div>
+      <div class="mobile-services" id="mobile-services">
+        <a href="ses-sistemleri.html" class="mobile-service-link active"><span class="mobile-service-name">Ses Sistemleri</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Işık Sistemleri</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Sahne &amp; Truss Sistemleri</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Orkestra</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">LED Ekran</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Okul Mezuniyetleri</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">DJ Party</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Doğum Günü Party</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Etkinlik</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Davet &amp; Açılış</span></a>
+      </div>
+      <a href="hakkimizda.html" class="mobile-plain-link">Hakkımızda</a>
+      <a href="referanslar.html" class="mobile-plain-link">Referanslar</a>
+      <a href="demo.html" class="mobile-plain-link">Galeri</a>
+      <a href="iletisim.html" class="mobile-plain-link">İletişim</a>
+      <div class="mobile-btns">
+        <button class="btn-ghost">Giriş Yap</button>
+        <button class="btn-solid">Teklif Al</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mega Menu -->
+  <div class="mega-overlay" id="mega-overlay"></div>
+  <div class="mega-menu" id="mega-menu" role="dialog" aria-label="Hizmetler menüsü">
+    <div class="mega-left">
+      <div class="mega-left-top">
+        <p class="mega-label">Hizmetlerimiz</p>
+        <h2 class="mega-title">Sahneyi<br><em>Bize</em><br>Bırakın</h2>
+        <div class="mega-divider"></div>
+        <p class="mega-desc">Profesyonel ekipman ve uzman kadromuzla etkinliğinizi unutulmaz kılıyoruz.</p>
+      </div>
+      <a href="hizmetlerimiz.html" class="mega-cta">
+        Tüm hizmetleri gör
+        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+    <div class="mega-right">
+      <p class="mega-right-label">Kategori seçin</p>
+      <div class="services-grid">
+        <a href="ses-sistemleri.html" class="service-item active">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M17 6a8 8 0 0 1 0 12"/></svg></div>
+          <div class="service-info"><span class="service-name">Ses Sistemleri</span><span class="service-tag">Profesyonel Ses</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/><circle cx="12" cy="12" r="4"/></svg></div>
+          <div class="service-info"><span class="service-name">Işık Sistemleri</span><span class="service-tag">Sahne Aydınlatma</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="2" y="16" width="20" height="4" rx="1"/><path d="M6 16V8h3v8M15 16V8h3v8"/><path d="M9 10h6"/></svg></div>
+          <div class="service-info"><span class="service-name">Sahne &amp; Truss</span><span class="service-tag">Yapısal Sistemler</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 0 0 0 4h2a2 2 0 0 0 2-2V5l12-2v14"/><circle cx="18" cy="17" r="2"/><path d="M9 17V5l12-2v12"/></svg></div>
+          <div class="service-info"><span class="service-name">Orkestra</span><span class="service-tag">Canlı Müzik</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <div class="service-info"><span class="service-name">LED Ekran</span><span class="service-tag">Görsel Sistemler</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v6c3 2 9 2 12 0v-6"/><path d="M22 10v6"/></svg></div>
+          <div class="service-info"><span class="service-name">Okul Mezuniyetleri</span><span class="service-tag">Özel Törenler</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
+          <div class="service-info"><span class="service-name">DJ Party</span><span class="service-tag">Dans &amp; Eğlence</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2 1 2 1"/><path d="M2 21h20"/><path d="M7 8v2M12 8v2M17 8v2M7 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/><path d="M12 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM17 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg></div>
+          <div class="service-info"><span class="service-name">Doğum Günü Party</span><span class="service-tag">Kutlama Organizasyonu</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div class="service-info"><span class="service-name">Etkinlik</span><span class="service-tag">Kurumsal &amp; Özel</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+          <div class="service-info"><span class="service-name">Davet &amp; Açılış</span><span class="service-tag">Açılış Törenleri</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ══════════ § 1 HERO ══════════ -->
+    <section class="hero">
+      <div class="hero-bg-img" aria-hidden="true"></div>
+      <div class="staff"><div class="sl"></div><div class="sl"></div><div class="sl"></div><div class="sl"></div><div class="sl"></div></div>
+      <div class="hero-wm">SES</div>
+      <div class="hero-left">
+        <div class="hero-bc">
+          <a href="index.html">Anasayfa</a><span>/</span>
+          <a href="hizmetlerimiz.html">Hizmetler</a><span>/</span>
+          <span style="color:rgba(255,255,255,.5)">Ses Sistemleri</span>
+        </div>
+        <div class="hero-cat">Profesyonel Ses</div>
+        <h1 class="hero-h1">Ses<em>Sistemleri</em></h1>
+        <p class="hero-desc">Line array'den subwoofer'a, dijital mikserden sahne monitörüne — her ölçekte etkinlik için kusursuz ses kalitesi sunuyoruz.</p>
+        <div class="hero-actions">
+          <button class="btn-primary">Teklif Al</button>
+          <button class="btn-ghost-light">İletişime Geç</button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-spec-list">
+          <div class="hsl-row"><span class="hsl-key">Kapasite</span><span class="hsl-val">50 — 10.000 kişi</span></div>
+          <div class="hsl-row"><span class="hsl-key">Etkinlik Türü</span><span class="hsl-val">Açık / Kapalı Alan</span></div>
+          <div class="hsl-row"><span class="hsl-key">Kurulum Süresi</span><span class="hsl-val">2 — 8 saat</span></div>
+          <div class="hsl-row"><span class="hsl-key">Operatör</span><span class="hsl-val">Dahil</span></div>
+          <div class="hsl-row"><span class="hsl-key">Markalar</span><span class="hsl-val">L-Acoustics · d&b · Yamaha</span></div>
+        </div>
+        <div class="hero-badge-wrap">
+          <div class="hero-badge"><div class="hb-num">500<sup>+</sup></div><div class="hb-label">Etkinlik</div></div>
+          <div class="hero-badge"><div class="hb-num">12<sup>+</sup></div><div class="hb-label">Yıl Tecrübe</div></div>
+          <div class="hero-badge"><div class="hb-num">98<sup>%</sup></div><div class="hb-label">Memnuniyet</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ § 2 OVERVIEW ══════════ -->
+    <section class="overview">
+      <div class="ov-left rv">
+        <div class="ov-eyebrow rv">Hizmet Detayı</div>
+        <h2 class="ov-title rv rv1">Her Sahne İçin<br><em>Mükemmel Ses</em></h2>
+        <p class="ov-body rv rv2">Profesyonel ses sistemleri, etkinliğinizin ruhunu seyirciye iletmenin temel taşıdır. Yılların birikimi ve tier 1 ekipmanlarla küçük oda konserlerinden binlerce kişilik açık hava festivallerine kadar her ortamda kristal netliğinde ses üretiyoruz. Kurulum, kalibrason, prova ve canlı operatörlük hizmeti dahildir.</p>
+        <div class="ov-features">
+          <div class="ovf-item rv rv1">
+            <div class="ovf-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 8a4 4 0 0 1 0 8"/></svg></div>
+            <div class="ovf-text"><div class="ovf-name">Line Array Sistemleri</div><div class="ovf-desc">Geniş alanlarda homojen ses dağılımı</div></div>
+          </div>
+          <div class="ovf-item rv rv2">
+            <div class="ovf-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="18" r="4"/><path d="M12 14V2M8 6l4-4 4 4"/></svg></div>
+            <div class="ovf-text"><div class="ovf-name">Dijital Mikser & Sinyal Zinciri</div><div class="ovf-desc">Yamaha, Allen & Heath, DiGiCo konsollar</div></div>
+          </div>
+          <div class="ovf-item rv rv3">
+            <div class="ovf-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></div>
+            <div class="ovf-text"><div class="ovf-name">Mikrofon & IEM Sistemleri</div><div class="ovf-desc">Shure, Sennheiser telsiz çözümler</div></div>
+          </div>
+          <div class="ovf-item rv rv4">
+            <div class="ovf-icon"><svg viewBox="0 0 24 24"><path d="M2 12h20M12 2v20"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div class="ovf-text"><div class="ovf-name">Akustik Analiz & Kalibrasyon</div><div class="ovf-desc">Smaart / EASE yazılım desteğiyle ölçüm</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="ov-right rv rv1">
+        <div class="eq-block">
+          <div class="eq-block-label">Teknik Özellikler</div>
+          <table class="eq-table">
+            <tr><td>Frekans Yanıtı</td><td>40 Hz — 20 kHz</td></tr>
+            <tr><td>Maks. SPL</td><td>136 dB (peak)</td></tr>
+            <tr><td>Kapsama Açısı</td><td>90° × 15° (array başına)</td></tr>
+            <tr><td>Subwoofer</td><td>2×18" kardioit konfigürasyon</td></tr>
+            <tr><td>Monitör Tipi</td><td>Koaksiyel / IEM</td></tr>
+            <tr><td>Kablo Altyapısı</td><td>Cat6 AES / Analog XLR</td></tr>
+            <tr><td>Güç Yönetimi</td><td>Dijital amplifikatör + UPS</td></tr>
+          </table>
+        </div>
+        <div class="eq-block rv rv2">
+          <div class="eq-block-label">Paketler</div>
+          <div class="pkg-grid">
+            <div class="pkg-card"><div class="pkg-name">Başlangıç</div><div class="pkg-tag">50–300 Kişi</div><div class="pkg-price">Fiyat için iletişime geçin →</div></div>
+            <div class="pkg-card"><div class="pkg-name">Profesyonel</div><div class="pkg-tag">300–1.500 Kişi</div><div class="pkg-price">Fiyat için iletişime geçin →</div></div>
+            <div class="pkg-card"><div class="pkg-name">Festival</div><div class="pkg-tag">1.500–5.000 Kişi</div><div class="pkg-price">Fiyat için iletişime geçin →</div></div>
+            <div class="pkg-card"><div class="pkg-name">Grand</div><div class="pkg-tag">5.000+ Kişi</div><div class="pkg-price">Fiyat için iletişime geçin →</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ § 3 GALERİ (placeholder) ══════════ -->
+    <section class="media-section" id="media">
+      <div class="media-top">
+        <div class="mt-left rv">
+          <div class="ms-eyebrow">Galeri</div>
+          <h2 class="ms-title">Ses Sistemleri<br><em>Görselleri</em></h2>
+        </div>
+        <p class="mt-right rv rv2">Ses sistemleri kurulumlarımızdan ve etkinliklerimizden kareler.</p>
+      </div>
+      <div class="media-grid ses-gallery-grid">
+        <div class="media-thumb-placeholder ph-1"></div>
+        <div class="media-thumb-placeholder ph-2"></div>
+        <div class="media-thumb-placeholder ph-3"></div>
+        <div class="media-thumb-placeholder ph-4"></div>
+        <div class="media-thumb-placeholder ph-5"></div>
+        <div class="media-thumb-placeholder ph-6"></div>
+        <div class="media-thumb-placeholder ph-7"></div>
+        <div class="media-thumb-placeholder ph-8"></div>
+      </div>
+    </section>
+
+    <!-- ══════════ § 4 EQUIPMENT ══════════ -->
+    <section class="equipment">
+      <div class="eq-header">
+        <div class="eq-h-left"><div class="eq-eyebrow rv">Ekipman Parkuru</div><h2 class="eq-title rv rv1">Kullandığımız<br><em>Ekipmanlar</em></h2></div>
+        <p class="eq-h-right rv rv2">Tier 1 markaların en güncel modelleriyle çalışıyoruz.</p>
+      </div>
+      <div class="eq-list">
+        <div class="eq-card rv"><div class="eqc-num">01</div><div class="eqc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 8a4 4 0 0 1 0 8"/><path d="M17.5 5.5a8.5 8.5 0 0 1 0 13"/></svg></div><div class="eqc-name">L-Acoustics K2</div><div class="eqc-brand">Line Array Sistem</div><div class="eqc-desc">Büyük ölçekli konser ve festival alanları için üst segment line array.</div></div>
+        <div class="eq-card rv rv1"><div class="eqc-num">02</div><div class="eqc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 2v4M8 2v4"/><circle cx="12" cy="14" r="3"/></svg></div><div class="eqc-name">Yamaha CL5</div><div class="eqc-brand">Dijital Konsollar</div><div class="eqc-desc">64 kanallı dijital mikser; FOH ve monitör operasyonu için.</div></div>
+        <div class="eq-card rv rv2"><div class="eqc-num">03</div><div class="eqc-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div><div class="eqc-name">Shure Axient Digital</div><div class="eqc-brand">Telsiz Mikrofon</div><div class="eqc-desc">Frekans çakışmasına karşı otomatik ağ yönetimli premium telsiz sistem.</div></div>
+        <div class="eq-card rv rv1"><div class="eqc-num">04</div><div class="eqc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="eqc-name">d&b Audiotechnik SL Series</div><div class="eqc-brand">Subwoofer Sistemi</div><div class="eqc-desc">Kardioit subwoofer konfigürasyonu ile sahne arkasına kaçan sesi önler.</div></div>
+        <div class="eq-card rv rv2"><div class="eqc-num">05</div><div class="eqc-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg></div><div class="eqc-name">Sennheiser 6000 IEM</div><div class="eqc-brand">In-Ear Monitör</div><div class="eqc-desc">Sanatçılar ve müzisyenler için kristal netliğinde kulak içi monitörleme.</div></div>
+        <div class="eq-card rv rv3"><div class="eqc-num">06</div><div class="eqc-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="eqc-name">Lake LM 44 / Smaart</div><div class="eqc-brand">Ölçüm & Kalibrasyon</div><div class="eqc-desc">Gerçek zamanlı spektrum analizi ve ses sistemini mekâna göre optimize etme.</div></div>
+      </div>
+    </section>
+
+    <!-- ══════════ § 5 CTA ══════════ -->
+    <section class="cta-final rv" id="cta">
+      <div class="cf-left"><div class="cf-eyebrow">Ses Sistemleri · Teklif</div><h2 class="cf-title">Etkinliğiniz İçin<br><em>Teklif Alın</em></h2></div>
+      <div class="cf-right rv rv2">
+        <button class="btn-primary" style="padding:14px 36px;font-size:9.5px;letter-spacing:.28em;">Ücretsiz Teklif Al</button>
+        <div class="cf-contact"><a href="tel:+905001234567">+90 500 123 45 67</a><br><a href="mailto:info@prensesmuzik.com">info@prensesmuzik.com</a></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="img/prenses-müzik-logo-beyaz.png" alt="Prenses Müzik">
+        </div>
+
+        <div class="footer-social">
+          <a href="demo.html" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke-linecap="round"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="demo.html" class="social-btn" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.5 6.4s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C17 3 12 3 12 3s-5 0-7.3.1c-.5.1-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S1.2 8.1 1.2 9.8v1.5c0 1.7.3 3.4.3 3.4s.2 1.6.9 2.3c.9.9 2 .8 2.5.9C6.2 18 12 18 12 18s5 0 7.3-.1c.5-.1 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.3-1.7.3-3.4V9.8c0-1.7-.3-3.4-.3-3.4z" stroke-linecap="round"/><polygon points="9.5,15 15.5,12 9.5,9" fill="currentColor" stroke="none"/></svg></a>
+          <a href="demo.html" class="social-btn" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Hizmetler</h4>
+        <ul>
+          <li><a href="ses-sistemleri.html">Ses Sistemleri</a></li>
+          <li><a href="demo.html">Işık Sistemleri</a></li>
+          <li><a href="demo.html">Sahne &amp; Truss</a></li>
+          <li><a href="demo.html">Orkestra</a></li>
+          <li><a href="demo.html">LED Ekran</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Etkinlikler</h4>
+        <ul>
+          <li><a href="demo.html">Okul Mezuniyetleri</a></li>
+          <li><a href="demo.html">DJ Party</a></li>
+          <li><a href="demo.html">Doğum Günü Party</a></li>
+          <li><a href="demo.html">Etkinlik</a></li>
+          <li><a href="demo.html">Davet &amp; Açılış</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <h4>Bülten</h4>
+        <p>Konserler, özel etkinlikler ve yeni hizmetlerden ilk haberdar olan siz olun.</p>
+        <div class="nl-form">
+          <input type="email" placeholder="E-posta adresiniz" />
+          <button aria-label="Abone ol"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Prenses Müzik. Tüm hakları saklıdır.</p>
+      <div class="footer-bottom-links"><a href="demo.html">Gizlilik Politikası</a><a href="demo.html">Kullanım Koşulları</a><a href="demo.html">KVKK</a></div>
+    </div>
+  </footer>
+
+  <!-- Mobil bottom bar (sadece mobilde görünür) -->
+  <div class="mobile-bottom-bar" id="mobile-bottom-bar" aria-hidden="true">
+    <div class="mobile-bottom-bar-inner">
+      <a href="index.html" class="mobile-bar-brand">
+        <img src="img/prenses-müzik-logo-beyaz.png" alt="Prenses Müzik" class="mobile-bar-logo">
+      </a>
+      <div class="mobile-bar-actions">
+        <a href="tel:+905001234567" class="mobile-bar-btn secondary" aria-label="Bizi Ara">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <span>Ara</span>
+        </a>
+        <a href="#cta" class="mobile-bar-btn primary">Teklif Al</a>
+      </div>
+    </div>
+    <div class="mobile-bar-home-indicator"></div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

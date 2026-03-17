@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prenses Müzik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f6f2;
+      --gray-light: #e8e4de;
+      --gray-mid: #b0a89e;
+      --gray-dark: #4a4540;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── HEADER ─────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: var(--white);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s, background 0.4s, backdrop-filter 0.4s;
+    }
+    header.scrolled {
+      border-color: var(--gray-light);
+      background: rgba(248, 246, 242, 0.94);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 56px;
+      height: 80px;
+    }
+
+    /* ── Logo ── */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      text-decoration: none;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+    .logo-icon { width: 40px; height: 40px; }
+    .logo-icon svg { width: 100%; height: 100%; }
+    .logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .logo-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px; font-weight: 400;
+      letter-spacing: 0.08em; color: var(--black);
+    }
+    .logo-sub {
+      font-size: 7.5px; font-weight: 300;
+      letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--gray-mid); margin-top: 4px;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      height: 80px;
+    }
+
+    .nav-item {
+      position: static;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-link {
+      font-size: 10px; font-weight: 300;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gray-dark); text-decoration: none;
+      position: relative; padding-bottom: 2px;
+      transition: color 0.25s;
+      display: flex; align-items: center; gap: 5px;
+      white-space: nowrap;
+      height: 100%;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--black);
+      transition: width 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-link:hover,
+    .nav-item.active .nav-link { color: var(--black); }
+    .nav-link:hover::after,
+    .nav-item.active .nav-link::after { width: 100%; }
+
+    .nav-link .arrow {
+      display: inline-block;
+      font-size: 8px;
+      transition: transform 0.3s;
+      margin-top: 1px;
+      color: var(--gray-mid);
+    }
+    .nav-item.active .nav-link .arrow { transform: rotate(180deg); }
+
+    /* ── Mega Menu ── */
+    .mega-menu {
+      position: fixed;
+      top: 80px; left: 0; right: 0;
+      background: var(--black);
+      color: var(--white);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-12px);
+      transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1),
+                  transform 0.35s cubic-bezier(0.4,0,0.2,1),
+                  visibility 0.35s;
+      pointer-events: none;
+      z-index: 199;
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
+    }
+    .mega-menu.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    /* Left panel */
+    .mega-left {
+      background: #111;
+      padding: 52px 40px 52px 56px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .mega-left-top {}
+    .mega-label {
+      font-size: 8px; font-weight: 300;
+      letter-spacing: 0.36em; text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 20px;
+    }
+    .mega-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px; font-weight: 300;
+      line-height: 1.15;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .mega-title em { font-style: italic; color: rgba(255,255,255,0.45); }
+    .mega-divider { width: 32px; height: 1px; background: rgba(255,255,255,0.15); margin: 24px 0; }
+    .mega-desc {
+      font-size: 10.5px; font-weight: 300;
+      line-height: 2; letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.38);
+      max-width: 200px;
+    }
+    .mega-cta {
+      margin-top: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 9px; font-weight: 300;
+      letter-spacing: 0.26em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.25s;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .mega-cta:hover { color: var(--white); }
+    .mega-cta svg { width: 12px; height: 12px; stroke: currentColor; fill: none; transition: transform 0.25s; }
+    .mega-cta:hover svg { transform: translateX(4px); }
+
+    /* Right panel — services grid */
+    .mega-right {
+      padding: 52px 56px 52px 48px;
+    }
+    .mega-right-label {
+      font-size: 8px; font-weight: 300;
+      letter-spacing: 0.36em; text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 36px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+
+    .service-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 20px 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.25s;
+      position: relative;
+    }
+    .service-item:nth-child(odd) { padding-right: 32px; border-right: 1px solid rgba(255,255,255,0.06); }
+    .service-item:nth-child(even) { padding-left: 32px; }
+    /* Remove bottom border from last row */
+    .service-item:nth-last-child(1),
+    .service-item:nth-last-child(2) { border-bottom: none; }
+
+    .service-icon {
+      width: 36px; height: 36px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .service-icon svg {
+      width: 16px; height: 16px;
+      stroke: rgba(255,255,255,0.45);
+      fill: none; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 0.3s;
+    }
+    .service-item:hover .service-icon {
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.05);
+    }
+    .service-item:hover .service-icon svg { stroke: var(--white); }
+
+    .service-info {}
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; font-weight: 400;
+      letter-spacing: 0.03em;
+      color: rgba(255,255,255,0.72);
+      transition: color 0.25s;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .service-tag {
+      font-size: 8.5px; font-weight: 300;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+      transition: color 0.25s;
+    }
+    .service-item:hover .service-name { color: var(--white); }
+    .service-item:hover .service-tag { color: rgba(255,255,255,0.42); }
+
+    /* ── Header CTA ── */
+    .header-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .btn-ghost {
+      font-size: 9.5px; font-weight: 300;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--black); background: none;
+      border: 1px solid var(--gray-light);
+      padding: 10px 22px; cursor: pointer;
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+      white-space: nowrap;
+    }
+    .btn-ghost:hover { background: var(--black); border-color: var(--black); color: var(--white); }
+    .btn-solid {
+      font-size: 9.5px; font-weight: 300;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--white); background: var(--black);
+      border: 1px solid var(--black);
+      padding: 10px 22px; cursor: pointer;
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+    .btn-solid:hover { background: var(--gray-dark); border-color: var(--gray-dark); }
+
+    /* ── Hamburger ── */
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 5px; background: none; border: none;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 1px;
+      background: var(--black);
+      transition: transform 0.35s, opacity 0.35s;
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── Mobile Menu ── */
+    .mobile-menu {
+      display: none; flex-direction: column;
+      background: var(--white);
+      border-top: 1px solid var(--gray-light);
+    }
+    .mobile-menu.open { display: flex; }
+
+    .mobile-nav-link {
+      font-size: 10px; font-weight: 300;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gray-dark); text-decoration: none;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--gray-light);
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer;
+      transition: color 0.25s, background 0.25s;
+    }
+    .mobile-nav-link:hover { color: var(--black); background: rgba(0,0,0,0.02); }
+    .mobile-nav-link .arrow { font-size: 10px; transition: transform 0.3s; }
+    .mobile-nav-link.active .arrow { transform: rotate(180deg); }
+
+    .mobile-services {
+      display: none;
+      background: var(--black);
+      padding: 8px 0;
+    }
+    .mobile-services.open { display: block; }
+    .mobile-service-link {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 28px 13px 36px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .mobile-service-link:hover { background: rgba(255,255,255,0.05); }
+    .mobile-service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.03em;
+    }
+
+    .mobile-plain-link {
+      font-size: 10px; font-weight: 300;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gray-dark); text-decoration: none;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--gray-light);
+      display: block;
+      transition: color 0.25s;
+    }
+    .mobile-plain-link:hover { color: var(--black); }
+    .mobile-btns {
+      display: flex; gap: 12px;
+      padding: 20px 28px;
+    }
+    .mobile-btns button { flex: 1; }
+
+    /* Overlay */
+    .mega-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.25);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.35s, visibility 0.35s;
+      z-index: 198;
+    }
+    .mega-overlay.open { opacity: 1; visibility: visible; }
+
+    /* ─── DEMO CONTENT ── */
+    .demo {
+      flex: 1;
+      margin-top: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 56px;
+      text-align: center;
+      gap: 18px;
+    }
+    .demo .eyebrow {
+      font-size: 8.5px; font-weight: 300;
+      letter-spacing: 0.36em; text-transform: uppercase;
+      color: var(--gray-mid);
+    }
+    .demo h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 300; line-height: 1.05;
+      color: var(--black); letter-spacing: 0.02em;
+    }
+    .demo h1 em { font-style: italic; color: var(--gray-dark); }
+    .demo-div { width: 48px; height: 1px; background: var(--gray-light); margin: 6px auto; }
+    .demo p {
+      font-size: 11.5px; font-weight: 300;
+      letter-spacing: 0.08em; color: var(--gray-mid);
+      max-width: 400px; line-height: 2;
+    }
+
+    /* ─── FOOTER ── */
+    footer {
+      background: var(--black);
+      color: var(--white);
+      padding: 80px 56px 0;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 56px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-logo { display: flex; align-items: center; gap: 13px; margin-bottom: 22px; }
+    .footer-logo .logo-main { color: var(--white); }
+    .footer-logo .logo-sub { color: rgba(255,255,255,0.3); }
+    .footer-brand p {
+      font-size: 10.5px; font-weight: 300;
+      line-height: 2; letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.38); max-width: 240px;
+    }
+    .footer-social { display: flex; gap: 14px; margin-top: 28px; }
+    .social-btn {
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; text-decoration: none;
+      color: rgba(255,255,255,0.4);
+      transition: border-color 0.3s, background 0.3s, color 0.3s;
+    }
+    .social-btn:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); color: var(--white); }
+    .social-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+    .footer-col h4 {
+      font-size: 8px; font-weight: 400;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255,255,255,0.28); margin-bottom: 22px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .footer-col ul li a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14.5px; font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none; letter-spacing: 0.03em;
+      transition: color 0.25s;
+    }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-newsletter h4 {
+      font-size: 8px; font-weight: 400;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255,255,255,0.28); margin-bottom: 22px;
+    }
+    .footer-newsletter p {
+      font-size: 10.5px; font-weight: 300;
+      color: rgba(255,255,255,0.38); line-height: 1.9;
+      margin-bottom: 18px; letter-spacing: 0.04em;
+    }
+    .nl-form { display: flex; border: 1px solid rgba(255,255,255,0.12); transition: border-color 0.3s; }
+    .nl-form:focus-within { border-color: rgba(255,255,255,0.35); }
+    .nl-form input {
+      flex: 1; background: none; border: none; outline: none;
+      padding: 11px 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9.5px; font-weight: 300;
+      letter-spacing: 0.1em; color: var(--white);
+    }
+    .nl-form input::placeholder { color: rgba(255,255,255,0.22); }
+    .nl-form button {
+      background: none; border: none;
+      border-left: 1px solid rgba(255,255,255,0.12);
+      padding: 11px 14px; cursor: pointer;
+      color: rgba(255,255,255,0.45);
+      transition: background 0.3s, color 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nl-form button:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+    .nl-form button svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .footer-bottom {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 22px 0;
+    }
+    .footer-bottom p {
+      font-size: 9px; font-weight: 300;
+      letter-spacing: 0.12em; color: rgba(255,255,255,0.22);
+    }
+    .footer-bottom-links { display: flex; gap: 24px; }
+    .footer-bottom-links a {
+      font-size: 9px; font-weight: 300;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.22); text-decoration: none;
+      transition: color 0.25s;
+    }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,0.55); }
+
+    /* ─── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .header-inner { padding: 0 32px; }
+      nav { gap: 24px; }
+    }
+    @media (max-width: 900px) {
+      .header-inner { padding: 0 28px; }
+      nav, .header-cta { display: none; }
+      .hamburger { display: flex; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      footer { padding: 60px 28px 0; }
+    }
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 12px; }
+      .demo { padding: 80px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header id="site-header">
+  <div class="header-inner">
+
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 4C22 4 14 10 14 20C14 28 20 31 20 38C20 42 17 44 17 44" stroke="#0a0a0a" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M14 20C14 20 10 21 10 25C10 29 14 31 20 31C26 31 30 28 30 24C30 20 26 17 20 17C16 17 14 20 14 20Z" stroke="#0a0a0a" stroke-width="1.4"/>
+          <path d="M20 17C20 17 20 10 24 8C27 6.5 30 8 30 12C30 16 27 18 24 18" stroke="#0a0a0a" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="20" cy="38" r="2.5" stroke="#0a0a0a" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-main">Prenses Müzik</span>
+        <span class="logo-sub">Müzik &amp; Sahne Sanatları</span>
+      </div>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav>
+      <div class="nav-item" id="hizmetler-item">
+        <a href="#" class="nav-link" id="hizmetler-trigger">
+          Hizmetler <span class="arrow">&#9660;</span>
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">Hakkımızda</a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">Konserler</a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">Galeri</a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">İletişim</a>
+      </div>
+    </nav>
+
+    <!-- CTA -->
+    <div class="header-cta">
+      <button class="btn-ghost">Giriş Yap</button>
+      <button class="btn-solid">Teklif Al</button>
+    </div>
+
+    <!-- Hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-nav-link" id="mobile-hizmetler-toggle">
+      Hizmetler <span class="arrow">&#9660;</span>
+    </div>
+    <div class="mobile-services" id="mobile-services">
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">Ses Sistemleri</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">Işık Sistemleri</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">Sahne &amp; Truss Sistemleri</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">Orkestra</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">LED Ekran</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">Okul Mezuniyetleri</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">DJ Party</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">Doğum Günü Party</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">Etkinlik</span></a>
+      <a href="#" class="mobile-service-link"><span class="mobile-service-name">Davet &amp; Açılış</span></a>
+    </div>
+    <a href="#" class="mobile-plain-link">Hakkımızda</a>
+    <a href="#" class="mobile-plain-link">Konserler</a>
+    <a href="#" class="mobile-plain-link">Galeri</a>
+    <a href="#" class="mobile-plain-link">İletişim</a>
+    <div class="mobile-btns">
+      <button class="btn-ghost">Giriş Yap</button>
+      <button class="btn-solid">Teklif Al</button>
+    </div>
+  </div>
+</header>
+
+<!-- Mega Menu -->
+<div class="mega-overlay" id="mega-overlay"></div>
+<div class="mega-menu" id="mega-menu" role="dialog" aria-label="Hizmetler menüsü">
+
+  <!-- Left -->
+  <div class="mega-left">
+    <div class="mega-left-top">
+      <p class="mega-label">Hizmetlerimiz</p>
+      <h2 class="mega-title">Sahneyi<br><em>Bize</em><br>Bırakın</h2>
+      <div class="mega-divider"></div>
+      <p class="mega-desc">Profesyonel ekipman ve uzman kadromuzla etkinliğinizi unutulmaz kılıyoruz.</p>
+    </div>
+    <a href="#" class="mega-cta">
+      Tüm hizmetleri gör
+      <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- Right: Services Grid -->
+  <div class="mega-right">
+    <p class="mega-right-label">Kategori seçin</p>
+    <div class="services-grid">
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Speaker icon -->
+          <svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M17 6a8 8 0 0 1 0 12"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">Ses Sistemleri</span>
+          <span class="service-tag">Profesyonel Ses</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Light icon -->
+          <svg viewBox="0 0 24 24"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">Işık Sistemleri</span>
+          <span class="service-tag">Sahne Aydınlatma</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Stage icon -->
+          <svg viewBox="0 0 24 24"><rect x="2" y="16" width="20" height="4" rx="1"/><path d="M6 16V8h3v8M15 16V8h3v8"/><path d="M9 10h6"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">Sahne &amp; Truss</span>
+          <span class="service-tag">Yapısal Sistemler</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Music notes icon -->
+          <svg viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 0 0 0 4h2a2 2 0 0 0 2-2V5l12-2v14"/><circle cx="18" cy="17" r="2"/><path d="M9 17V5l12-2v12"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">Orkestra</span>
+          <span class="service-tag">Canlı Müzik</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Monitor icon -->
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">LED Ekran</span>
+          <span class="service-tag">Görsel Sistemler</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Graduation icon -->
+          <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v6c3 2 9 2 12 0v-6"/><path d="M22 10v6"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">Okul Mezuniyetleri</span>
+          <span class="service-tag">Özel Törener</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Headphones icon -->
+          <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">DJ Party</span>
+          <span class="service-tag">Dans &amp; Eğlence</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Cake icon -->
+          <svg viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2 1 2 1"/><path d="M2 21h20"/><path d="M7 8v2M12 8v2M17 8v2M7 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/><path d="M12 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM17 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">Doğum Günü Party</span>
+          <span class="service-tag">Kutlama Organizasyonu</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Star icon -->
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">Etkinlik</span>
+          <span class="service-tag">Kurumsal &amp; Özel</span>
+        </div>
+      </a>
+
+      <a href="#" class="service-item">
+        <div class="service-icon">
+          <!-- Ribbon / ribbon scissors icon -->
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <div class="service-info">
+          <span class="service-name">Davet &amp; Açılış</span>
+          <span class="service-tag">Açılış Törenleri</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ DEMO ══════════════════ -->
+<section class="demo">
+  <span class="eyebrow">Ankara · Türkiye · Est. 2020</span>
+  <h1>Müziğin <em>Zarafeti</em><br>Seninle Başlıyor</h1>
+  <div class="demo-div"></div>
+  <p>Profesyonel ekipman ve uzman kadromuzla her etkinliği unutulmaz bir deneyime dönüştürüyoruz.</p>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 4C22 4 14 10 14 20C14 28 20 31 20 38C20 42 17 44 17 44" stroke="#f8f6f2" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M14 20C14 20 10 21 10 25C10 29 14 31 20 31C26 31 30 28 30 24C30 20 26 17 20 17C16 17 14 20 14 20Z" stroke="#f8f6f2" stroke-width="1.4"/>
+            <path d="M20 17C20 17 20 10 24 8C27 6.5 30 8 30 12C30 16 27 18 24 18" stroke="#f8f6f2" stroke-width="1.4" stroke-linecap="round"/>
+            <circle cx="20" cy="38" r="2.5" stroke="#f8f6f2" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-main">Prenses Müzik</span>
+          <span class="logo-sub">Müzik &amp; Sahne Sanatları</span>
+        </div>
+      </div>
+
+      <div class="footer-social">
+        <a href="#" class="social-btn" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke-linecap="round"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M22.5 6.4s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C17 3 12 3 12 3s-5 0-7.3.1c-.5.1-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S1.2 8.1 1.2 9.8v1.5c0 1.7.3 3.4.3 3.4s.2 1.6.9 2.3c.9.9 2 .8 2.5.9C6.2 18 12 18 12 18s5 0 7.3-.1c.5-.1 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.3-1.7.3-3.4V9.8c0-1.7-.3-3.4-.3-3.4z" stroke-linecap="round"/><polygon points="9.5,15 15.5,12 9.5,9" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Hizmetler</h4>
+      <ul>
+        <li><a href="#">Ses Sistemleri</a></li>
+        <li><a href="#">Işık Sistemleri</a></li>
+        <li><a href="#">Sahne &amp; Truss</a></li>
+        <li><a href="#">Orkestra</a></li>
+        <li><a href="#">LED Ekran</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Etkinlikler</h4>
+      <ul>
+        <li><a href="#">Okul Mezuniyetleri</a></li>
+        <li><a href="#">DJ Party</a></li>
+        <li><a href="#">Doğum Günü Party</a></li>
+        <li><a href="#">Etkinlik</a></li>
+        <li><a href="#">Davet &amp; Açılış</a></li>
+      </ul>
+    </div>
+    <div class="footer-newsletter">
+      <h4>Bülten</h4>
+      <p>Konserler, özel etkinlikler ve yeni hizmetlerden ilk haberdar olan siz olun.</p>
+      <div class="nl-form">
+        <input type="email" placeholder="E-posta adresiniz" />
+        <button aria-label="Abone ol">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Prenses Müzik. Tüm hakları saklıdır.</p>
+    <div class="footer-bottom-links">
+      <a href="#">Gizlilik Politikası</a>
+      <a href="#">Kullanım Koşulları</a>
+      <a href="#">KVKK</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll → sticky ──
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // ── Mega Menu ──
+  const trigger    = document.getElementById('hizmetler-trigger');
+  const hizItem    = document.getElementById('hizmetler-item');
+  const megaMenu   = document.getElementById('mega-menu');
+  const overlay    = document.getElementById('mega-overlay');
+
+  function openMega() {
+    megaMenu.classList.add('open');
+    overlay.classList.add('open');
+    hizItem.classList.add('active');
+  }
+  function closeMega() {
+    megaMenu.classList.remove('open');
+    overlay.classList.remove('open');
+    hizItem.classList.remove('active');
+  }
+  function toggleMega(e) {
+    e.preventDefault();
+    megaMenu.classList.contains('open') ? closeMega() : openMega();
+  }
+
+  trigger.addEventListener('click', toggleMega);
+  overlay.addEventListener('click', closeMega);
+
+  // Hover intent
+  let hoverTimeout;
+  hizItem.addEventListener('mouseenter', () => {
+    clearTimeout(hoverTimeout);
+    openMega();
+  });
+  hizItem.addEventListener('mouseleave', () => {
+    hoverTimeout = setTimeout(closeMega, 120);
+  });
+  megaMenu.addEventListener('mouseenter', () => clearTimeout(hoverTimeout));
+  megaMenu.addEventListener('mouseleave', () => {
+    hoverTimeout = setTimeout(closeMega, 120);
+  });
+
+  // Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMega();
+  });
+
+  // ── Hamburger ──
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+
+  // ── Mobile Services Toggle ──
+  const mobileToggle   = document.getElementById('mobile-hizmetler-toggle');
+  const mobileServices = document.getElementById('mobile-services');
+  mobileToggle.addEventListener('click', () => {
+    mobileToggle.classList.toggle('active');
+    mobileServices.classList.toggle('open');
+  });
+
+  // ── Newsletter ──
+  const nlBtn = document.querySelector('.nl-form button');
+  if (nlBtn) {
+    nlBtn.addEventListener('click', () => {
+      const inp = nlBtn.previousElementSibling;
+      if (inp.value.includes('@')) {
+        inp.value = '';
+        inp.placeholder = 'Teşekkürler! ✦';
+        setTimeout(() => inp.placeholder = 'E-posta adresiniz', 3000);
+      }
+    });
+  }
+</script>
+</body>
+</html>

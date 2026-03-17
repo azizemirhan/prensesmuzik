@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Ses Sistemleri — Prenses Müzik</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════
+   TOKENS & RESET
+══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#070707;
+  --ink2:#161412;
+  --paper:#f4f1ec;
+  --cream:#ece8e1;
+  --rule:#d9d3cb;
+  --muted:#a09488;
+  --dim:#6b6460;
+  --white:#faf8f4;
+  --upload-bg:#f0ece5;
+  --D:'Cormorant Garamond',serif;
+  --B:'Montserrat',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:var(--B);overflow-x:hidden;cursor:none;}
+@media(max-width:768px){body{cursor:auto;}}
+
+/* Cursor */
+.cur{position:fixed;width:9px;height:9px;background:#e02020;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .22s,height .22s,background .3s;box-shadow:0 0 12px rgba(224,32,32,.5);}
+.cur-r{position:fixed;width:28px;height:28px;border:1.5px solid rgba(224,32,32,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .18s,height .18s,border-color .3s;}
+@media(max-width:768px){.cur,.cur-r{display:none;}}
+
+/* Grain */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");background-size:160px;pointer-events:none;z-index:9990;opacity:.35;}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(32px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.rv.on{opacity:1;transform:none;}
+.rv1{transition-delay:.1s;}.rv2{transition-delay:.2s;}.rv3{transition-delay:.3s;}.rv4{transition-delay:.4s;}
+
+/* ══════════════════════════════════════
+   § 1  HERO
+══════════════════════════════════════ */
+.hero{
+  min-height:88vh;
+  background:var(--ink2);
+  color:var(--white);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:relative;
+  overflow:hidden;
+}
+/* Staff lines */
+.staff{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:0;pointer-events:none;}
+.sl{height:1px;background:rgba(255,255,255,.04);transform:scaleX(0);transform-origin:left;animation:grow 2s cubic-bezier(.16,1,.3,1) forwards;}
+.sl:nth-child(1){animation-delay:.05s;}.sl:nth-child(2){animation-delay:.12s;}.sl:nth-child(3){animation-delay:.19s;}.sl:nth-child(4){animation-delay:.26s;}.sl:nth-child(5){animation-delay:.33s;}
+@keyframes grow{to{transform:scaleX(1);}}
+
+/* Vertical split line */
+.hero::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.06);}
+
+.hero-left{
+  padding:110px 72px 80px;
+  display:flex;flex-direction:column;justify-content:flex-end;gap:36px;
+  position:relative;z-index:1;
+}
+.hero-bc{
+  display:flex;align-items:center;gap:8px;
+  font-size:8px;font-weight:300;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);
+  animation:fu .9s .1s ease both;
+}
+.hero-bc a{color:inherit;text-decoration:none;cursor:none;transition:color .25s;}
+.hero-bc a:hover{color:rgba(255,255,255,.6);}
+.hero-bc span{color:rgba(255,255,255,.1);}
+.hero-cat{
+  font-size:8.5px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+  display:flex;align-items:center;gap:10px;
+  animation:fu .9s .22s ease both;
+}
+.hero-cat::before{content:'';display:block;width:22px;height:1px;background:rgba(255,255,255,.18);}
+.hero-h1{
+  font-family:var(--D);
+  font-size:clamp(60px,8vw,112px);
+  font-weight:200;line-height:.9;letter-spacing:-.01em;
+  animation:fu .9s .36s ease both;
+}
+.hero-h1 em{font-style:italic;color:rgba(255,255,255,.35);display:block;}
+.hero-desc{
+  font-size:11.5px;font-weight:300;line-height:2.1;letter-spacing:.05em;
+  color:rgba(255,255,255,.38);max-width:400px;
+  animation:fu .9s .5s ease both;
+}
+.hero-actions{
+  display:flex;gap:14px;align-items:center;
+  animation:fu .9s .62s ease both;
+}
+.btn-primary{font-size:9.5px;font-weight:300;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);background:var(--white);border:none;padding:13px 30px;cursor:none;transition:background .3s;}
+.btn-primary:hover{background:var(--cream);}
+.btn-ghost-light{font-size:9.5px;font-weight:300;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.4);background:none;border:1px solid rgba(255,255,255,.14);padding:13px 26px;cursor:none;transition:border-color .3s,color .3s;}
+.btn-ghost-light:hover{border-color:rgba(255,255,255,.45);color:var(--white);}
+@keyframes fu{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+
+/* Hero right — visual */
+.hero-right{
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;
+  padding:110px 72px 80px;gap:48px;
+  position:relative;z-index:1;
+}
+.hero-spec-list{
+  display:flex;flex-direction:column;gap:0;width:100%;
+  animation:fu .9s .55s ease both;
+}
+.hsl-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07);
+}
+.hsl-row:last-child{border-bottom:none;}
+.hsl-key{font-size:8px;font-weight:300;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+.hsl-val{font-family:var(--D);font-size:16px;font-weight:300;color:rgba(255,255,255,.65);letter-spacing:.02em;}
+
+.hero-badge-wrap{
+  display:flex;gap:12px;
+  animation:fu .9s .7s ease both;
+}
+.hero-badge{
+  border:1px solid rgba(255,255,255,.1);
+  padding:10px 18px;
+  display:flex;flex-direction:column;gap:4px;
+  text-align:center;
+}
+.hb-num{font-family:var(--D);font-size:30px;font-weight:200;color:var(--white);line-height:1;}
+.hb-num sup{font-size:.45em;color:rgba(255,255,255,.45);vertical-align:super;}
+.hb-label{font-size:7.5px;font-weight:300;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+
+/* wm */
+.hero-wm{position:absolute;right:-40px;bottom:-40px;font-family:var(--D);font-size:clamp(200px,26vw,340px);font-weight:200;color:rgba(255,255,255,.025);letter-spacing:-.04em;line-height:1;pointer-events:none;user-select:none;animation:fi 2s .4s ease both;}
+@keyframes fi{from{opacity:0;}to{opacity:1;}}
+
+/* ══════════════════════════════════════
+   § 2  OVERVIEW
+══════════════════════════════════════ */
+.overview{
+  background:var(--white);
+  padding:120px 72px;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
+}
+.ov-left{}
+.ov-eyebrow{font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.ov-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--rule);}
+.ov-title{font-family:var(--D);font-size:clamp(34px,4vw,56px);font-weight:300;line-height:1.08;margin-bottom:28px;}
+.ov-title em{font-style:italic;color:var(--muted);}
+.ov-body{font-size:11.5px;font-weight:300;line-height:2.15;letter-spacing:.05em;color:var(--dim);margin-bottom:40px;}
+.ov-features{display:flex;flex-direction:column;gap:14px;}
+.ovf-item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:16px 20px;
+  border:1px solid var(--rule);
+  transition:border-color .3s,background .3s;
+  cursor:none;
+}
+.ovf-item:hover{border-color:var(--ink);background:rgba(8,8,8,.02);}
+.ovf-icon{flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid var(--rule);transition:border-color .3s,background .3s;}
+.ovf-item:hover .ovf-icon{border-color:var(--ink);background:var(--ink);}
+.ovf-icon svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s;}
+.ovf-item:hover .ovf-icon svg{stroke:var(--white);}
+.ovf-text{}
+.ovf-name{font-family:var(--D);font-size:17px;font-weight:400;color:var(--ink);margin-bottom:3px;letter-spacing:.01em;}
+.ovf-desc{font-size:9.5px;font-weight:300;letter-spacing:.08em;color:var(--muted);}
+
+.ov-right{display:flex;flex-direction:column;gap:40px;}
+/* Equipment specs */
+.eq-block{}
+.eq-block-label{font-size:8px;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.eq-block-label::before{content:'';display:block;width:18px;height:1px;background:var(--rule);}
+.eq-table{width:100%;border-collapse:collapse;}
+.eq-table tr{border-bottom:1px solid var(--rule);}
+.eq-table tr:last-child{border-bottom:none;}
+.eq-table td{padding:13px 0;font-size:10.5px;font-weight:300;letter-spacing:.04em;color:var(--dim);}
+.eq-table td:first-child{color:var(--muted);width:45%;font-size:9px;letter-spacing:.18em;text-transform:uppercase;}
+.eq-table td:last-child{font-family:var(--D);font-size:15px;color:var(--ink);letter-spacing:.02em;}
+
+/* Packages */
+.pkg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pkg-card{
+  border:1px solid var(--rule);padding:24px 20px;
+  display:flex;flex-direction:column;gap:10px;
+  cursor:none;transition:border-color .4s,background .4s,transform .3s;
+  position:relative;overflow:hidden;
+}
+.pkg-card::before{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleY(0);transform-origin:bottom;transition:transform .45s cubic-bezier(.16,1,.3,1);z-index:0;}
+.pkg-card:hover::before{transform:scaleY(1);}
+.pkg-card:hover .pkg-name,.pkg-card:hover .pkg-tag,.pkg-card:hover .pkg-price{color:var(--white);}
+.pkg-card:hover .pkg-arrow{color:var(--white);}
+.pkg-name{font-family:var(--D);font-size:20px;font-weight:300;color:var(--ink);letter-spacing:.02em;position:relative;z-index:1;transition:color .4s;}
+.pkg-tag{font-size:8px;font-weight:300;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);position:relative;z-index:1;transition:color .4s;}
+.pkg-price{font-family:var(--D);font-size:13px;font-weight:300;color:var(--muted);margin-top:auto;position:relative;z-index:1;transition:color .4s;}
+.pkg-arrow{position:absolute;bottom:18px;right:18px;font-size:14px;color:var(--rule);position:relative;z-index:1;transition:color .4s;margin-top:auto;text-align:right;}
+
+/* ══════════════════════════════════════
+   § 3  MEDIA UPLOAD
+══════════════════════════════════════ */
+.media-section{
+  background:var(--ink);
+  color:var(--white);
+  padding:120px 72px;
+  position:relative;overflow:hidden;
+}
+.media-section::before{content:'';position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:400px;height:400px;border:1px solid rgba(255,255,255,.04);border-radius:50%;pointer-events:none;}
+.media-top{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:40px;
+  margin-bottom:72px;
+}
+.mt-left{}
+.ms-eyebrow{font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.ms-eyebrow::before{content:'';display:block;width:20px;height:1px;background:rgba(255,255,255,.15);}
+.ms-title{font-family:var(--D);font-size:clamp(32px,4vw,56px);font-weight:300;line-height:1.05;}
+.ms-title em{font-style:italic;color:rgba(255,255,255,.35);}
+.mt-right{font-size:10.5px;font-weight:300;line-height:2;letter-spacing:.05em;color:rgba(255,255,255,.35);max-width:260px;text-align:right;}
+
+/* Tab bar */
+.media-tabs{
+  display:flex;gap:0;margin-bottom:48px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.mtab{
+  font-size:9px;font-weight:300;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+  padding:14px 32px 16px;cursor:none;
+  border-bottom:2px solid transparent;
+  transition:color .3s,border-color .3s;
+  background:none;border-top:none;border-left:none;border-right:none;
+  display:flex;align-items:center;gap:10px;
+}
+.mtab.active{color:var(--white);border-bottom-color:var(--white);}
+.mtab-count{
+  font-size:8px;background:rgba(255,255,255,.12);
+  padding:2px 7px;border-radius:10px;
+  color:rgba(255,255,255,.5);
+  transition:background .3s,color .3s;
+}
+.mtab.active .mtab-count{background:rgba(255,255,255,.2);color:var(--white);}
+
+/* Upload zone */
+.upload-pane{display:none;}
+.upload-pane.active{display:block;}
+
+.dropzone{
+  border:1px dashed rgba(255,255,255,.2);
+  background:rgba(255,255,255,.02);
+  padding:64px 40px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;text-align:center;
+  cursor:none;
+  transition:border-color .3s,background .3s;
+  position:relative;
+  margin-bottom:40px;
+}
+.dropzone.drag-over{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);}
+.dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:none;width:100%;height:100%;}
+.dz-icon{
+  width:56px;height:56px;
+  border:1px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:4px;
+  transition:border-color .3s;
+}
+.dropzone.drag-over .dz-icon{border-color:rgba(255,255,255,.45);}
+.dz-icon svg{width:22px;height:22px;stroke:rgba(255,255,255,.4);fill:none;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s;}
+.dropzone.drag-over .dz-icon svg{stroke:rgba(255,255,255,.8);}
+.dz-title{font-family:var(--D);font-size:22px;font-weight:300;color:rgba(255,255,255,.7);letter-spacing:.02em;}
+.dz-sub{font-size:9.5px;font-weight:300;letter-spacing:.1em;color:rgba(255,255,255,.3);}
+.dz-formats{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;
+}
+.dz-fmt{
+  font-size:7.5px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);
+  border:1px solid rgba(255,255,255,.1);
+  padding:4px 10px;
+}
+.dz-btn{
+  font-size:9px;font-weight:300;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--ink);background:var(--white);
+  border:none;padding:12px 28px;cursor:none;
+  transition:background .3s;
+  pointer-events:none; /* let the hidden input handle clicks */
+}
+
+/* Media grid */
+.media-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:3px;
+}
+.media-thumb{
+  position:relative;aspect-ratio:1;overflow:hidden;
+  background:rgba(255,255,255,.06);
+  cursor:none;
+  group:true;
+}
+.media-thumb img,.media-thumb video{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .6s cubic-bezier(.16,1,.3,1),filter .4s;
+}
+.media-thumb:hover img,.media-thumb:hover video{transform:scale(1.06);filter:brightness(.75);}
+.thumb-overlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
+  padding:16px;
+  background:linear-gradient(transparent 40%,rgba(0,0,0,.6));
+  opacity:0;transition:opacity .35s;
+}
+.media-thumb:hover .thumb-overlay{opacity:1;}
+.thumb-name{font-size:10px;font-weight:300;color:var(--white);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.thumb-size{font-size:8px;font-weight:300;color:rgba(255,255,255,.5);letter-spacing:.1em;margin-top:2px;}
+.thumb-type-badge{
+  position:absolute;top:10px;left:10px;
+  font-size:7px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;
+  background:rgba(0,0,0,.6);
+  color:rgba(255,255,255,.7);
+  padding:3px 8px;
+  backdrop-filter:blur(4px);
+}
+.thumb-del{
+  position:absolute;top:10px;right:10px;
+  width:28px;height:28px;
+  background:rgba(0,0,0,.55);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;
+  opacity:0;transition:opacity .35s,background .25s;
+  border:none;
+}
+.media-thumb:hover .thumb-del{opacity:1;}
+.thumb-del:hover{background:rgba(200,50,50,.8);}
+.thumb-del svg{width:12px;height:12px;stroke:var(--white);fill:none;stroke-width:1.5;stroke-linecap:round;}
+
+/* Video play indicator */
+.thumb-play{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;
+}
+.thumb-play svg{width:36px;height:36px;stroke:rgba(255,255,255,.7);fill:rgba(255,255,255,.12);stroke-width:1;transition:opacity .3s;}
+.media-thumb:hover .thumb-play svg{opacity:.6;}
+
+/* Empty state */
+.media-empty{
+  grid-column:1/-1;
+  padding:80px 40px;
+  text-align:center;
+  border:1px dashed rgba(255,255,255,.08);
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.me-icon svg{width:32px;height:32px;stroke:rgba(255,255,255,.2);fill:none;stroke-width:1.2;stroke-linecap:round;}
+.me-text{font-family:var(--D);font-size:20px;font-weight:300;color:rgba(255,255,255,.3);}
+.me-sub{font-size:9px;font-weight:300;letter-spacing:.14em;color:rgba(255,255,255,.2);}
+
+/* Upload progress */
+.upload-progress-wrap{margin-bottom:40px;display:flex;flex-direction:column;gap:10px;}
+.up-item{
+  display:flex;align-items:center;gap:16px;
+  padding:14px 18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+}
+.up-icon{width:32px;height:32px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.up-icon svg{width:14px;height:14px;stroke:rgba(255,255,255,.4);fill:none;stroke-width:1.4;stroke-linecap:round;}
+.up-info{flex:1;min-width:0;}
+.up-name{font-size:10px;font-weight:300;color:rgba(255,255,255,.65);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.up-bar-wrap{margin-top:6px;height:1px;background:rgba(255,255,255,.1);}
+.up-bar{height:100%;background:rgba(255,255,255,.5);transition:width .4s ease;width:0%;}
+.up-status{font-size:8px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);flex-shrink:0;}
+.up-status.done{color:rgba(180,220,180,.6);}
+
+/* ══════════════════════════════════════
+   § 4  LIGHTBOX
+══════════════════════════════════════ */
+.lightbox{
+  position:fixed;inset:0;
+  background:rgba(7,7,7,.95);
+  z-index:8000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
+  transition:opacity .4s,visibility .4s;
+}
+.lightbox.open{opacity:1;visibility:visible;}
+.lb-close{
+  position:absolute;top:32px;right:40px;
+  width:40px;height:40px;
+  border:1px solid rgba(255,255,255,.15);
+  background:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;
+  transition:border-color .3s,background .3s;
+}
+.lb-close:hover{border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.06);}
+.lb-close svg{width:14px;height:14px;stroke:rgba(255,255,255,.6);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.lb-content{max-width:90vw;max-height:85vh;position:relative;}
+.lb-content img,.lb-content video{max-width:90vw;max-height:80vh;object-fit:contain;display:block;}
+.lb-caption{
+  margin-top:16px;text-align:center;
+  font-size:9.5px;font-weight:300;letter-spacing:.12em;
+  color:rgba(255,255,255,.35);
+}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;transition:border-color .3s,background .3s;
+}
+.lb-nav:hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.08);}
+.lb-nav svg{width:14px;height:14px;stroke:rgba(255,255,255,.6);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.lb-prev{left:-64px;}.lb-next{right:-64px;}
+
+/* ══════════════════════════════════════
+   § 5  EQUIPMENT LIST
+══════════════════════════════════════ */
+.equipment{
+  background:var(--paper);
+  padding:120px 72px;
+}
+.eq-header{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:72px;}
+.eq-h-left{}
+.eq-eyebrow{font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.eq-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--rule);}
+.eq-title{font-family:var(--D);font-size:clamp(32px,4vw,54px);font-weight:300;line-height:1.05;}
+.eq-title em{font-style:italic;color:var(--muted);}
+.eq-h-right{font-size:10.5px;font-weight:300;line-height:2;letter-spacing:.05em;color:var(--muted);max-width:240px;text-align:right;}
+
+.eq-list{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--rule);border-left:1px solid var(--rule);
+}
+.eq-card{
+  border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:40px 32px 36px;
+  cursor:none;position:relative;overflow:hidden;
+  transition:background .4s;
+}
+.eq-card::before{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleY(0);transform-origin:bottom;transition:transform .5s cubic-bezier(.16,1,.3,1);z-index:0;}
+.eq-card:hover::before{transform:scaleY(1);}
+.eq-card:hover .eqc-num,.eq-card:hover .eqc-name,.eq-card:hover .eqc-brand,.eq-card:hover .eqc-desc,.eq-card:hover .eqc-icon svg{color:rgba(255,255,255,.7);stroke:rgba(255,255,255,.5);}
+.eqc-num{font-family:var(--D);font-size:11px;font-weight:300;color:var(--rule);letter-spacing:.1em;margin-bottom:28px;position:relative;z-index:1;transition:color .4s;}
+.eqc-icon{margin-bottom:16px;position:relative;z-index:1;}
+.eqc-icon svg{width:20px;height:20px;stroke:var(--muted);fill:none;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;transition:stroke .4s;}
+.eqc-name{font-family:var(--D);font-size:20px;font-weight:400;color:var(--ink);letter-spacing:.02em;margin-bottom:6px;position:relative;z-index:1;transition:color .4s;}
+.eqc-brand{font-size:8.5px;font-weight:300;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;position:relative;z-index:1;transition:color .4s;}
+.eqc-desc{font-size:10.5px;font-weight:300;line-height:1.9;letter-spacing:.04em;color:var(--dim);position:relative;z-index:1;transition:color .4s;}
+
+/* ══════════════════════════════════════
+   § 6  CTA
+══════════════════════════════════════ */
+.cta-final{
+  background:var(--ink2);
+  color:var(--white);
+  padding:120px 72px;
+  display:flex;align-items:center;justify-content:space-between;gap:60px;
+  position:relative;overflow:hidden;
+}
+.cta-final::before{content:'';position:absolute;left:-100px;top:50%;transform:translateY(-50%);width:360px;height:360px;border:1px solid rgba(255,255,255,.04);border-radius:50%;pointer-events:none;}
+.cf-left{position:relative;z-index:1;}
+.cf-eyebrow{font-size:8px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:18px;}
+.cf-title{font-family:var(--D);font-size:clamp(34px,4.5vw,64px);font-weight:300;line-height:1.05;}
+.cf-title em{font-style:italic;color:rgba(255,255,255,.32);}
+.cf-right{display:flex;flex-direction:column;align-items:flex-end;gap:20px;position:relative;z-index:1;flex-shrink:0;}
+.cf-contact{text-align:right;font-size:10.5px;font-weight:300;letter-spacing:.05em;color:rgba(255,255,255,.35);line-height:2.1;}
+.cf-contact a{color:rgba(255,255,255,.6);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:1px;cursor:none;transition:color .25s,border-color .25s;}
+.cf-contact a:hover{color:var(--white);border-color:rgba(255,255,255,.5);}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:1100px){
+  .hero{grid-template-columns:1fr;}.hero-right{display:none;}.hero::before{display:none;}
+  .overview{grid-template-columns:1fr;gap:60px;}
+  .eq-list{grid-template-columns:repeat(2,1fr);}
+  .media-grid{grid-template-columns:repeat(3,1fr);}
+  .cta-final{flex-direction:column;align-items:flex-start;}.cf-right{align-items:flex-start;}
+}
+@media(max-width:768px){
+  .hero-left,.overview,.media-section,.equipment,.cta-final{padding-left:28px;padding-right:28px;}
+  .hero-left{padding-top:80px;padding-bottom:60px;}
+  .media-grid{grid-template-columns:repeat(2,1fr);}
+  .eq-list{grid-template-columns:1fr;}
+  .pkg-grid{grid-template-columns:1fr;}
+  .eq-header{flex-direction:column;}.eq-h-right{text-align:left;}
+  .media-top{flex-direction:column;}.mt-right{text-align:left;max-width:100%;}
+  .media-tabs .mtab{padding:12px 18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- ══════════ § 1 HERO ══════════ -->
+<section class="hero">
+  <div class="staff"><div class="sl"></div><div class="sl"></div><div class="sl"></div><div class="sl"></div><div class="sl"></div></div>
+  <div class="hero-wm">SES</div>
+
+  <div class="hero-left">
+    <div class="hero-bc">
+      <a href="#">Anasayfa</a><span>/</span>
+      <a href="#">Hizmetler</a><span>/</span>
+      <span style="color:rgba(255,255,255,.5)">Ses Sistemleri</span>
+    </div>
+    <div class="hero-cat">Profesyonel Ses</div>
+    <h1 class="hero-h1">Ses<em>Sistemleri</em></h1>
+    <p class="hero-desc">
+      Line array'den subwoofer'a, dijital mikserden sahne monitörüne —
+      her ölçekte etkinlik için kusursuz ses kalitesi sunuyoruz.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary">Teklif Al</button>
+      <button class="btn-ghost-light">İletişime Geç</button>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-spec-list">
+      <div class="hsl-row"><span class="hsl-key">Kapasite</span><span class="hsl-val">50 — 10.000 kişi</span></div>
+      <div class="hsl-row"><span class="hsl-key">Etkinlik Türü</span><span class="hsl-val">Açık / Kapalı Alan</span></div>
+      <div class="hsl-row"><span class="hsl-key">Kurulum Süresi</span><span class="hsl-val">2 — 8 saat</span></div>
+      <div class="hsl-row"><span class="hsl-key">Operatör</span><span class="hsl-val">Dahil</span></div>
+      <div class="hsl-row"><span class="hsl-key">Markalar</span><span class="hsl-val">L-Acoustics · d&b · Yamaha</span></div>
+    </div>
+    <div class="hero-badge-wrap">
+      <div class="hero-badge"><div class="hb-num">500<sup>+</sup></div><div class="hb-label">Etkinlik</div></div>
+      <div class="hero-badge"><div class="hb-num">12<sup>+</sup></div><div class="hb-label">Yıl Tecrübe</div></div>
+      <div class="hero-badge"><div class="hb-num">98<sup>%</sup></div><div class="hb-label">Memnuniyet</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ § 2 OVERVIEW ══════════ -->
+<section class="overview">
+  <div class="ov-left rv">
+    <div class="ov-eyebrow rv">Hizmet Detayı</div>
+    <h2 class="ov-title rv rv1">Her Sahne İçin<br><em>Mükemmel Ses</em></h2>
+    <p class="ov-body rv rv2">
+      Profesyonel ses sistemleri, etkinliğinizin ruhunu seyirciye iletmenin temel taşıdır.
+      Yılların birikimi ve tier 1 ekipmanlarla küçük oda konserlerinden binlerce kişilik
+      açık hava festivallerine kadar her ortamda kristal netliğinde ses üretiyoruz.
+      Kurulum, kalibrason, prova ve canlı operatörlük hizmeti dahildir.
+    </p>
+    <div class="ov-features">
+      <div class="ovf-item rv rv1">
+        <div class="ovf-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 8a4 4 0 0 1 0 8"/></svg></div>
+        <div class="ovf-text"><div class="ovf-name">Line Array Sistemleri</div><div class="ovf-desc">Geniş alanlarda homojen ses dağılımı</div></div>
+      </div>
+      <div class="ovf-item rv rv2">
+        <div class="ovf-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="18" r="4"/><path d="M12 14V2M8 6l4-4 4 4"/></svg></div>
+        <div class="ovf-text"><div class="ovf-name">Dijital Mikser & Sinyal Zinciri</div><div class="ovf-desc">Yamaha, Allen & Heath, DiGiCo konsollar</div></div>
+      </div>
+      <div class="ovf-item rv rv3">
+        <div class="ovf-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></div>
+        <div class="ovf-text"><div class="ovf-name">Mikrofon & IEM Sistemleri</div><div class="ovf-desc">Shure, Sennheiser telsiz çözümler</div></div>
+      </div>
+      <div class="ovf-item rv rv4">
+        <div class="ovf-icon"><svg viewBox="0 0 24 24"><path d="M2 12h20M12 2v20"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="ovf-text"><div class="ovf-name">Akustik Analiz & Kalibrasyon</div><div class="ovf-desc">Smaart / EASE yazılım desteğiyle ölçüm</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ov-right rv rv1">
+    <div class="eq-block">
+      <div class="eq-block-label">Teknik Özellikler</div>
+      <table class="eq-table">
+        <tr><td>Frekans Yanıtı</td><td>40 Hz — 20 kHz</td></tr>
+        <tr><td>Maks. SPL</td><td>136 dB (peak)</td></tr>
+        <tr><td>Kapsama Açısı</td><td>90° × 15° (array başına)</td></tr>
+        <tr><td>Subwoofer</td><td>2×18" kardioit konfigürasyon</td></tr>
+        <tr><td>Monitör Tipi</td><td>Koaksiyel / IEM</td></tr>
+        <tr><td>Kablo Altyapısı</td><td>Cat6 AES / Analog XLR</td></tr>
+        <tr><td>Güç Yönetimi</td><td>Dijital amplifikatör + UPS</td></tr>
+      </table>
+    </div>
+
+    <div class="eq-block rv rv2">
+      <div class="eq-block-label">Paketler</div>
+      <div class="pkg-grid">
+        <div class="pkg-card">
+          <div class="pkg-name">Başlangıç</div>
+          <div class="pkg-tag">50–300 Kişi</div>
+          <div class="pkg-price">Fiyat için iletişime geçin →</div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-name">Profesyonel</div>
+          <div class="pkg-tag">300–1.500 Kişi</div>
+          <div class="pkg-price">Fiyat için iletişime geçin →</div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-name">Festival</div>
+          <div class="pkg-tag">1.500–5.000 Kişi</div>
+          <div class="pkg-price">Fiyat için iletişime geçin →</div>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-name">Grand</div>
+          <div class="pkg-tag">5.000+ Kişi</div>
+          <div class="pkg-price">Fiyat için iletişime geçin →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ § 3 MEDIA UPLOAD ══════════ -->
+<section class="media-section" id="media">
+  <div class="media-top">
+    <div class="mt-left rv">
+      <div class="ms-eyebrow">Medya Galerisi</div>
+      <h2 class="ms-title">Fotoğraf &amp; <em>Video</em><br>Yükleyin</h2>
+    </div>
+    <p class="mt-right rv rv2">Etkinlik fotoğraflarınızı ve video kayıtlarınızı buradan galeriye ekleyebilirsiniz.</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="media-tabs rv rv1">
+    <button class="mtab active" data-tab="photos">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Fotoğraflar
+      <span class="mtab-count" id="photo-count">0</span>
+    </button>
+    <button class="mtab" data-tab="videos">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Videolar
+      <span class="mtab-count" id="video-count">0</span>
+    </button>
+  </div>
+
+  <!-- Photo Pane -->
+  <div class="upload-pane active" id="pane-photos">
+    <div class="dropzone" id="photo-drop">
+      <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp,image/gif" multiple/>
+      <div class="dz-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div class="dz-title">Fotoğrafları buraya sürükleyin</div>
+      <div class="dz-sub">veya bilgisayarınızdan seçin</div>
+      <div class="dz-formats">
+        <span class="dz-fmt">JPG</span><span class="dz-fmt">PNG</span><span class="dz-fmt">WEBP</span><span class="dz-fmt">GIF</span>
+      </div>
+      <button class="dz-btn">Dosya Seç</button>
+    </div>
+    <div class="upload-progress-wrap" id="photo-progress"></div>
+    <div class="media-grid" id="photo-grid">
+      <div class="media-empty">
+        <div class="me-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+        <div class="me-text">Henüz fotoğraf yüklenmedi</div>
+        <div class="me-sub">Yukarıdaki alandan fotoğraf ekleyebilirsiniz</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Pane -->
+  <div class="upload-pane" id="pane-videos">
+    <div class="dropzone" id="video-drop">
+      <input type="file" id="video-input" accept="video/mp4,video/webm,video/quicktime,video/avi" multiple/>
+      <div class="dz-icon">
+        <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <div class="dz-title">Videoları buraya sürükleyin</div>
+      <div class="dz-sub">veya bilgisayarınızdan seçin</div>
+      <div class="dz-formats">
+        <span class="dz-fmt">MP4</span><span class="dz-fmt">WEBM</span><span class="dz-fmt">MOV</span><span class="dz-fmt">AVI</span>
+      </div>
+      <button class="dz-btn">Dosya Seç</button>
+    </div>
+    <div class="upload-progress-wrap" id="video-progress"></div>
+    <div class="media-grid" id="video-grid">
+      <div class="media-empty">
+        <div class="me-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+        <div class="me-text">Henüz video yüklenmedi</div>
+        <div class="me-sub">Yukarıdaki alandan video ekleyebilirsiniz</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ § 4 EQUIPMENT ══════════ -->
+<section class="equipment">
+  <div class="eq-header">
+    <div class="eq-h-left">
+      <div class="eq-eyebrow rv">Ekipman Parkuru</div>
+      <h2 class="eq-title rv rv1">Kullandığımız<br><em>Ekipmanlar</em></h2>
+    </div>
+    <p class="eq-h-right rv rv2">Tier 1 markaların en güncel modelleriyle çalışıyoruz.</p>
+  </div>
+  <div class="eq-list">
+    <div class="eq-card rv">
+      <div class="eqc-num">01</div>
+      <div class="eqc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 8a4 4 0 0 1 0 8"/><path d="M17.5 5.5a8.5 8.5 0 0 1 0 13"/></svg></div>
+      <div class="eqc-name">L-Acoustics K2</div>
+      <div class="eqc-brand">Line Array Sistem</div>
+      <div class="eqc-desc">Büyük ölçekli konser ve festival alanları için üst segment line array.</div>
+    </div>
+    <div class="eq-card rv rv1">
+      <div class="eqc-num">02</div>
+      <div class="eqc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 2v4M8 2v4"/><circle cx="12" cy="14" r="3"/></svg></div>
+      <div class="eqc-name">Yamaha CL5</div>
+      <div class="eqc-brand">Dijital Konsollar</div>
+      <div class="eqc-desc">64 kanallı dijital mikser; FOH ve monitör operasyonu için.</div>
+    </div>
+    <div class="eq-card rv rv2">
+      <div class="eqc-num">03</div>
+      <div class="eqc-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div>
+      <div class="eqc-name">Shure Axient Digital</div>
+      <div class="eqc-brand">Telsiz Mikrofon</div>
+      <div class="eqc-desc">Frekans çakışmasına karşı otomatik ağ yönetimli premium telsiz sistem.</div>
+    </div>
+    <div class="eq-card rv rv1">
+      <div class="eqc-num">04</div>
+      <div class="eqc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <div class="eqc-name">d&b Audiotechnik SL Series</div>
+      <div class="eqc-brand">Subwoofer Sistemi</div>
+      <div class="eqc-desc">Kardioit subwoofer konfigürasyonu ile sahne arkasına kaçan sesi önler.</div>
+    </div>
+    <div class="eq-card rv rv2">
+      <div class="eqc-num">05</div>
+      <div class="eqc-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg></div>
+      <div class="eqc-name">Sennheiser 6000 IEM</div>
+      <div class="eqc-brand">In-Ear Monitör</div>
+      <div class="eqc-desc">Sanatçılar ve müzisyenler için kristal netliğinde kulak içi monitörleme.</div>
+    </div>
+    <div class="eq-card rv rv3">
+      <div class="eqc-num">06</div>
+      <div class="eqc-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="eqc-name">Lake LM 44 / Rational Acoustics Smaart</div>
+      <div class="eqc-brand">Ölçüm & Kalibrasyon</div>
+      <div class="eqc-desc">Gerçek zamanlı spektrum analizi ve ses sistemini mekâna göre optimize etme.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ § 5 CTA ══════════ -->
+<section class="cta-final rv">
+  <div class="cf-left">
+    <div class="cf-eyebrow">Ses Sistemleri · Teklif</div>
+    <h2 class="cf-title">Etkinliğiniz İçin<br><em>Teklif Alın</em></h2>
+  </div>
+  <div class="cf-right rv rv2">
+    <button class="btn-primary" style="padding:14px 36px;font-size:9.5px;letter-spacing:.28em;">Ücretsiz Teklif Al</button>
+    <div class="cf-contact">
+      <a href="tel:+905001234567">+90 500 123 45 67</a><br>
+      <a href="mailto:info@prensesmuzik.com">info@prensesmuzik.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ LIGHTBOX ══════════ -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lb-close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  <div class="lb-nav lb-prev" id="lb-prev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+  <div class="lb-content" id="lb-content"></div>
+  <div class="lb-nav lb-next" id="lb-next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+</div>
+
+<script>
+/* ──────────── CURSOR ──────────── */
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.ovf-item,.pkg-card,.eq-card,.media-thumb').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='13px';cur.style.height='13px';curR.style.width='42px';curR.style.height='42px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='7px';cur.style.height='7px';curR.style.width='26px';curR.style.height='26px';});
+});
+
+/* ──────────── SCROLL REVEAL ──────────── */
+const revObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>revObs.observe(el));
+
+/* ──────────── TABS ──────────── */
+document.querySelectorAll('.mtab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.upload-pane').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('pane-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ──────────── MEDIA STORE ──────────── */
+const store={photos:[],videos:[]};
+
+function fmt(b){if(b<1024)return b+' B';if(b<1048576)return (b/1024).toFixed(1)+' KB';return (b/1048576).toFixed(1)+' MB';}
+
+/* Drag & drop for both zones */
+['photo','video'].forEach(type=>{
+  const drop=document.getElementById(type+'-drop');
+  const input=document.getElementById(type+'-input');
+
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag-over');});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('drag-over'));
+  drop.addEventListener('drop',e=>{
+    e.preventDefault();drop.classList.remove('drag-over');
+    handleFiles([...e.dataTransfer.files],type);
+  });
+  input.addEventListener('change',e=>{
+    handleFiles([...e.target.files],type);
+    e.target.value='';
+  });
+});
+
+function handleFiles(files,type){
+  files.forEach(file=>{
+    const isPhoto=file.type.startsWith('image/');
+    const isVideo=file.type.startsWith('video/');
+    if(type==='photos'&&!isPhoto)return;
+    if(type==='videos'&&!isVideo)return;
+    addToProgress(file,type);
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const item={id:Date.now()+'_'+Math.random(),name:file.name,size:file.size,url:ev.target.result,type};
+      store[type].push(item);
+      updateCount(type);
+      renderGrid(type);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function addToProgress(file,type){
+  const wrap=document.getElementById(type.slice(0,-1)==='photo'?'photo-progress':'video-progress');
+  // fix: derive correctly
+  const pId=type==='photos'?'photo-progress':'video-progress';
+  const pWrap=document.getElementById(pId);
+  const div=document.createElement('div');
+  div.className='up-item';
+  const icon=type==='photos'
+    ?`<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`
+    :`<svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`;
+  div.innerHTML=`
+    <div class="up-icon">${icon}</div>
+    <div class="up-info">
+      <div class="up-name">${file.name}</div>
+      <div class="up-bar-wrap"><div class="up-bar" id="bar-${file.name.replace(/[^a-z0-9]/gi,'_')}"></div></div>
+    </div>
+    <div class="up-status" id="status-${file.name.replace(/[^a-z0-9]/gi,'_')}">Yükleniyor</div>`;
+  pWrap.appendChild(div);
+  const bar=div.querySelector('.up-bar');
+  const status=div.querySelector('.up-status');
+  let p=0;
+  const iv=setInterval(()=>{
+    p+=Math.random()*18+8;if(p>=100){p=100;clearInterval(iv);status.textContent='Tamamlandı';status.classList.add('done');
+      setTimeout(()=>div.style.transition='opacity .4s',50);
+      setTimeout(()=>{div.style.opacity='0';setTimeout(()=>div.remove(),400);},2000);
+    }
+    bar.style.width=p+'%';
+  },120);
+}
+
+function updateCount(type){
+  const count=store[type].length;
+  document.getElementById(type==='photos'?'photo-count':'video-count').textContent=count;
+}
+
+function renderGrid(type){
+  const grid=document.getElementById(type==='photos'?'photo-grid':'video-grid');
+  // Remove empty state
+  const empty=grid.querySelector('.media-empty');
+  if(empty)empty.remove();
+
+  // Rebuild from store (simple: just append new last item)
+  const item=store[type][store[type].length-1];
+  const thumb=document.createElement('div');
+  thumb.className='media-thumb';
+  thumb.dataset.id=item.id;
+  thumb.dataset.type=type;
+
+  let mediaEl;
+  if(type==='photos'){
+    mediaEl=`<img src="${item.url}" alt="${item.name}" loading="lazy"/>`;
+  } else {
+    mediaEl=`<video src="${item.url}" preload="metadata" muted></video>
+    <div class="thumb-play"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg></div>`;
+  }
+  thumb.innerHTML=`
+    ${mediaEl}
+    <span class="thumb-type-badge">${type==='photos'?'Fotoğraf':'Video'}</span>
+    <div class="thumb-overlay">
+      <div class="thumb-name">${item.name}</div>
+      <div class="thumb-size">${fmt(item.size)}</div>
+    </div>
+    <button class="thumb-del" data-id="${item.id}" data-type="${type}" aria-label="Sil">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>`;
+
+  // Open lightbox on click
+  thumb.addEventListener('click',e=>{
+    if(e.target.closest('.thumb-del'))return;
+    const idx=store[type].findIndex(i=>i.id===item.id);
+    openLightbox(type,idx);
+  });
+  // Delete
+  thumb.querySelector('.thumb-del').addEventListener('click',e=>{
+    e.stopPropagation();
+    deleteMedia(item.id,type);
+    thumb.style.transition='opacity .35s,transform .35s';
+    thumb.style.opacity='0';thumb.style.transform='scale(.9)';
+    setTimeout(()=>{thumb.remove();checkEmpty(type);},350);
+  });
+
+  grid.appendChild(thumb);
+
+  // cursor
+  thumb.addEventListener('mouseenter',()=>{cur.style.width='13px';cur.style.height='13px';curR.style.width='42px';curR.style.height='42px';});
+  thumb.addEventListener('mouseleave',()=>{cur.style.width='7px';cur.style.height='7px';curR.style.width='26px';curR.style.height='26px';});
+}
+
+function deleteMedia(id,type){
+  const idx=store[type].findIndex(i=>i.id===id);
+  if(idx>-1){store[type].splice(idx,1);updateCount(type);}
+}
+
+function checkEmpty(type){
+  const grid=document.getElementById(type==='photos'?'photo-grid':'video-grid');
+  if(!grid.querySelector('.media-thumb')){
+    const icon=type==='photos'
+      ?`<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`
+      :`<svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`;
+    grid.innerHTML=`<div class="media-empty">
+      <div class="me-icon">${icon}</div>
+      <div class="me-text">Henüz ${type==='photos'?'fotoğraf':'video'} yüklenmedi</div>
+      <div class="me-sub">Yukarıdaki alandan ekleyebilirsiniz</div></div>`;
+  }
+}
+
+/* ──────────── LIGHTBOX ──────────── */
+const lb=document.getElementById('lightbox');
+const lbContent=document.getElementById('lb-content');
+let lbType='',lbIdx=0;
+
+function openLightbox(type,idx){
+  lbType=type;lbIdx=idx;
+  renderLightbox();
+  lb.classList.add('open');
+}
+
+function renderLightbox(){
+  const item=store[lbType][lbIdx];
+  if(!item)return;
+  lbContent.innerHTML='';
+  if(lbType==='photos'){
+    const img=document.createElement('img');
+    img.src=item.url;img.alt=item.name;
+    lbContent.appendChild(img);
+  } else {
+    const vid=document.createElement('video');
+    vid.src=item.url;vid.controls=true;vid.autoplay=true;
+    vid.style.maxWidth='88vw';vid.style.maxHeight='78vh';
+    lbContent.appendChild(vid);
+  }
+  const cap=document.createElement('div');
+  cap.className='lb-caption';
+  cap.textContent=`${item.name}  ·  ${fmt(item.size)}  ·  ${lbIdx+1} / ${store[lbType].length}`;
+  lbContent.appendChild(cap);
+}
+
+document.getElementById('lb-close').addEventListener('click',()=>{
+  lb.classList.remove('open');
+  // stop any video
+  const vid=lbContent.querySelector('video');
+  if(vid){vid.pause();vid.src='';}
+});
+document.getElementById('lb-prev').addEventListener('click',()=>{
+  if(store[lbType].length===0)return;
+  lbIdx=(lbIdx-1+store[lbType].length)%store[lbType].length;
+  const vid=lbContent.querySelector('video');if(vid){vid.pause();vid.src='';}
+  renderLightbox();
+});
+document.getElementById('lb-next').addEventListener('click',()=>{
+  if(store[lbType].length===0)return;
+  lbIdx=(lbIdx+1)%store[lbType].length;
+  const vid=lbContent.querySelector('video');if(vid){vid.pause();vid.src='';}
+  renderLightbox();
+});
+lb.addEventListener('click',e=>{
+  if(e.target===lb){
+    lb.classList.remove('open');
+    const vid=lbContent.querySelector('video');if(vid){vid.pause();vid.src='';}
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape'){lb.classList.remove('open');const vid=lbContent.querySelector('video');if(vid){vid.pause();vid.src='';}}
+  if(e.key==='ArrowLeft')document.getElementById('lb-prev').click();
+  if(e.key==='ArrowRight')document.getElementById('lb-next').click();
+});
+</script>
+</body>
+</html>

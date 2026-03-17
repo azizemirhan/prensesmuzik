@@ -1,0 +1,143 @@
+/* ══════════════════════════════════════════
+   MOBİL BOTTOM BAR — Sadece mobilde görünür
+   Logo + Ara + Teklif Al (beyaz buton)
+══════════════════════════════════════════ */
+
+.mobile-bottom-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0a0a0a;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 0 20px;
+  padding-bottom: env(safe-area-inset-bottom, 12px);
+  min-height: 64px;
+  z-index: 999;
+  box-shadow: 0 -1px 24px rgba(0,0,0,0.5);
+}
+
+.mobile-bottom-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 64px;
+  gap: 12px;
+}
+
+.mobile-bar-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  min-height: 44px;
+}
+
+.mobile-bar-logo {
+  height: 28px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.mobile-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Ara — ghost */
+.mobile-bar-btn.secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(248,246,242,0.15);
+  border-radius: 8px;
+  background: transparent;
+  color: #f8f6f2;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  min-width: 44px;
+  white-space: nowrap;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.mobile-bar-btn.secondary svg {
+  width: 15px;
+  height: 15px;
+  stroke: #f8f6f2;
+  opacity: 0.8;
+}
+
+.mobile-bar-btn.secondary:hover,
+.mobile-bar-btn.secondary:active {
+  border-color: rgba(248,246,242,0.35);
+  background: rgba(248,246,242,0.06);
+}
+
+/* Teklif Al — beyaz */
+.mobile-bar-btn.primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 20px;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  color: #0a0a0a;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  min-width: 44px;
+  white-space: nowrap;
+  transition: background 0.25s, transform 0.2s;
+}
+
+.mobile-bar-btn.primary:hover,
+.mobile-bar-btn.primary:active {
+  background: #e8e6e2;
+  transform: scale(0.98);
+}
+
+.mobile-bar-home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.18);
+}
+
+/* Sadece mobilde göster + body padding */
+@media (max-width: 768px) {
+  .mobile-bottom-bar {
+    display: block;
+  }
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 12px) + 12px);
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-bottom-bar {
+    display: none !important;
+  }
+  body {
+    padding-bottom: 0;
+  }
+}

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prenses Müzik – Mobile Bottom Bar</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ─── Design Tokens ─── */
+  :root {
+    --bg-dark:      #0a0a0a;
+    --bg-bar:       #0a0a0a;
+    --text-cream:   #f8f6f2;
+    --text-muted:   rgba(248,246,242,0.50);
+    --accent-red:   #c41e3a;
+    --accent-gold:  #c9a84c;
+    --border-top:   rgba(255,255,255,0.08);
+    --bar-height:   64px;
+    --safe-bottom:  34px;          /* iPhone home-indicator */
+    --radius-btn:   8px;
+    --tap-min:      44px;
+    --font-brand:   'Playfair Display', 'Georgia', serif;
+    --font-ui:      'DM Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  /* ─── Reset ─── */
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #141414;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-ui);
+    gap: 48px;
+    padding: 40px 20px;
+  }
+
+  /* ─── Spec Notes Panel ─── */
+  .spec-notes {
+    max-width: 420px;
+    width: 100%;
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    line-height: 1.7;
+    font-family: var(--font-ui);
+    letter-spacing: 0.02em;
+  }
+  .spec-notes h3 {
+    color: var(--text-cream);
+    font-family: var(--font-brand);
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .spec-notes .token {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .spec-notes .swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+  }
+  .spec-notes code {
+    background: rgba(255,255,255,0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+  }
+  .spec-notes ul { list-style: none; }
+  .spec-notes ul li { padding: 3px 0; }
+
+  /* ─── Phone Frame ─── */
+  .phone-frame {
+    width: 375px;
+    height: 260px;
+    background: var(--bg-dark);
+    border-radius: 0 0 40px 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.06),
+      0 24px 80px rgba(0,0,0,0.6),
+      0 4px 20px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  /* Simulated page content above bar */
+  .page-hint {
+    padding: 32px 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-align: center;
+    line-height: 1.6;
+    opacity: 0.4;
+  }
+  .page-hint span {
+    display: block;
+    width: 60%;
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 16px auto;
+  }
+
+  /* ─── Bottom Bar ─── */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-bar);
+    border-top: 1px solid var(--border-top);
+    padding: 0 20px;
+    padding-bottom: var(--safe-bottom);
+    height: calc(var(--bar-height) + var(--safe-bottom));
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 100;
+    /* Subtle top glow */
+    box-shadow: 0 -1px 24px rgba(0,0,0,0.5);
+  }
+
+  .bottom-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(201,168,76,0.20) 30%,
+      rgba(201,168,76,0.35) 50%,
+      rgba(201,168,76,0.20) 70%,
+      transparent 100%
+    );
+  }
+
+  .bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: var(--bar-height);
+  }
+
+  /* ─── Brand ─── */
+  .bar-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    min-height: var(--tap-min);
+  }
+
+  .bar-brand .crown-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.85;
+  }
+
+  .bar-brand-text {
+    font-family: var(--font-brand);
+    font-size: 14.5px;
+    font-weight: 400;
+    color: var(--text-cream);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* ─── Actions ─── */
+  .bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  /* Secondary – Call */
+  .bar-btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid rgba(248,246,242,0.15);
+    border-radius: var(--radius-btn);
+    background: transparent;
+    color: var(--text-cream);
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    min-width: var(--tap-min);
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .bar-btn-secondary svg {
+    width: 15px;
+    height: 15px;
+    stroke: var(--text-cream);
+    opacity: 0.8;
+  }
+
+  .bar-btn-secondary:hover,
+  .bar-btn-secondary:active {
+    border-color: rgba(248,246,242,0.30);
+    background: rgba(248,246,242,0.05);
+  }
+
+  /* Primary – CTA */
+  .bar-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 20px;
+    background: var(--accent-red);
+    border: none;
+    border-radius: var(--radius-btn);
+    color: #fff;
+    font-family: var(--font-ui);
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    min-width: var(--tap-min);
+    white-space: nowrap;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bar-btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255,255,255,0.12) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+
+  .bar-btn-primary:hover,
+  .bar-btn-primary:active {
+    background: #a8182f;
+    transform: scale(0.98);
+  }
+
+  /* ─── Home Indicator ─── */
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.18);
+  }
+
+  /* ─── Variant Label ─── */
+  .variant-label {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.22);
+  }
+
+  /* ─── Gold Variant ─── */
+  .phone-frame.gold-variant .bar-btn-primary {
+    background: var(--accent-gold);
+    color: #0a0a0a;
+  }
+  .phone-frame.gold-variant .bar-btn-primary:hover,
+  .phone-frame.gold-variant .bar-btn-primary:active {
+    background: #b5923e;
+  }
+  .phone-frame.gold-variant .bottom-bar::before {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(201,168,76,0.25) 30%,
+      rgba(201,168,76,0.45) 50%,
+      rgba(201,168,76,0.25) 70%,
+      transparent 100%
+    );
+  }
+
+  /* ─── Both Frames Row ─── */
+  .frames-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .frame-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .frame-label {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* ─── Annotation Lines ─── */
+  .annotated-wrap {
+    position: relative;
+  }
+
+  .anno {
+    position: absolute;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    color: rgba(255,255,255,0.30);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .anno-left {
+    left: -90px;
+    bottom: 68px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .anno-left::after {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: rgba(255,255,255,0.12);
+  }
+
+  .anno-right {
+    right: -85px;
+    bottom: 50px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .anno-right::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: rgba(255,255,255,0.12);
+  }
+
+  .anno-bottom {
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 480px) {
+    .frames-row { gap: 24px; }
+    .anno-left, .anno-right { display: none; }
+    body { padding: 24px 12px; }
+    .spec-notes { padding: 0 4px; }
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- ━━━ Frames ━━━ -->
+  <div class="frames-row">
+
+    <!-- Red Accent Variant -->
+    <div class="frame-col">
+      <span class="frame-label">Red Accent — 375px</span>
+      <div class="annotated-wrap">
+        <span class="anno anno-left">Serif brand</span>
+        <span class="anno anno-right">44px tap ↕</span>
+        <span class="anno anno-bottom">safe-area: 34px</span>
+
+        <div class="phone-frame" id="redVariant">
+          <span class="variant-label">375 × 98</span>
+          <div class="page-hint">
+            ··· page content ···
+            <span></span>
+            Etkinlik &amp; Organizasyon
+          </div>
+
+          <div class="bottom-bar">
+            <div class="bar-inner">
+
+              <!-- Brand -->
+              <div class="bar-brand">
+                <svg class="crown-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 18h18v2H3v-2zm0-2l3-7 4 4 5-8 3 6.5L21 16H3z" fill="#c9a84c" opacity="0.85"/>
+                </svg>
+                <span class="bar-brand-text">Prenses Müzik</span>
+              </div>
+
+              <!-- Actions -->
+              <div class="bar-actions">
+                <a href="tel:+905001234567" class="bar-btn-secondary" aria-label="Bizi Ara">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                  </svg>
+                  <span>Ara</span>
+                </a>
+                <a href="#teklif" class="bar-btn-primary">
+                  Teklif Al
+                </a>
+              </div>
+
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gold Accent Variant -->
+    <div class="frame-col">
+      <span class="frame-label">Gold Accent — 390px</span>
+      <div class="annotated-wrap">
+
+        <div class="phone-frame gold-variant" style="width:390px">
+          <span class="variant-label">390 × 98</span>
+          <div class="page-hint">
+            ··· page content ···
+            <span></span>
+            Düğün &amp; Özel Gece
+          </div>
+
+          <div class="bottom-bar">
+            <div class="bar-inner">
+
+              <div class="bar-brand">
+                <svg class="crown-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 18h18v2H3v-2zm0-2l3-7 4 4 5-8 3 6.5L21 16H3z" fill="#c9a84c" opacity="0.85"/>
+                </svg>
+                <span class="bar-brand-text">Prenses Müzik</span>
+              </div>
+
+              <div class="bar-actions">
+                <a href="tel:+905001234567" class="bar-btn-secondary" aria-label="Bizi Ara">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                  </svg>
+                  <span>Ara</span>
+                </a>
+                <a href="#teklif" class="bar-btn-primary">
+                  Teklif Al
+                </a>
+              </div>
+
+            </div>
+            <div class="home-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ━━━ Spec Notes ━━━ -->
+  <div class="spec-notes">
+    <h3>Design Specifications</h3>
+    <ul>
+      <li class="token"><span class="swatch" style="background:#0a0a0a"></span> <code>#0a0a0a</code> — Bar background</li>
+      <li class="token"><span class="swatch" style="background:#f8f6f2"></span> <code>#f8f6f2</code> — Cream text</li>
+      <li class="token"><span class="swatch" style="background:#c41e3a"></span> <code>#c41e3a</code> — Red accent (CTA)</li>
+      <li class="token"><span class="swatch" style="background:#c9a84c"></span> <code>#c9a84c</code> — Gold accent (variant / crown)</li>
+      <li class="token"><span class="swatch" style="background:rgba(255,255,255,0.08)"></span> <code>rgba(255,255,255,0.08)</code> — Top border</li>
+    </ul>
+    <br>
+    <ul>
+      <li><code>bar-height</code> : 64px &nbsp;|&nbsp; <code>safe-area</code> : 34px &nbsp;→&nbsp; total: 98px</li>
+      <li><code>padding-x</code> : 20px &nbsp;|&nbsp; <code>gap</code> : 10–12px</li>
+      <li><code>btn-height</code> : 42px &nbsp;(≥ 44px tap w/ padding)</li>
+      <li><code>radius</code> : 8px &nbsp;|&nbsp; <code>brand font</code> : 14.5px</li>
+      <li>Brand: <code>Playfair Display</code> &nbsp;|&nbsp; UI: <code>DM Sans</code></li>
+      <li>Top border glow: gold gradient, 1px, centered fade</li>
+    </ul>
+  </div>
+
+  <!-- ━━━ Subtle entrance animation ━━━ -->
+  <script>
+    document.querySelectorAll('.phone-frame').forEach((frame, i) => {
+      frame.style.opacity = '0';
+      frame.style.transform = 'translateY(20px)';
+      frame.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      setTimeout(() => {
+        frame.style.opacity = '1';
+        frame.style.transform = 'translateY(0)';
+      }, 200 + i * 180);
+    });
+
+    // Ripple effect on CTA
+    document.querySelectorAll('.bar-btn-primary').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `
+          position:absolute; border-radius:50%;
+          width:80px; height:80px;
+          background:rgba(255,255,255,0.25);
+          transform:translate(-50%,-50%) scale(0);
+          animation: ripple-out 0.5s ease-out forwards;
+          pointer-events:none;
+          left:${e.offsetX}px; top:${e.offsetY}px;
+        `;
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 500);
+      });
+    });
+
+    // Inject ripple keyframe
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple-out {
+        to { transform: translate(-50%,-50%) scale(3); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+</body>
+</html>

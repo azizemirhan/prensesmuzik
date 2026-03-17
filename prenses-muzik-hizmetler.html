@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Hizmetlerimiz — Prenses Müzik</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#080808;
+  --ink2:#1c1a18;
+  --paper:#f5f2ed;
+  --cream:#ede9e2;
+  --rule:#dbd5cc;
+  --muted:#a09891;
+  --dim:#6b6460;
+  --white:#faf8f4;
+  --display:'Cormorant Garamond',serif;
+  --body:'Montserrat',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── Cursor ── */
+.cur{position:fixed;width:9px;height:9px;background:#e02020;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s;box-shadow:0 0 12px rgba(224,32,32,.5);}
+.cur-r{position:fixed;width:28px;height:28px;border:1.5px solid rgba(224,32,32,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s ease;}
+@media(max-width:768px){.cur,.cur-r{display:none;}body{cursor:auto;}}
+
+/* ── Grain ── */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-size:160px;pointer-events:none;z-index:500;opacity:.35;}
+
+/* ── Reveal ── */
+.r{opacity:0;transform:translateY(36px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.r.on{opacity:1;transform:none;}
+.r1{transition-delay:.1s;}.r2{transition-delay:.2s;}.r3{transition-delay:.3s;}.r4{transition-delay:.4s;}.r5{transition-delay:.5s;}
+.rfade{opacity:0;transition:opacity .9s ease;}
+.rfade.on{opacity:1;}
+
+/* ══════════════════════════════════════
+   PAGE HERO
+══════════════════════════════════════ */
+.page-hero{
+  background:var(--ink);
+  color:var(--white);
+  min-height:72vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:relative;
+  overflow:hidden;
+}
+/* vertical rule */
+.page-hero::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.06);}
+
+/* decorative lines */
+.hero-staff{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:0 72px;pointer-events:none;}
+.hs-line{height:1px;background:rgba(255,255,255,.04);animation:grow 1.8s cubic-bezier(.16,1,.3,1) forwards;transform:scaleX(0);transform-origin:left;}
+.hs-line:nth-child(1){animation-delay:.05s;}
+.hs-line:nth-child(2){animation-delay:.12s;}
+.hs-line:nth-child(3){animation-delay:.19s;}
+.hs-line:nth-child(4){animation-delay:.26s;}
+.hs-line:nth-child(5){animation-delay:.33s;}
+@keyframes grow{to{transform:scaleX(1);}}
+
+.ph-left{
+  padding:100px 72px 80px;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  gap:32px;
+  position:relative;z-index:1;
+}
+.ph-breadcrumb{
+  display:flex;align-items:center;gap:10px;
+  font-size:8px;font-weight:300;
+  letter-spacing:.34em;text-transform:uppercase;
+  color:rgba(255,255,255,.28);
+  animation:fadeUp .9s .2s ease both;
+}
+.ph-breadcrumb span{color:rgba(255,255,255,.12);}
+.ph-title{
+  font-family:var(--display);
+  font-size:clamp(56px,8vw,110px);
+  font-weight:200;line-height:.9;
+  letter-spacing:-.01em;
+  animation:fadeUp .9s .4s ease both;
+}
+.ph-title em{font-style:italic;color:rgba(255,255,255,.38);display:block;}
+.ph-desc{
+  font-size:11px;font-weight:300;
+  line-height:2.1;letter-spacing:.05em;
+  color:rgba(255,255,255,.38);
+  max-width:380px;
+  animation:fadeUp .9s .58s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+
+.ph-right{
+  padding:100px 72px 80px;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  align-items:flex-end;
+  gap:48px;
+  position:relative;z-index:1;
+}
+.ph-count{
+  text-align:right;
+  animation:fadeUp .9s .6s ease both;
+}
+.ph-count-num{
+  font-family:var(--display);
+  font-size:clamp(80px,12vw,160px);
+  font-weight:200;line-height:1;
+  color:rgba(255,255,255,.08);
+  letter-spacing:-.04em;
+}
+.ph-count-label{
+  font-size:8.5px;font-weight:300;
+  letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(255,255,255,.22);
+  margin-top:8px;
+}
+.ph-tags{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;
+  animation:fadeUp .9s .72s ease both;
+}
+.ph-tag{
+  font-size:8px;font-weight:300;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);
+  border:1px solid rgba(255,255,255,.1);
+  padding:7px 14px;
+}
+
+/* big watermark */
+.hero-wm{
+  position:absolute;bottom:-60px;right:-40px;
+  font-family:var(--display);
+  font-size:clamp(200px,28vw,360px);
+  font-weight:200;
+  color:rgba(255,255,255,.025);
+  letter-spacing:-.05em;
+  line-height:1;
+  pointer-events:none;user-select:none;
+  animation:fadeIn 2s .4s ease both;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ══════════════════════════════════════
+   INTRO BAND
+══════════════════════════════════════ */
+.intro-band{
+  background:var(--cream);
+  border-bottom:1px solid var(--rule);
+  padding:56px 72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:60px;
+}
+.ib-left{
+  font-family:var(--display);
+  font-size:clamp(22px,2.8vw,36px);
+  font-weight:300;
+  color:var(--ink);
+  max-width:520px;
+  line-height:1.35;
+  letter-spacing:.01em;
+}
+.ib-left em{font-style:italic;color:var(--muted);}
+.ib-right{display:flex;gap:48px;flex-shrink:0;}
+.ib-stat{text-align:center;}
+.ib-stat-n{
+  font-family:var(--display);
+  font-size:40px;font-weight:300;
+  color:var(--ink);letter-spacing:-.02em;line-height:1;
+}
+.ib-stat-n sup{font-size:.45em;color:var(--muted);vertical-align:super;}
+.ib-stat-l{
+  font-size:7.5px;font-weight:300;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--muted);margin-top:6px;
+}
+
+/* ══════════════════════════════════════
+   SERVICES — ACCORDION LIST
+══════════════════════════════════════ */
+.svc-section{
+  background:var(--paper);
+  padding:0 72px 0;
+}
+.svc-section-header{
+  padding:100px 0 64px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:40px;
+  border-bottom:1px solid var(--rule);
+}
+.ssh-left{}
+.ssh-eyebrow{
+  font-size:8px;font-weight:300;
+  letter-spacing:.36em;text-transform:uppercase;
+  color:var(--muted);
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:16px;
+}
+.ssh-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--rule);}
+.ssh-title{
+  font-family:var(--display);
+  font-size:clamp(36px,4.5vw,64px);
+  font-weight:300;line-height:1.05;
+}
+.ssh-title em{font-style:italic;color:var(--muted);}
+.ssh-right{
+  font-size:10.5px;font-weight:300;
+  line-height:2;letter-spacing:.05em;
+  color:var(--muted);
+  max-width:280px;text-align:right;
+}
+
+/* Service accordion item */
+.svc-list{padding-bottom:100px;}
+.svc-item{
+  border-bottom:1px solid var(--rule);
+  overflow:hidden;
+}
+.svc-trigger{
+  display:grid;
+  grid-template-columns:80px 1fr auto 120px;
+  align-items:center;
+  gap:40px;
+  padding:36px 0;
+  cursor:none;
+  transition:background .3s;
+  position:relative;
+}
+.svc-trigger:hover{background:rgba(8,8,8,.018);}
+
+.svc-num{
+  font-family:var(--display);
+  font-size:13px;font-weight:300;
+  letter-spacing:.1em;color:var(--rule);
+  transition:color .3s;
+  flex-shrink:0;
+}
+.svc-item.open .svc-num{color:var(--muted);}
+
+.svc-name{
+  font-family:var(--display);
+  font-size:clamp(26px,3.2vw,44px);
+  font-weight:300;line-height:1;
+  letter-spacing:.01em;color:var(--ink);
+  transition:color .3s;
+}
+.svc-item.open .svc-name{color:var(--ink2);}
+
+.svc-tag{
+  font-size:8px;font-weight:300;
+  letter-spacing:.24em;text-transform:uppercase;
+  color:var(--muted);
+  justify-self:center;
+}
+
+.svc-toggle{
+  display:flex;align-items:center;justify-content:flex-end;gap:12px;
+}
+.svc-toggle-label{
+  font-size:8.5px;font-weight:300;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);transition:opacity .3s;
+}
+.svc-item.open .svc-toggle-label{opacity:0;}
+.svc-toggle-icon{
+  width:36px;height:36px;
+  border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:background .35s,border-color .35s,transform .45s cubic-bezier(.16,1,.3,1);
+}
+.svc-item.open .svc-toggle-icon{
+  background:var(--ink);border-color:var(--ink);
+  transform:rotate(45deg);
+}
+.svc-toggle-icon svg{
+  width:13px;height:13px;
+  stroke:var(--muted);fill:none;stroke-width:1.5;stroke-linecap:round;
+  transition:stroke .35s;
+}
+.svc-item.open .svc-toggle-icon svg{stroke:var(--white);}
+
+/* Panel */
+.svc-panel{
+  display:grid;grid-template-rows:0fr;
+  transition:grid-template-rows .55s cubic-bezier(.16,1,.3,1);
+}
+.svc-item.open .svc-panel{grid-template-rows:1fr;}
+.svc-panel-inner{
+  overflow:hidden;
+}
+.svc-panel-content{
+  display:grid;
+  grid-template-columns:80px 1fr 1fr;
+  gap:40px;
+  padding:0 0 56px;
+}
+.svc-panel-col1{} /* spacer */
+.svc-panel-main{
+  display:flex;flex-direction:column;gap:24px;
+}
+.svc-panel-desc{
+  font-size:12px;font-weight:300;
+  line-height:2.1;letter-spacing:.05em;
+  color:var(--dim);max-width:480px;
+}
+.svc-panel-features{
+  display:flex;flex-direction:column;gap:10px;
+}
+.spf-row{
+  display:flex;align-items:center;gap:12px;
+  font-size:10.5px;font-weight:300;
+  letter-spacing:.06em;color:var(--dim);
+}
+.spf-dot{width:4px;height:4px;border-radius:50%;background:var(--rule);flex-shrink:0;}
+.svc-panel-right{
+  display:flex;flex-direction:column;gap:32px;
+  padding-left:40px;
+  border-left:1px solid var(--rule);
+}
+.spr-label{
+  font-size:8px;font-weight:300;
+  letter-spacing:.3em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;
+}
+.spr-items{display:flex;flex-direction:column;gap:10px;}
+.spr-item{
+  font-family:var(--display);
+  font-size:16px;font-weight:300;
+  color:var(--ink);letter-spacing:.02em;
+  display:flex;align-items:center;gap:10px;
+}
+.spr-item::before{content:'';display:block;width:16px;height:1px;background:var(--rule);}
+.svc-cta-row{
+  display:flex;align-items:center;gap:16px;
+  padding-top:8px;
+}
+.btn-svc{
+  font-size:9px;font-weight:300;
+  letter-spacing:.26em;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  border:none;padding:12px 28px;
+  cursor:none;transition:background .3s;
+}
+.btn-svc:hover{background:var(--dim);}
+.btn-svc-ghost{
+  font-size:9px;font-weight:300;
+  letter-spacing:.26em;text-transform:uppercase;
+  color:var(--dim);background:none;
+  border:1px solid var(--rule);
+  padding:12px 22px;cursor:none;
+  transition:border-color .3s,color .3s;
+}
+.btn-svc-ghost:hover{border-color:var(--dim);color:var(--ink);}
+
+/* visual pill in panel */
+.svc-icon-large{
+  width:56px;height:56px;
+  border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+}
+.svc-icon-large svg{
+  width:24px;height:24px;
+  stroke:var(--muted);fill:none;
+  stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* ══════════════════════════════════════
+   FEATURED BLOCK  — DARK
+══════════════════════════════════════ */
+.featured{
+  background:var(--ink2);
+  color:var(--white);
+  padding:120px 72px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+.featured::before{
+  content:'';position:absolute;
+  right:-120px;top:50%;transform:translateY(-50%);
+  width:480px;height:480px;
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:50%;pointer-events:none;
+}
+.featured::after{
+  content:'';position:absolute;
+  right:-60px;top:50%;transform:translateY(-50%);
+  width:280px;height:280px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:50%;pointer-events:none;
+}
+.feat-eyebrow{
+  font-size:8px;font-weight:300;
+  letter-spacing:.36em;text-transform:uppercase;
+  color:rgba(255,255,255,.28);
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:24px;
+}
+.feat-eyebrow::before{content:'';display:block;width:24px;height:1px;background:rgba(255,255,255,.15);}
+.feat-title{
+  font-family:var(--display);
+  font-size:clamp(36px,4.5vw,64px);
+  font-weight:300;line-height:1.08;
+  margin-bottom:24px;
+}
+.feat-title em{font-style:italic;color:rgba(255,255,255,.38);}
+.feat-body{
+  font-size:11px;font-weight:300;
+  line-height:2.1;letter-spacing:.05em;
+  color:rgba(255,255,255,.38);
+  margin-bottom:40px;
+}
+.feat-actions{display:flex;gap:14px;}
+.btn-feat{
+  font-size:9.5px;font-weight:300;
+  letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ink);background:var(--white);
+  border:none;padding:13px 28px;cursor:none;
+  transition:background .3s;
+}
+.btn-feat:hover{background:var(--cream);}
+.btn-feat-ghost{
+  font-size:9.5px;font-weight:300;
+  letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);background:none;
+  border:1px solid rgba(255,255,255,.14);
+  padding:13px 24px;cursor:none;
+  transition:border-color .3s,color .3s;
+}
+.btn-feat-ghost:hover{border-color:rgba(255,255,255,.45);color:var(--white);}
+
+.feat-right{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:rgba(255,255,255,.06);
+  position:relative;z-index:1;
+}
+.feat-card{
+  background:var(--ink2);
+  padding:36px 28px;
+  display:flex;flex-direction:column;gap:14px;
+  transition:background .35s;
+  cursor:none;
+}
+.feat-card:hover{background:#222;}
+.fc-icon svg{
+  width:20px;height:20px;
+  stroke:rgba(255,255,255,.35);fill:none;
+  stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;
+  transition:stroke .35s;
+}
+.feat-card:hover .fc-icon svg{stroke:rgba(255,255,255,.7);}
+.fc-name{
+  font-family:var(--display);
+  font-size:18px;font-weight:300;
+  color:rgba(255,255,255,.65);
+  letter-spacing:.02em;
+  transition:color .35s;
+}
+.feat-card:hover .fc-name{color:var(--white);}
+.fc-tag{
+  font-size:7.5px;font-weight:300;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.2);
+}
+
+/* ══════════════════════════════════════
+   PROCESS MINI
+══════════════════════════════════════ */
+.process-mini{
+  background:var(--paper);
+  padding:120px 72px;
+}
+.pm-header{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;
+  gap:40px;
+  margin-bottom:72px;
+}
+.pm-title{
+  font-family:var(--display);
+  font-size:clamp(34px,4vw,58px);
+  font-weight:300;line-height:1.05;
+}
+.pm-title em{font-style:italic;color:var(--muted);}
+.pm-subtitle{
+  font-size:10.5px;font-weight:300;
+  line-height:2;letter-spacing:.05em;
+  color:var(--muted);
+  max-width:260px;text-align:right;
+}
+.pm-steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-top:1px solid var(--rule);
+}
+.pm-step{
+  padding:48px 40px 40px 0;
+  border-right:1px solid var(--rule);
+  position:relative;
+}
+.pm-step:last-child{border-right:none;}
+.pm-step-bar{
+  position:absolute;top:0;left:0;
+  width:0;height:2px;
+  background:var(--ink);
+  transition:width 1.4s cubic-bezier(.16,1,.3,1);
+}
+.pm-step.on .pm-step-bar{width:60%;}
+.pm-step-n{
+  font-family:var(--display);
+  font-size:64px;font-weight:200;
+  color:rgba(8,8,8,.05);
+  line-height:1;letter-spacing:-.04em;
+  margin-bottom:20px;
+}
+.pm-step-title{
+  font-family:var(--display);
+  font-size:21px;font-weight:300;
+  color:var(--ink);letter-spacing:.02em;
+  margin-bottom:12px;
+}
+.pm-step-body{
+  font-size:10.5px;font-weight:300;
+  line-height:1.95;letter-spacing:.04em;
+  color:var(--muted);
+}
+
+/* ══════════════════════════════════════
+   CTA STRIP — DARK
+══════════════════════════════════════ */
+.cta-strip{
+  background:var(--ink);
+  color:var(--white);
+  padding:100px 72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:60px;
+  position:relative;
+  overflow:hidden;
+}
+.cta-strip::before{
+  content:'';position:absolute;
+  left:-100px;top:50%;transform:translateY(-50%);
+  width:400px;height:400px;
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:50%;
+}
+.cta-left{position:relative;z-index:1;}
+.cta-label{
+  font-size:8px;font-weight:300;
+  letter-spacing:.36em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);
+  margin-bottom:20px;
+}
+.cta-title{
+  font-family:var(--display);
+  font-size:clamp(36px,5vw,72px);
+  font-weight:300;line-height:1.05;
+}
+.cta-title em{font-style:italic;color:rgba(255,255,255,.32);}
+.cta-right{
+  display:flex;flex-direction:column;
+  align-items:flex-end;gap:20px;
+  position:relative;z-index:1;flex-shrink:0;
+}
+.cta-contact{
+  text-align:right;
+  font-size:10.5px;font-weight:300;
+  letter-spacing:.06em;
+  color:rgba(255,255,255,.35);
+  line-height:2;
+}
+.cta-contact a{
+  color:rgba(255,255,255,.6);text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.18);
+  padding-bottom:1px;cursor:none;
+  transition:color .25s,border-color .25s;
+}
+.cta-contact a:hover{color:var(--white);border-color:rgba(255,255,255,.5);}
+.btn-cta-big{
+  font-size:9.5px;font-weight:300;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--ink);background:var(--white);
+  border:none;padding:15px 36px;cursor:none;
+  transition:background .3s;
+  white-space:nowrap;
+}
+.btn-cta-big:hover{background:var(--cream);}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:1100px){
+  .page-hero{grid-template-columns:1fr;}
+  .ph-right{display:none;}
+  .page-hero::before{display:none;}
+  .svc-trigger{grid-template-columns:60px 1fr 80px;}
+  .svc-tag{display:none;}
+  .svc-panel-content{grid-template-columns:60px 1fr;}
+  .svc-panel-right{display:none;}
+  .featured{grid-template-columns:1fr;}
+  .feat-right{display:none;}
+  .pm-steps{grid-template-columns:repeat(2,1fr);}
+  .cta-strip{flex-direction:column;align-items:flex-start;}
+  .cta-right{align-items:flex-start;}
+}
+@media(max-width:768px){
+  .page-hero,.intro-band,.svc-section,.featured,.process-mini,.cta-strip{padding-left:28px;padding-right:28px;}
+  .ph-left{padding:72px 28px 60px;}
+  .svc-section-header{padding-top:72px;padding-bottom:48px;flex-direction:column;}
+  .ssh-right{text-align:left;max-width:100%;}
+  .intro-band{flex-direction:column;gap:40px;}
+  .ib-right{gap:32px;}
+  .ib-left{max-width:100%;}
+  .pm-steps{grid-template-columns:1fr;}
+  .pm-step{border-right:none;border-bottom:1px solid var(--rule);padding-bottom:40px;padding-right:0;}
+  .pm-step:last-child{border-bottom:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- ══════════════════════════════════════
+     PAGE HERO
+══════════════════════════════════════ -->
+<section class="page-hero">
+  <div class="hero-staff">
+    <div class="hs-line"></div><div class="hs-line"></div>
+    <div class="hs-line"></div><div class="hs-line"></div>
+    <div class="hs-line"></div>
+  </div>
+  <div class="hero-wm">10</div>
+
+  <div class="ph-left">
+    <div class="ph-breadcrumb">
+      Prenses Müzik <span>/</span> Hizmetlerimiz
+    </div>
+    <h1 class="ph-title">
+      Hizmet<em>lerimiz</em>
+    </h1>
+    <p class="ph-desc">
+      Ses sistemlerinden sahne kurulumuna, orkestradan LED ekrana —
+      etkinliğinizin her boyutunda profesyonel çözümler sunuyoruz.
+    </p>
+  </div>
+
+  <div class="ph-right">
+    <div class="ph-count">
+      <div class="ph-count-num">10</div>
+      <div class="ph-count-label">Hizmet Kategorisi</div>
+    </div>
+    <div class="ph-tags">
+      <span class="ph-tag">Ses</span>
+      <span class="ph-tag">Işık</span>
+      <span class="ph-tag">Sahne</span>
+      <span class="ph-tag">Orkestra</span>
+      <span class="ph-tag">LED</span>
+      <span class="ph-tag">Etkinlik</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     INTRO BAND
+══════════════════════════════════════ -->
+<div class="intro-band r">
+  <p class="ib-left">
+    <em>Profesyonel ekipman</em> ve uzman kadromuzla,<br>
+    küçük kutlamalardan büyük sahnelere her etkinliği titizlikle yönetiyoruz.
+  </p>
+  <div class="ib-right">
+    <div class="ib-stat r r1">
+      <div class="ib-stat-n">500<sup>+</sup></div>
+      <div class="ib-stat-l">Etkinlik</div>
+    </div>
+    <div class="ib-stat r r2">
+      <div class="ib-stat-n">12<sup>+</sup></div>
+      <div class="ib-stat-l">Yıl Tecrübe</div>
+    </div>
+    <div class="ib-stat r r3">
+      <div class="ib-stat-n">98<sup>%</sup></div>
+      <div class="ib-stat-l">Memnuniyet</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SERVICES ACCORDION
+══════════════════════════════════════ -->
+<div class="svc-section">
+  <div class="svc-section-header">
+    <div class="ssh-left">
+      <div class="ssh-eyebrow r">Tüm Hizmetler</div>
+      <h2 class="ssh-title r r1">Ne <em>Yapıyoruz?</em></h2>
+    </div>
+    <p class="ssh-right r r2">
+      Detaylı bilgi için istediğiniz<br>kategoriye tıklayın.
+    </p>
+  </div>
+
+  <div class="svc-list">
+
+    <!-- 01 Ses Sistemleri -->
+    <div class="svc-item r" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">01</span>
+        <span class="svc-name">Ses Sistemleri</span>
+        <span class="svc-tag">Profesyonel Ses</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 8a4 4 0 0 1 0 8"/><path d="M17.5 5.5a8.5 8.5 0 0 1 0 13"/></svg>
+              </div>
+              <p class="svc-panel-desc">Line array, subwoofer, monitör, mikser ve tüm sinyal zinciri ekipmanlarını profesyonel sahne standartlarında sağlıyor; kurulum, prova ve etkinlik boyunca teknik destek veriyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Line Array & Subwoofer Sistemleri</div>
+                <div class="spf-row"><div class="spf-dot"></div>Dijital & Analog Mikser Kurulumu</div>
+                <div class="spf-row"><div class="spf-dot"></div>Sahne Monitörleri & IEM</div>
+                <div class="spf-row"><div class="spf-dot"></div>Etkinlik Boyunca Ses Operatörü</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Uygun Etkinlikler</div>
+                <div class="spr-items">
+                  <div class="spr-item">Konser & Sahne</div>
+                  <div class="spr-item">Kurumsal Toplantı</div>
+                  <div class="spr-item">Mezuniyet Töreni</div>
+                  <div class="spr-item">DJ Party</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Işık Sistemleri -->
+    <div class="svc-item r r1" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">02</span>
+        <span class="svc-name">Işık Sistemleri</span>
+        <span class="svc-tag">Sahne Aydınlatma</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+              </div>
+              <p class="svc-panel-desc">Moving head, wash, spot, strobe ve özel efekt armatürleriyle sahnenize hayat veriyoruz. DMX kontrol ve programlama hizmetiyle etkinliğinize özgü ışık şovları tasarlıyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Moving Head Spot & Wash</div>
+                <div class="spf-row"><div class="spf-dot"></div>Strobe & Efekt Armatürler</div>
+                <div class="spf-row"><div class="spf-dot"></div>DMX Programlama & Kontrol</div>
+                <div class="spf-row"><div class="spf-dot"></div>Özel Işık Şov Tasarımı</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Uygun Etkinlikler</div>
+                <div class="spr-items">
+                  <div class="spr-item">Konser & Show</div>
+                  <div class="spr-item">DJ Party</div>
+                  <div class="spr-item">Açılış Töreni</div>
+                  <div class="spr-item">Tiyatro & Sahne</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Sahne & Truss -->
+    <div class="svc-item r r2" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">03</span>
+        <span class="svc-name">Sahne &amp; Truss Sistemleri</span>
+        <span class="svc-tag">Yapısal Çözümler</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><rect x="2" y="16" width="20" height="4" rx="1"/><path d="M6 16V8h3v8M15 16V8h3v8"/><path d="M9 10h6"/></svg>
+              </div>
+              <p class="svc-panel-desc">Modüler sahne ve truss sistemleriyle her mekana uygun çözümler üretiyoruz. Yük hesabı, kurulum ve söküm ekibimizle güvenli ve hızlı sahne altyapısı sağlıyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Modüler Sahne Kurulumu</div>
+                <div class="spf-row"><div class="spf-dot"></div>Alüminyum Truss Sistemleri</div>
+                <div class="spf-row"><div class="spf-dot"></div>Güvenli Yük Hesabı & Montaj</div>
+                <div class="spf-row"><div class="spf-dot"></div>Kurulum & Söküm Ekibi</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Uygun Etkinlikler</div>
+                <div class="spr-items">
+                  <div class="spr-item">Açık Alan Konserleri</div>
+                  <div class="spr-item">Festivaller</div>
+                  <div class="spr-item">Kurumsal Etkinlik</div>
+                  <div class="spr-item">Tiyatro Sahne</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Orkestra -->
+    <div class="svc-item r" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">04</span>
+        <span class="svc-name">Orkestra</span>
+        <span class="svc-tag">Canlı Müzik</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 0 0 0 4h2a2 2 0 0 0 2-2V5l12-2v12"/><circle cx="18" cy="17" r="2"/></svg>
+              </div>
+              <p class="svc-panel-desc">Oda orkestrası, senfoni orkestrası veya oda müziği topluluğu organizasyonundan nota temininden prova yönetimine kadar tüm süreçleri koordine ediyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Oda & Senfoni Orkestrası</div>
+                <div class="spf-row"><div class="spf-dot"></div>Nota Temini & Düzenleme</div>
+                <div class="spf-row"><div class="spf-dot"></div>Prova Yönetimi</div>
+                <div class="spf-row"><div class="spf-dot"></div>Etkinlik Koordinasyonu</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Uygun Etkinlikler</div>
+                <div class="spr-items">
+                  <div class="spr-item">Gala & Resepsiyon</div>
+                  <div class="spr-item">Düğün Töreni</div>
+                  <div class="spr-item">Kurumsal Gece</div>
+                  <div class="spr-item">Davet & Açılış</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 LED Ekran -->
+    <div class="svc-item r r1" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">05</span>
+        <span class="svc-name">LED Ekran</span>
+        <span class="svc-tag">Görsel Sistemler</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              </div>
+              <p class="svc-panel-desc">Indoor ve outdoor LED ekranlarla etkinliğinize görsel boyut katıyoruz. İçerik yönetimi, video operatörü ve özel grafik tasarım hizmetleriyle tam çözüm sunuyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Indoor & Outdoor LED Paneller</div>
+                <div class="spf-row"><div class="spf-dot"></div>Yüksek Çözünürlüklü Görüntü</div>
+                <div class="spf-row"><div class="spf-dot"></div>Video İçerik Yönetimi</div>
+                <div class="spf-row"><div class="spf-dot"></div>Özel Grafik & Animasyon</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Uygun Etkinlikler</div>
+                <div class="spr-items">
+                  <div class="spr-item">Konser & Festival</div>
+                  <div class="spr-item">Kurumsal Sunum</div>
+                  <div class="spr-item">Açık Alan Etkinliği</div>
+                  <div class="spr-item">Spor Organizasyonu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 Okul Mezuniyetleri -->
+    <div class="svc-item r r2" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">06</span>
+        <span class="svc-name">Okul Mezuniyetleri</span>
+        <span class="svc-tag">Özel Törenler</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>
+              </div>
+              <p class="svc-panel-desc">Ses, sahne, ışık ve görsel sistemlerin yanı sıra seremoni müziği ve mekân düzenlemesiyle unutulmaz bir mezuniyet töreni organize ediyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Tören Sahne & Ses Kurulumu</div>
+                <div class="spf-row"><div class="spf-dot"></div>Seremoni Müziği</div>
+                <div class="spf-row"><div class="spf-dot"></div>LED Ekran & Fotoğraf Anı</div>
+                <div class="spf-row"><div class="spf-dot"></div>Tam Paket Organizasyon</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Uygun Kurumlar</div>
+                <div class="spr-items">
+                  <div class="spr-item">İlk & Ortaöğretim</div>
+                  <div class="spr-item">Üniversite</div>
+                  <div class="spr-item">Özel Okul</div>
+                  <div class="spr-item">Yurt & Kurs</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 DJ Party -->
+    <div class="svc-item r" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">07</span>
+        <span class="svc-name">DJ Party</span>
+        <span class="svc-tag">Dans &amp; Eğlence</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+              </div>
+              <p class="svc-panel-desc">Profesyonel DJ ekipmanı, beat sync ses sistemi ve özel ışık efektleriyle mekanınızı dance floor'a dönüştürüyoruz. Müzik seçkisinden set organizasyonuna tam paket.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Profesyonel DJ Mixer & Controller</div>
+                <div class="spf-row"><div class="spf-dot"></div>Beat-Sync Ses & Işık Sistemi</div>
+                <div class="spf-row"><div class="spf-dot"></div>Özel Müzik Set Tasarımı</div>
+                <div class="spf-row"><div class="spf-dot"></div>Efekt Makineleri (Duman, Köpük)</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Uygun Etkinlikler</div>
+                <div class="spr-items">
+                  <div class="spr-item">Gece Partisi</div>
+                  <div class="spr-item">Doğum Günü</div>
+                  <div class="spr-item">Düğün After Party</div>
+                  <div class="spr-item">Kurumsal Gece</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08 Doğum Günü Party -->
+    <div class="svc-item r r1" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">08</span>
+        <span class="svc-name">Doğum Günü Party</span>
+        <span class="svc-tag">Kutlama Organizasyonu</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2 1 2 1"/><path d="M2 21h20M12 8V3M9 5h6"/></svg>
+              </div>
+              <p class="svc-panel-desc">Müzik, ses ve ışık sistemleri, kişiselleştirilmiş dekorasyon ve konsept yönetimiyle hayalinizdeki doğum günü organizasyonunu hayata geçiriyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Kişiselleştirilmiş Ses & Playlist</div>
+                <div class="spf-row"><div class="spf-dot"></div>Tematik Işık & Dekor Kurulumu</div>
+                <div class="spf-row"><div class="spf-dot"></div>Fotoğraf & Video Köşesi</div>
+                <div class="spf-row"><div class="spf-dot"></div>Sürpriz Anı Organizasyonu</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Organizasyon Türleri</div>
+                <div class="spr-items">
+                  <div class="spr-item">Çocuk Partisi</div>
+                  <div class="spr-item">Genç & Yetişkin</div>
+                  <div class="spr-item">Surprise Party</div>
+                  <div class="spr-item">Özel Tema Gecesi</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 09 Etkinlik -->
+    <div class="svc-item r r2" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">09</span>
+        <span class="svc-name">Etkinlik</span>
+        <span class="svc-tag">Kurumsal &amp; Özel</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <p class="svc-panel-desc">Kurumsal tanıtım gecelerinden özel davetlere, ürün lansmanlarından gala etkinliklere — ses, ışık, sahne ve görsel altyapının tümünü anahtar teslim sağlıyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Anahtar Teslim Teknik Altyapı</div>
+                <div class="spf-row"><div class="spf-dot"></div>Mekân Teknik Keşfi</div>
+                <div class="spf-row"><div class="spf-dot"></div>Prova & Teknik Provası</div>
+                <div class="spf-row"><div class="spf-dot"></div>Etkinlik Günü Tam Destek</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Etkinlik Türleri</div>
+                <div class="spr-items">
+                  <div class="spr-item">Ürün Lansmanı</div>
+                  <div class="spr-item">Gala Gecesi</div>
+                  <div class="spr-item">Konferans & Seminer</div>
+                  <div class="spr-item">Ödül Töreni</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 Davet & Açılış -->
+    <div class="svc-item r" data-svc>
+      <div class="svc-trigger" data-trigger>
+        <span class="svc-num">10</span>
+        <span class="svc-name">Davet &amp; Açılış</span>
+        <span class="svc-tag">Açılış Törenleri</span>
+        <div class="svc-toggle">
+          <span class="svc-toggle-label">İncele</span>
+          <div class="svc-toggle-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel">
+        <div class="svc-panel-inner">
+          <div class="svc-panel-content">
+            <div></div>
+            <div class="svc-panel-main">
+              <div class="svc-icon-large">
+                <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </div>
+              <p class="svc-panel-desc">Mağaza, ofis, tesis ve benzeri mekanların açılış törenlerinde profesyonel ses sistemi, dekoratif ışık kurulumu ve canlı müzik organizasyonuyla prestijli bir açılış deneyimi yaşatıyoruz.</p>
+              <div class="svc-panel-features">
+                <div class="spf-row"><div class="spf-dot"></div>Açılış Törenine Özel Ses Sistemi</div>
+                <div class="spf-row"><div class="spf-dot"></div>Dekoratif & Tematik Işık</div>
+                <div class="spf-row"><div class="spf-dot"></div>Canlı Müzik veya DJ</div>
+                <div class="spf-row"><div class="spf-dot"></div>Kurde Kesimi & Seremoni</div>
+              </div>
+              <div class="svc-cta-row">
+                <button class="btn-svc">Teklif Al</button>
+                <button class="btn-svc-ghost">Detaylar</button>
+              </div>
+            </div>
+            <div class="svc-panel-right">
+              <div>
+                <div class="spr-label">Uygun Mekanlar</div>
+                <div class="spr-items">
+                  <div class="spr-item">Mağaza & Butik</div>
+                  <div class="spr-item">Ofis & Tesis</div>
+                  <div class="spr-item">Restoran & Kafe</div>
+                  <div class="spr-item">Showroom</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /svc-list -->
+</div><!-- /svc-section -->
+
+<!-- ══════════════════════════════════════
+     FEATURED
+══════════════════════════════════════ -->
+<section class="featured">
+  <div>
+    <div class="feat-eyebrow r">Neden Biz?</div>
+    <h2 class="feat-title r r1">
+      Fark Yaratan<br><em>Deneyim</em>
+    </h2>
+    <p class="feat-body r r2">
+      2020'den bu yana yüzlerce etkinlikte edindiğimiz tecrübeyi
+      her yeni projede kullanıyoruz. Ekipman kalitesi, teknik uzmanlık
+      ve zamanında teslimat bizim için tartışmasız.
+    </p>
+    <div class="feat-actions r r3">
+      <button class="btn-feat">Referanslar</button>
+      <button class="btn-feat-ghost">Hakkımızda</button>
+    </div>
+  </div>
+  <div class="feat-right">
+    <div class="feat-card">
+      <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fc-name">Güvenilir Ekipman</div>
+      <div class="fc-tag">Tier 1 Markalar</div>
+    </div>
+    <div class="feat-card">
+      <div class="fc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="1.3"/><polyline points="12 6 12 12 16 14" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fc-name">Zamanında Kurulum</div>
+      <div class="fc-tag">Her Zaman Hazır</div>
+    </div>
+    <div class="feat-card">
+      <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="1.3" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke-width="1.3"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="fc-name">Uzman Ekip</div>
+      <div class="fc-tag">Sertifikalı Teknisyenler</div>
+    </div>
+    <div class="feat-card">
+      <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.1-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="fc-name">7/24 Destek</div>
+      <div class="fc-tag">Kesintisiz İletişim</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PROCESS
+══════════════════════════════════════ -->
+<section class="process-mini">
+  <div class="pm-header">
+    <h2 class="pm-title r">Nasıl <em>Çalışıyoruz?</em></h2>
+    <p class="pm-subtitle r r2">Etkinliğinizin ilk adımından<br>son anına kadar yanınızdayız.</p>
+  </div>
+  <div class="pm-steps">
+    <div class="pm-step r">
+      <div class="pm-step-bar"></div>
+      <div class="pm-step-n">01</div>
+      <div class="pm-step-title">Keşif &amp; Brifing</div>
+      <p class="pm-step-body">Etkinliğinizin kapsamını, mekanını ve beklentilerinizi detaylıca konuşuyoruz.</p>
+    </div>
+    <div class="pm-step r r1">
+      <div class="pm-step-bar"></div>
+      <div class="pm-step-n">02</div>
+      <div class="pm-step-title">Teknik Planlama</div>
+      <p class="pm-step-body">Ses, ışık, sahne ve ekran düzenini mekan özelinde tasarlıyoruz.</p>
+    </div>
+    <div class="pm-step r r2">
+      <div class="pm-step-bar"></div>
+      <div class="pm-step-n">03</div>
+      <div class="pm-step-title">Kurulum &amp; Prova</div>
+      <p class="pm-step-body">Tüm ekipmanı etkinlikten önce kurarak kapsamlı test gerçekleştiriyoruz.</p>
+    </div>
+    <div class="pm-step r r3">
+      <div class="pm-step-bar"></div>
+      <div class="pm-step-n">04</div>
+      <div class="pm-step-title">Canlı Destek</div>
+      <p class="pm-step-body">Etkinlik boyunca uzman ekibimiz sahada; her an müdahaleye hazırız.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CTA STRIP
+══════════════════════════════════════ -->
+<section class="cta-strip">
+  <div class="cta-left">
+    <p class="cta-label r">Birlikte Çalışalım</p>
+    <h2 class="cta-title r r1">
+      Etkinliğiniz<br><em>Unutulmaz</em> Olsun
+    </h2>
+  </div>
+  <div class="cta-right r r2">
+    <button class="btn-cta-big">Ücretsiz Teklif Al</button>
+    <p class="cta-contact">
+      <a href="tel:+905001234567">+90 500 123 45 67</a><br>
+      <a href="mailto:info@prensesmuzik.com">info@prensesmuzik.com</a>
+    </p>
+  </div>
+</section>
+
+<script>
+/* ── Cursor ── */
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('button,a,.svc-trigger,.feat-card,.pm-step,.bsm-row').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='13px';cur.style.height='13px';curR.style.width='44px';curR.style.height='44px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='7px';cur.style.height='7px';curR.style.width='28px';curR.style.height='28px';});
+});
+
+/* ── Accordion ── */
+document.querySelectorAll('[data-svc]').forEach(item=>{
+  item.querySelector('[data-trigger]').addEventListener('click',()=>{
+    const isOpen=item.classList.contains('open');
+    document.querySelectorAll('[data-svc]').forEach(i=>i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+
+/* ── Scroll Reveal ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');}});
+},{threshold:.1});
+document.querySelectorAll('.r,.rfade').forEach(el=>obs.observe(el));
+
+/* Process bar observer */
+const pObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});
+},{threshold:.25});
+document.querySelectorAll('.pm-step').forEach(el=>pObs.observe(el));
+</script>
+</body>
+</html>

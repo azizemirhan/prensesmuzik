@@ -1,0 +1,107 @@
+/* ══════════════════════════════════════════
+   RESET & BASE (One-to-One from Original)
+══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  /* New tokens from son version */
+  --black: #080808;
+  --off-black: #111;
+  /* Original aliases */
+  --ink: #080808;
+  --ink2: #141210;
+  --paper: #f5f2ed;
+  --cream: #f0ece5;
+  --rule: #dbd4cc;
+  --muted: #a09488;
+  --warm-gray: #d6d0c8;
+  --mid-gray: #9e968c;
+  --dark-gray: #3e3a35;
+  --accent-line: rgba(255,255,255,0.07);
+  --dim: #6b6460;
+  --white: #f7f4ef;
+  --red: #e02020;
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Montserrat', sans-serif;
+  
+  /* Aliases used in different original pages */
+  --D: var(--font-display);
+  --display: var(--font-display);
+  --font: var(--font-body);
+  
+  /* Page specific dark variants (Originals) */
+  --ink-hakkimizda: #141210;
+  --ink-hizmetler: #1c1a18;
+  --ink-iletisim: #111009;
+}
+
+html { scroll-behavior: smooth; }
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── Custom cursor ── */
+.cursor, .cur {
+  position: fixed; width: 9px; height: 9px;
+  background: #e02020; border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.22s, height 0.22s, background 0.3s;
+  box-shadow: 0 0 12px rgba(224, 32, 32, .5);
+}
+.cursor-ring, .cur-r {
+  position: fixed; width: 30px; height: 30px;
+  border: 1.5px solid rgba(224, 32, 32, .4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.18s ease;
+}
+body.dark-bg .cursor { background: var(--white); }
+
+/* ── Grain overlay ── */
+body::before, body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size: 180px;
+  pointer-events: none; z-index: 1000; opacity: 0.4;
+}
+
+/* ── Reveal animation ── */
+.reveal, .rv {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+             transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.revealed, .rv.on { opacity: 1; transform: translateY(0); }
+.reveal-left{
+  opacity:0;transform:translateX(-50px);
+  transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+             transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-left.revealed{opacity:1;transform:translateX(0);}
+.reveal-right{
+  opacity:0;transform:translateX(50px);
+  transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+             transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-right.revealed{opacity:1;transform:translateX(0);}
+.reveal-delay-1, .rv1 { transition-delay: 0.1s; }
+.reveal-delay-2, .rv2 { transition-delay: 0.22s; }
+.reveal-delay-3, .rv3 { transition-delay: 0.34s; }
+.reveal-delay-4, .rv4 { transition-delay: 0.46s; }
+
+@media(max-width:768px){
+  body{cursor:auto;}
+  .cursor, .cursor-ring, .cur, .cur-r { display: none; }
+}

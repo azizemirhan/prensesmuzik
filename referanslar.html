@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Referanslar — Prenses Müzik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/referanslar.css">
+  <link rel="stylesheet" href="css/topbar.css">
+  <link rel="stylesheet" href="css/bottom-bar.css">
+</head>
+<body>
+
+  <!-- Top bar — siyah, kayan yazı -->
+  <div class="site-topbar" aria-hidden="true">
+    <div class="topbar-marquee-wrap">
+      <div class="topbar-marquee">Ses · Işık · Sahne · Orkestra · LED Ekran · Etkinlik · Prenses Müzik · Ankara &nbsp;&nbsp;◆&nbsp;&nbsp;</div>
+      <div class="topbar-marquee">Ses · Işık · Sahne · Orkestra · LED Ekran · Etkinlik · Prenses Müzik · Ankara &nbsp;&nbsp;◆&nbsp;&nbsp;</div>
+    </div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div id="cursor" class="cur"></div>
+  <div id="cursor-ring" class="cur-r"></div>
+  <header id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="img/prenses-müzik-logo.png" alt="Prenses Müzik" class="logo-img">
+      </a>
+
+      <nav>
+        <div class="nav-item" id="hizmetler-item">
+          <a href="hizmetlerimiz.html" class="nav-link" id="hizmetler-trigger">
+            Hizmetler <span class="arrow">&#9660;</span>
+          </a>
+        </div>
+        <div class="nav-item">
+          <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
+        </div>
+        <div class="nav-item active">
+          <a href="referanslar.html" class="nav-link">Referanslar</a>
+        </div>
+        <div class="nav-item">
+          <a href="demo.html" class="nav-link">Galeri</a>
+        </div>
+        <div class="nav-item">
+          <a href="iletisim.html" class="nav-link">İletişim</a>
+        </div>
+      </nav>
+
+      <div class="header-cta">
+        <button class="btn-ghost">Giriş Yap</button>
+        <button class="btn-solid">Teklif Al</button>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menü">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-nav-link" id="mobile-hizmetler-toggle">
+        Hizmetler <span class="arrow">&#9660;</span>
+      </div>
+      <div class="mobile-services" id="mobile-services">
+        <a href="hizmetlerimiz.html" class="mobile-service-link" style="border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(0,0,0,0.02);"><span class="mobile-service-name" style="font-weight: 500; color: #0a0a0a;">Tüm Hizmetleri Gör →</span></a>
+        <a href="ses-sistemleri.html" class="mobile-service-link"><span class="mobile-service-name">Ses Sistemleri</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Işık Sistemleri</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Sahne &amp; Truss Sistemleri</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Orkestra</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">LED Ekran</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Okul Mezuniyetleri</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">DJ Party</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Doğum Günü Party</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Etkinlik</span></a>
+        <a href="demo.html" class="mobile-service-link"><span class="mobile-service-name">Davet &amp; Açılış</span></a>
+      </div>
+      <a href="hakkimizda.html" class="mobile-plain-link">Hakkımızda</a>
+      <a href="referanslar.html" class="mobile-plain-link active">Referanslar</a>
+      <a href="demo.html" class="mobile-plain-link">Galeri</a>
+      <a href="iletisim.html" class="mobile-plain-link">İletişim</a>
+      <div class="mobile-btns">
+        <button class="btn-ghost">Giriş Yap</button>
+        <button class="btn-solid">Teklif Al</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mega Menu -->
+  <div class="mega-overlay" id="mega-overlay"></div>
+  <div class="mega-menu" id="mega-menu" role="dialog" aria-label="Hizmetler menüsü">
+    <div class="mega-left">
+      <div class="mega-left-top">
+        <p class="mega-label">Hizmetlerimiz</p>
+        <h2 class="mega-title">Sahneyi<br><em>Bize</em><br>Bırakın</h2>
+        <div class="mega-divider"></div>
+        <p class="mega-desc">Profesyonel ekipman ve uzman kadromuzla etkinliğinizi unutulmaz kılıyoruz.</p>
+      </div>
+      <a href="hizmetlerimiz.html" class="mega-cta">
+        Tüm hizmetleri gör
+        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+    <div class="mega-right">
+      <p class="mega-right-label">Kategori seçin</p>
+      <div class="services-grid">
+        <a href="ses-sistemleri.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="6" height="10" rx="1"/><path d="M9 9l6-5v16l-6-5"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M17 6a8 8 0 0 1 0 12"/></svg></div>
+          <div class="service-info"><span class="service-name">Ses Sistemleri</span><span class="service-tag">Profesyonel Ses</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/><circle cx="12" cy="12" r="4"/></svg></div>
+          <div class="service-info"><span class="service-name">Işık Sistemleri</span><span class="service-tag">Sahne Aydınlatma</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="2" y="16" width="20" height="4" rx="1"/><path d="M6 16V8h3v8M15 16V8h3v8"/><path d="M9 10h6"/></svg></div>
+          <div class="service-info"><span class="service-name">Sahne &amp; Truss</span><span class="service-tag">Yapısal Sistemler</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 0 0 0 4h2a2 2 0 0 0 2-2V5l12-2v14"/><circle cx="18" cy="17" r="2"/><path d="M9 17V5l12-2v12"/></svg></div>
+          <div class="service-info"><span class="service-name">Orkestra</span><span class="service-tag">Canlı Müzik</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <div class="service-info"><span class="service-name">LED Ekran</span><span class="service-tag">Görsel Sistemler</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v6c3 2 9 2 12 0v-6"/><path d="M22 10v6"/></svg></div>
+          <div class="service-info"><span class="service-name">Okul Mezuniyetleri</span><span class="service-tag">Özel Törenler</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
+          <div class="service-info"><span class="service-name">DJ Party</span><span class="service-tag">Dans &amp; Eğlence</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2 1 2 1"/><path d="M2 21h20"/><path d="M7 8v2M12 8v2M17 8v2M7 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/><path d="M12 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM17 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg></div>
+          <div class="service-info"><span class="service-name">Doğum Günü Party</span><span class="service-tag">Kutlama Organizasyonu</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div class="service-info"><span class="service-name">Etkinlik</span><span class="service-tag">Kurumsal &amp; Özel</span></div>
+        </a>
+        <a href="demo.html" class="service-item">
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+          <div class="service-info"><span class="service-name">Davet &amp; Açılış</span><span class="service-tag">Açılış Törenleri</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <main>
+    <!-- ══════════════════════════════════════
+         HERO
+    ══════════════════════════════════════ -->
+    <section class="hero">
+      <div class="staff">
+        <div class="sl"></div><div class="sl"></div><div class="sl"></div>
+        <div class="sl"></div><div class="sl"></div>
+      </div>
+      <div class="hero-wm">REF</div>
+      <div class="hero-circle"></div>
+      <div class="hero-vert">Ankara · 2025 · Türkiye</div>
+
+      <div class="hero-content">
+        <div class="hero-bc">
+          <a href="index.html">Anasayfa</a>
+          <span>/</span>
+          <span style="color:rgba(255,255,255,.5)">Referanslar</span>
+        </div>
+        <div class="hero-eyebrow">Etkinlik Arşivi</div>
+        <h1 class="hero-h1">
+          Güvenle<em>İmzamız<span class="accent">.</span></em>
+        </h1>
+        <p class="hero-sub">
+          Büyük arenalardan butik etkinliklere kadar, sahnede bıraktığımız izler ve mutlu ettiğimiz yüzler. Profesyonel teknik prodüksiyon ile her etkinlik bir sanat eserine dönüşür.
+        </p>
+      </div>
+
+      <div class="hero-bottom">
+        <div class="hb-item">
+          <div class="hb-num">500<sup>+</sup></div>
+          <div class="hb-label">Tamamlanan Etkinlik</div>
+        </div>
+        <div class="hb-item">
+          <div class="hb-num">12<sup>+</sup></div>
+          <div class="hb-label">Yıllık Tecrübe</div>
+        </div>
+        <div class="hb-item">
+          <div class="hb-num">98<sup>%</sup></div>
+          <div class="hb-label">Müşteri Memnuniyeti</div>
+        </div>
+        <div class="hb-item">
+          <div class="hb-num">80<sup>+</sup></div>
+          <div class="hb-label">Aktif Ekipman Seti</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         REFERENCES MOSAIC GRID
+    ══════════════════════════════════════ -->
+    <section class="ref-grid-container">
+      <div class="ref-mosaic">
+        <!-- Item 1 (Wide) -->
+        <div class="ref-item wide reveal">
+          <div class="ref-img ref-ph-1"></div>
+          <div class="ref-overlay">
+            <span class="ref-cat">Konser & Sahne</span>
+            <h3 class="ref-title">Ankara Yaz Festivali '24</h3>
+            <p class="ref-desc">Komple ses ve ışık sistemi kurulumu, sahne yönetimi.</p>
+          </div>
+        </div>
+
+        <!-- Item 2 (Tall) -->
+        <div class="ref-item tall reveal reveal-delay-1">
+          <div class="ref-img ref-ph-2"></div>
+          <div class="ref-overlay">
+            <span class="ref-cat">Mezuniyet</span>
+            <h3 class="ref-title">ODTÜ Mezuniyet Töreni</h3>
+            <p class="ref-desc">Ses sistemleri ve LED ekran çözümleri.</p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="ref-item reveal reveal-delay-2">
+          <div class="ref-img ref-ph-3"></div>
+          <div class="ref-overlay">
+            <span class="ref-cat">Düğün</span>
+            <h3 class="ref-title">Zarif Bir Davet</h3>
+            <p class="ref-desc">Özel ses tasarımı ve ambiyans aydınlatma.</p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="ref-item reveal reveal-delay-3">
+          <div class="ref-img ref-ph-4"></div>
+          <div class="ref-overlay">
+            <span class="ref-cat">Kurumsal</span>
+            <h3 class="ref-title">Şirket Yılbaşı Balosu</h3>
+            <p class="ref-desc">Truss sistemleri ve DJ performansı.</p>
+          </div>
+        </div>
+
+        <!-- Item 5 (Tall) -->
+        <div class="ref-item tall reveal">
+          <div class="ref-img ref-ph-5"></div>
+          <div class="ref-overlay">
+            <span class="ref-cat">Etkinlik</span>
+            <h3 class="ref-title">Lansman Gecesi</h3>
+            <p class="ref-desc">Teknik prodüksiyon ve sahne tasarımı.</p>
+          </div>
+        </div>
+
+        <!-- Item 6 (Wide) -->
+        <div class="ref-item wide reveal reveal-delay-1">
+          <div class="ref-img ref-ph-6"></div>
+          <div class="ref-overlay">
+            <span class="ref-cat">Party</span>
+            <h3 class="ref-title">Yaz Sonu Partisi</h3>
+            <p class="ref-desc">Ses ve ışık sistemleri, DJ kurulumu.</p>
+          </div>
+        </div>
+
+        <!-- Item 7 -->
+        <div class="ref-item reveal reveal-delay-2">
+          <div class="ref-img ref-ph-7"></div>
+          <div class="ref-overlay">
+            <span class="ref-cat">Fuar</span>
+            <h3 class="ref-title">Endüstri Fuarı Açılışı</h3>
+            <p class="ref-desc">Seslendirme ve anons sistemleri.</p>
+          </div>
+        </div>
+        
+        <!-- Item 8 -->
+        <div class="ref-item reveal reveal-delay-3">
+          <div class="ref-img ref-ph-8"></div>
+          <div class="ref-overlay">
+            <span class="ref-cat">Okul</span>
+            <h3 class="ref-title">Bahar Şenliği</h3>
+            <p class="ref-desc">Sahne, truss ve ses ekibi.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         CTA
+    ══════════════════════════════════════ -->
+    <section class="ref-cta-section" id="cta">
+      <div class="cta-inner reveal">
+        <div class="cta-eyebrow">Referanslar · Teknik Prodüksiyon</div>
+        <h2 class="cta-title">Kendi Sahnelerinizi<br><em>Yaratalım</em></h2>
+        <div class="cta-accent-dot"></div>
+        <p class="cta-desc">Profesyonel teknik prodüksiyon ve sahne tasarımı için bizimle iletişime geçin.</p>
+        <div class="cta-btns">
+          <a href="iletisim.html" class="btn-solid" style="padding: 16px 38px;">Teklif Al</a>
+          <a href="tel:+905001234567" class="btn-ghost" style="padding: 16px 38px;">+90 500 123 45 67</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="img/prenses-müzik-logo-beyaz.png" alt="Prenses Müzik">
+        </div>
+
+        <div class="footer-social">
+          <a href="demo.html" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke-linecap="round"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="demo.html" class="social-btn" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.5 6.4s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C17 3 12 3 12 3s-5 0-7.3.1c-.5.1-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S1.2 8.1 1.2 9.8v1.5c0 1.7.3 3.4.3 3.4s.2 1.6.9 2.3c.9.9 2 .8 2.5.9C6.2 18 12 18 12 18s5 0 7.3-.1c.5-.1 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.3-1.7.3-3.4V9.8c0-1.7-.3-3.4-.3-3.4z" stroke-linecap="round"/><polygon points="9.5,15 15.5,12 9.5,9" fill="currentColor" stroke="none"/></svg></a>
+          <a href="demo.html" class="social-btn" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Hizmetler</h4>
+        <ul>
+          <li><a href="ses-sistemleri.html">Ses Sistemleri</a></li>
+          <li><a href="demo.html">Işık Sistemleri</a></li>
+          <li><a href="demo.html">Sahne &amp; Truss</a></li>
+          <li><a href="demo.html">Orkestra</a></li>
+          <li><a href="demo.html">LED Ekran</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Etkinlikler</h4>
+        <ul>
+          <li><a href="demo.html">Okul Mezuniyetleri</a></li>
+          <li><a href="demo.html">DJ Party</a></li>
+          <li><a href="demo.html">Doğum Günü Party</a></li>
+          <li><a href="demo.html">Etkinlik</a></li>
+          <li><a href="demo.html">Davet &amp; Açılış</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <h4>Bülten</h4>
+        <p>Konserler, özel etkinlikler ve yeni hizmetlerden ilk haberdar olan siz olun.</p>
+        <div class="nl-form">
+          <input type="email" placeholder="E-posta adresiniz" />
+          <button aria-label="Abone ol"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Prenses Müzik. Tüm hakları saklıdır.</p>
+      <div class="footer-bottom-links"><a href="demo.html">Gizlilik Politikası</a><a href="demo.html">Kullanım Koşulları</a><a href="demo.html">KVKK</a></div>
+    </div>
+  </footer>
+
+  <!-- Mobil bottom bar (sadece mobilde görünür) -->
+  <div class="mobile-bottom-bar" id="mobile-bottom-bar" aria-hidden="true">
+    <div class="mobile-bottom-bar-inner">
+      <a href="index.html" class="mobile-bar-brand">
+        <img src="img/prenses-müzik-logo-beyaz.png" alt="Prenses Müzik" class="mobile-bar-logo">
+      </a>
+      <div class="mobile-bar-actions">
+        <a href="tel:+905001234567" class="mobile-bar-btn secondary" aria-label="Bizi Ara">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <span>Ara</span>
+        </a>
+        <a href="#cta" class="mobile-bar-btn primary">Teklif Al</a>
+      </div>
+    </div>
+    <div class="mobile-bar-home-indicator"></div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
